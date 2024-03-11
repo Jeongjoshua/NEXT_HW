@@ -1,0 +1,407 @@
+.outerbox {
+    display: flex;
+    height: 640px;
+    width: 360px;
+    position: absolute;
+    background-color: black;
+    border-radius: 25px;
+    margin: auto;
+    position: absolute;
+    z-index: 1;
+    top: 5%;
+    left: 39%;
+}
+.heading {
+    display: flex;
+    height: 40px;
+    width: 340px;
+    position: absolute;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: black;
+    top: 25px;
+    z-index: 2;
+}
+.username {
+    display: flex;
+    position: relative;
+    color: white;
+    left: 5px;
+    font-size: 20px;
+    z-index: 3;
+}
+.icon1 {
+    width: 17px;
+    height: 17px;
+    border-radius: 5px;
+    border: 2px solid white;
+    position: relative;
+    z-index: 3;
+    left: 37%;
+    background-color: black;
+    justify-content: center;
+}
+.icon2 {
+    height: 17px;
+    width: 19px;
+    left: 45%;
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    justify-content: space-between;
+    z-index: 3;
+    background-color: black;
+}
+.stripe {
+    height: 2px;
+    width: 17px;
+    background-color: white;
+    z-index: 4;
+}
+.longbox1 {
+    height: 2px;
+    width: 15px;
+    top: 50%;
+    left: 1px;
+    background-color: white;
+    z-index: 4;
+    position: relative;
+}
+.longbox2 {
+    height: 15px;
+    width: 2.5px;
+    bottom: 1px;
+    left: 7px;
+    background-color: white;
+    z-index: 4;
+    position: relative;
+}
+.center {
+    display: block;
+    margin: 0 auto;
+}
+.profile {
+    display: flex;
+    height: 70px;
+    width: 340px;
+    position: relative;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: black;
+    top: 50px;
+    z-index: 2;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+.circle {
+    height: 65px;
+    width: 65px;
+    border-radius: 32.5px;
+    position: relative;
+    z-index: 3;
+    background-color: grey;
+    flex-direction: column;
+}
+
+.post {
+    height: 50px;
+    width: 60px;
+    background-color: black;
+    z-index: 3;
+    align-items: center;
+    justify-content: center;
+}
+.follower {
+    height: 50px;
+    width: 60px;
+    background-color: black;
+    z-index: 3;
+    justify-content: center;
+    align-items: center;
+}
+.following {
+    height: 50px;
+    width: 60px;
+    background-color: black;
+    z-index: 3;
+    justify-content: center;
+    align-items: center;
+}
+.number {
+    font-size: 17px;
+    color: white;
+    align-items: center;
+}
+.korean {
+    font-size: 13px;
+    color: white;
+    line-height: 1.5;
+    position: relative;
+    justify-content: space-between;
+    align-items: center;
+    display: flex;
+    text-align: center;
+}
+.myBio {
+    display: flex;
+    height: 90px;
+    width: 140px;
+    position: relative;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: black;
+    top: 50px;
+    z-index: 2;
+    flex-direction: column;
+}
+.dashboard {
+    display: flex;
+    height: 50px;
+    width: 320px;
+    left: 10px;
+    border-radius: 15px;
+    position: relative;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: grey;
+    top: 50px;
+    z-index: 2;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+}
+.dashboard1 {
+    font-size: 13px;
+    color: white;
+    top: 5px;
+}
+
+.dashboard2 {
+    font-size: 9px;
+    color: white;
+    line-height: 0;
+}
+
+.smallDashboard1 {
+    display: inline-flex;
+    height: 25px;
+    width: 140px;
+    border-radius: 7px;
+    position: relative;
+    padding-left: 8px;
+    background-color: grey;
+    top: 15px;
+    z-index: 2;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.smallDashboard2 {
+    display: inline-flex;
+    height: 25px;
+    width: 140px;
+    border-radius: 7px;
+    position: relative;
+    padding-left: 16px;
+    padding-right: 10px;
+    background-color: grey;
+    top: 15px;
+    z-index: 2;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.imageOver {
+    display: flex;
+    height: 62px;
+    width: 62px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    z-index: 3;
+    left: 2px;
+    top: 2px;
+}
+.imageOver img {
+    width: 100%;
+    height: 100%;
+}
+
+.storySection {
+    display: flex;
+    width: 90%;
+    justify-content: space-between;
+    position: relative;
+}
+
+.storyBackground {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+}
+
+.story {
+    height: 85px;
+    width: 65px;
+    border-radius: 15px;
+    position: relative;
+    background-color: black;
+    z-index: 2;
+    justify-content: center;
+    align-items: center;
+    top: 25px;
+}
+.koreanStory {
+    position: relative;
+    font-size: 12px;
+    text-align: center;
+}
+.section {
+    display: flex;
+    height: 50px;
+    width: 320px;
+    position: relative;
+    background-color: black;
+    margin: auto;
+    top: 25px;
+    z-index: 2;
+    justify-content: space-around;
+    align-items: center;
+}
+.icon {
+    display: flex;
+    height: 140px;
+    width: 320px;
+    position: relative;
+    z-index: 3;
+}
+
+.bottomIcon {
+    display: flex;
+    height: 40px;
+    width: 320px;
+    top: 370px;
+    position: absolute;
+    background-color: black;
+    bottom: 25px;
+    z-index: 2;
+    justify-content: space-around;
+    align-items: center;
+}
+.photo {
+    display: flex;
+    height: 30px;
+    width: 71px;
+    position: relative;
+    z-index: 3;
+}
+
+.photo svg {
+    width: 100%;
+    height: 100%;
+}
+.video {
+    display: flex;
+    height: 30px;
+    width: 71px;
+    position: relative;
+    z-index: 3;
+}
+.video svg {
+    width: 100%;
+    height: 100%;
+}
+.others {
+    display: flex;
+    height: 30px;
+    width: 71px;
+    position: relative;
+    z-index: 3;
+}
+.others svg {
+    width: 100%;
+    height: 100%;
+}
+.line {
+    display: flex;
+    height: 2px;
+    width: 100px;
+    position: relative;
+    background-color: white;
+    top: 25px;
+    z-index: 2;
+}
+.home {
+    display: flex;
+    height: 30px;
+    width: 30px;
+    position: relative;
+    z-index: 3;
+}
+.home svg {
+    width: 100%;
+    height: 100%;
+}
+.search {
+    display: flex;
+    height: 25px;
+    width: 25px;
+    position: relative;
+    z-index: 3;
+}
+.search svg {
+    width: 100%;
+    height: 100%;
+}
+
+.add {
+    display: flex;
+    height: 25px;
+    width: 25px;
+    position: relative;
+    z-index: 3;
+}
+.add svg {
+    width: 100%;
+    height: 100%;
+}
+.me {
+    display: flex;
+    height: 25px;
+    width: 25px;
+    border-radius: 12.5px;
+    position: relative;
+    z-index: 3;
+    overflow: hidden;
+}
+
+.me img {
+    width: 100%;
+    height: 100%;
+}
+.photoBackground {
+    display: flex;
+    height: 140px;
+    width: 320px;
+    flex-direction: column;
+    position: relative;
+    background-color: black;
+    top: 25px;
+    z-index: 2;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+.row {
+    display: flex;
+    height: 100px;
+    width: 100px;
+    position: relative;
+    z-index: 3;
+    padding: 1px;
+}
+.row img {
+    width: 100%;
+    height: 100%;
+    margin-right: 2px;
+}
