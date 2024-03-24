@@ -1,0 +1,1262 @@
+@charset "UTF-8";
+
+/*** 공통 ***/
+/* vs 대결 */
+.vsDIv { width: 100%;display: table;  }
+.vsDIv > div {  position: relative;display: table-cell;vertical-align: top;width:50%   }
+.vsDIv > div:first-child {  text-align: right;padding-right: 12px }
+.vsDIv > div:last-child {  text-align:left ;padding-left: 12px }
+.vsDIv > div span.center { position: absolute;width: 25px;top:0;margin-left: -24px;text-align:center; }
+
+.vsDIv.state > div {position:relative;}
+.vsDIv.state > div:first-child {  padding-right: 35px }
+th .vsDIv.state.v2 > div:first-child { padding-right:40px }
+.vsDIv.state > div:last-child {  padding-left: 35px }
+.vsDIv.state > div span.center { top:50%;margin-top:-10px;width: 70px ;margin-left: -70px; }
+.vsDIv.state .ckbFav{position:absolute;top:50%;margin-top:-7px;}
+.vsDIv.state > div:first-child .ckbFav{left:15px;}
+.vsDIv.state > div:last-child .ckbFav{right:15px;}
+.vsDIv.state > div .tb{display:table;width:100%;}
+.vsDIv.state > div .tb .tbCell{display:table-cell;vertical-align:middle;}
+.vsDIv.state > div .tb .tbCell.wCell{width:43px;}/*scoreCell*/
+.vsDIv.state .score{display:inline-block;width:35px;font-family:Roboto;color:#222;font-size:14px;text-align:center;}
+.vsDIv.state .team{display:inline-block;font-weight:700;color:#222;text-decoration:underline !important;}
+.vsDIv.state .player{display:block;margin-top:2px;font-size:12px;}
+.vsDIv.state .rank{font-size:12px;}
+.vsDIv.state .rank + .team{margin-left:5px;}
+.vsDIv.state .team + .rank{margin-left:5px;}
+.vsDIv.state .team + .flagCountry{margin-left:10px;margin-right:0;}
+
+.vsDIv.vsUh > div:first-child{width:64%;}
+.vsDIv.vsUh > div:last-child{width:36%;}
+
+/* table - score div */
+.udPoint{display:block;height:18px;font-size:11px;vertical-align:top}
+.scoreDiv{display:table;table-layout:fixed;width:100%;position:relative;}
+.scoreDiv .cell{display:table-cell;}
+.scoreDiv .cell .score{font-weight:700;color:#222;}
+.scoreDiv .dash{display:table-cell;width:14px;}
+.scoreDiv .num{display:table-cell;width:40px;font-weight:700;color:#222;}
+.scoreDiv .udPointBox{display:block;height:18px;}
+.scoreDiv .udPointBox .udPoint{position:absolute;right:50%;margin-right:8px;}
+.scoreDiv .udPoint .updown{position:absolute;top:50%;right:-11px;margin-top:-5px;}
+/* table - 승부식 정보 div */
+.dtDiv{table-layout:fixed;text-align:right;}
+/* table - 배당률 일치 표시 */
+.trueMark{position:relative;color:#222;}
+.trueMark .icoG.true{position:absolute;top:6px;left:-13px}
+.trueMark + strong{color:#222;}
+/* table - 공지사항 툴팁 div */
+.ntTh{padding-left:22px;}
+.ntDiv{position:relative;padding-left: 30px;text-align: left;}
+.ntDiv .tooltipCBox{position:absolute;top:0;left: 9px;}
+/* table - 기록식 투표지 div */
+.recordTh{padding-right:26px;}
+.recordDiv{display:inline-block;min-width:126px;margin-top:3px;margin-bottom:3px;vertical-align:middle}
+.recordDiv:after{display:block;clear:both;content:'';}
+.recordDiv .btnChk{float:left;}
+.recordDiv .tooltipCBox{float:left;margin:11px 0 0 7px;}
+/* table - 팀명, 즐겨찾기선택 */
+.tbl td > .teamBox{display:inline-block;position:relative;width:85px;}
+.tbl td .teamBox .tbInr{width:60px;text-align:center;}
+.tbl td .teamBox .ckbFav{position:absolute;right:2px;top:50%;margin-top:-7px;}
+
+/* table - layerPopup */
+.tblLp table{table-layout:fixed;width:100%;border-top:1px solid #a9b5c7;}
+.tblLp thead th{padding:5px 0;border-left:1px solid #e0e0e0;border-bottom:1px solid #a9b5c7;background-color:#ebeff5;color:#222;font-size:13px;line-height:18px;}
+.tblLp thead th:first-child{border-left:1px solid #a9b5c7;}
+.tblLp thead th:last-child{border-right:1px solid #a9b5c7;}
+.tblLp tbody th{border-bottom:1px solid #e0e0e0;background-color:#f8f8f8;color:#222;text-align:center;}
+.tblLp table > tbody > tr > td {padding:7px 0;border-left:1px solid #e0e0e0;border-bottom:1px solid #e0e0e0;line-height:18px;text-align:center;}
+.tblLp table > tbody > tr > td:first-child{border-left-width:0px;}
+
+/* table - 하단 경기정보 */
+.tblGameInfo table{table-layout:fixed;border-top:1px solid #ddd;}
+.tblGameInfo thead th{padding:9px 0px;border-left:1px solid #ddd;border-bottom:1px solid #ddd;background-color:#f8f8f8;font-size:12px;line-height:100%;}
+.tblGameInfo thead th:last-child{border-right:1px solid #ddd;}
+.tblGameInfo tbody td{padding:8px 15px;border-bottom:1px solid #ddd;border-left:1px solid #ddd;font-size:12px;line-height:23px;vertical-align:top;}
+.tblGameInfo tbody td:first-child{border-left:1px solid #ddd;}
+.tblGameInfo tbody td:last-child{border-right:1px solid #ddd;}
+.tblGameInfo a{display:block;color:#555;text-align:left;line-height:24px;}
+
+/* table - 투표현황 */
+.tbl thead .vtTh{padding:0 5px !important;line-height:15px;}
+/*.tbl thead .vtTh + th{border-left:0;}*/
+.tbl thead tr + tr .vtTh{border-top:0;}
+
+/* table - 배당률 */
+.tbl tbody td.tdDrate{padding:14px 0;background-color:#eff2fa;}
+.tbl tbody td.tdDrate .dRateVal{font-weight:700;color:#222;}
+.tbl tbody td.tdDrate .dRateVal em{font-weight:700;color:#0f4c81;font-size:16px;}
+.tbl tbody td.tdDrate .btnIco.reset{position:absolute;right:0;top:50%;width:36px;height:35px;margin-top:-18px;background:none;}
+.tbl tbody td .dRateBox{padding:0 12px;}
+.tbl tbody td .dRateBox:after{content:'';display:block;clear:both;}
+.tbl tbody td .dRateBox .dRateTit{float:left;color:#222;}
+.tbl tbody td .dRateBox .dRateNum{float:right;color:#222;}
+.tbl tbody td .btnDRate{width:45px;height:22px;background-color:#777;color:#fff;font-size:12px;text-align:center;line-height:20px;}
+
+/* table - 월드컵 안내 */
+.tbl td.nocBoxW{width:100%;padding:15px 12px !important;background:url(/images/game/notice_bg.jpg) repeat 0 0;}
+.tbl td.nocBoxW p{font-weight:700;color:#334466;}
+
+/* 구매금액 */
+.priceBox{position:relative;padding-right:17px;}
+.priceBox .inputBox{width:100%;min-width:inherit;}
+.priceBox .won{position:absolute;top:0;right:0;height:30px;line-height:30px;}
+.tbl td .priceBox{margin-top:3px;margin-bottom:3px;}
+.noPadd .tbl td .priceBox{margin:3px 5px 3px 10px;}
+
+/** slider **/
+.gamenoticeArea {position: relative;margin-top: 10px;padding: 0 98px 0 49px;border: 1px solid #ccd0d5;background-color: #fff;}
+.gamenoticeArea:after {content: "";position: absolute;left: -1px;top: -1px;display: block;width: 50px;height: 50px;background: url(/images/game/slider_game_bg.png) no-repeat left top;}
+.gamenoticeArea.noticeEmergency:after {background-position: left -50px;}
+.gamenoticeArea .bx-viewport {}
+.gamenoticeArea .bx-viewport .bxSlider > div {overflow: hidden;padding: 0 15px;}
+.gamenoticeArea .bx-viewport .bxSlider > div a {overflow: hidden;float: left;display: inline-block;max-width: 100%;text-overflow: ellipsis;white-space: nowrap;height: 48px;line-height: 48px;font-size: 14px;color: #222;}
+.gamenoticeArea .bx-controls .bx-controls-direction {position: absolute;right: 0;top: 0;height: 50px;}
+.gamenoticeArea .bx-controls .bx-controls-direction a {position: static;display: inline-block;width: 49px;height: 48px;margin: 0;border-left: 1px solid #ddd;overflow: hidden;line-height: 99em}
+.gamenoticeArea .bx-controls .bx-controls-direction .bx-prev {background: url(/images/game/slider_game_bg.png) no-repeat left -100px;}
+.gamenoticeArea .bx-controls .bx-controls-direction .bx-next {background: url(/images/game/slider_game_bg.png) no-repeat left -148px;}
+.gamenoticeArea .bx-controls .bx-controls-direction a.disabled {display: none;}
+
+/** TEXT 많이 들어가는 커스텀 slider **/
+.gamenoticeArea2 {position: relative; padding: 0 100px 0 15px;border: 1px solid #ccd0d5;background-color: #fff; height:48px;}
+.gamenoticeArea2 .bx-viewport {}
+.gamenoticeArea2 .bx-viewport .bxSlider > div {overflow: hidden;padding: 0 0;}
+.gamenoticeArea2 .bx-viewport .bxSlider > div a {overflow: hidden;float: left;display: inline-block;max-width: 100%;text-overflow: ellipsis;white-space: nowrap;height: 48px;line-height: 16px;font-size: 12px;color: #222; margin-top: 7px;}
+.gamenoticeArea2 .bx-controls .bx-controls-direction {position: absolute;right: 0;top: 0;height: 48px;}
+.gamenoticeArea2 .bx-controls .bx-controls-direction a {position: static;display: inline-block;width: 49px;height: 48px;margin: 0;border-left: 1px solid #ddd;overflow: hidden;line-height: 99em}
+.gamenoticeArea2 .bx-controls .bx-controls-direction .bx-prev {background: url(/images/game/slider_game_bg.png) no-repeat left -100px;}
+.gamenoticeArea2 .bx-controls .bx-controls-direction .bx-next {background: url(/images/game/slider_game_bg.png) no-repeat left -148px;}
+.gamenoticeArea2 .bx-controls .bx-controls-direction a.disabled {display: none;}
+
+/* 관심 리그/팀 목록 팝업 */
+.lintLTBox:after{content:'';display:block;clear:both;}
+.lintLTBox .inr{float:left;}
+.lintLTBox .inr + .inr{margin-left:10px;}
+.lintLTBox .tit{display:block;width:165px;border:1px solid #ddd;background-color:#eee;font-weight:700;color:#222;font-size:14px;text-align:center;line-height:38px;}
+.lintLTBox .lintLTList{overflow-y:auto;height:269px;margin-top:1px;border:1px solid #ddd;}
+.lintLTBox .lintLTList:after{content:'';display:block;padding-top:10px;}
+.lintLTBox .lintLTList li{margin-top:10px;font-size:13px;text-align:center;}
+.lintLTBox .lintLTList li + li{margin-top:4px;}
+
+/** 맞대결 정보 **/
+/* 선발 선수 정보 */
+.tblAreaSt{position:relative;padding-top:1px;}
+.tblAreaSt:after{content:'';position:absolute;z-index:10;width:1px;height:100%;left:-1px;top:0;background-color:#fff;}
+/* 선발 선수 정보 - layer popup */
+.tblAreaSt .stInfoLayer{position:absolute;top:0;bottom:0;z-index:2;border:1px solid #222;background-color:#fff;}
+.tblAreaSt .stInfoLayer.left,
+.tblAreaSt .stInfoLayer.right{width:50%;}
+.tblAreaSt .stInfoLayer.left:before,
+.tblAreaSt .stInfoLayer.right:before{content:'';position:absolute;top:19px;z-index:10;width:11px;height:21px;background:url(/images/comm/layer_ico.png) no-repeat 0 0;background-size:24px 21px;}
+.tblAreaSt .stInfoLayer.left{left:0;}
+.tblAreaSt .stInfoLayer.left:before{content:'';right:-11px;}
+.tblAreaSt .stInfoLayer.right{right:0;}
+.tblAreaSt .stInfoLayer.right:before{content:'';left:-11px;background-position:100% 0;}
+.tblAreaSt .stInfoLayer .inBox{padding:19px;}
+.tblAreaSt .stInfoLayer .lyHead{padding-right:17px;}
+.tblAreaSt .stInfoLayer .lyHead .tit{font-weight:700;color:#222;font-size:16px;}
+.tblAreaSt .stInfoLayer .lyBody{padding-top:13px;}
+.tblAreaSt .stInfoLayer .lyBody .namePy{display:block;margin-bottom:5px;line-height:35px;background-color:#0f4c81;font-weight:700;color:#fff;font-size:14px;text-align:center;}
+.tblAreaSt .stInfoLayer .lyBody .namePy span{font-weight:400;font-size:14px;}
+.tblAreaSt .stInfoLayer .lyBody .namePy + .tbl{margin-top:5px;}
+.tblAreaSt .stInfoLayer .lyBody .control{margin-top:10px;text-align:center;}
+.tblAreaSt .stInfoLayer .lyBody .control .btn + .btn{margin-left:4px;}
+.tblAreaSt .stInfoLayer .btnClose{overflow:hidden;position:absolute;top:0;right:0;width:35px;height:35px;border:none;background:url(/images/comm/layer_btn_close.png) no-repeat 50% 50%;line-height:99em;}
+.tblAreaSt .stInfoLayer.arNone{top:37px;width:100%;}
+.tblAreaSt .stInfoLayer.arNone:before{content:none;}
+.tblAreaSt.bs .stInfoLayer{top:38px;left:1px;right:1px;bottom:inherit;}
+/* 선발 선수 정보 - 축구 */
+.tblAreaSt.sc{height: 340px;background:url(/images/game/game_lineup_sc.jpg) no-repeat 50% 100%;background-size:cover;}
+.tblAreaSt.sc:before{content:'';position:absolute;top:60px;right:5px;bottom:5px;left:5px;z-index:1;background:url(/images/game/game_lineup_sc2.png) no-repeat 50% 0;background-size:100% 100%;}
+.tblAreaSt.sc .tblSc tr + tr th{background:rgba(31,114,41,0.7);}
+.tblAreaSt.sc .tblSc th{height:30px !important;border:none;padding:0 !important;background:rgba(0,0,0,0.4);color:#fff;line-height:inherit !important;text-align:center;}
+.tblAreaSt.sc .tblSc td{height:264px !important;padding:0;border:none;text-align:center;line-height:30px !important;}
+.tblAreaSt.sc .tblSc td .row + .row{margin-top: 10px;}
+.tblAreaSt.sc .tblSc td .btnNpy{position:relative;z-index:1;width:60px;height:30px;border-radius:16px;background:rgba(40,82,45,0.7);font-weight:700;color:#fff;text-decoration:underline;}
+.tblAreaSt.sc .tblSc td .btnNpy.active,
+.tblAreaSt.sc .tblSc td .btnNpy:focus{background-color:#0f4c81;}
+/* 게임구매 */
+.tblAreaSt.sc.v2{height:315px;}
+.tblAreaSt.sc.v2 .tblSc{height:315px;}
+.tblAreaSt.sc.v2 .tblSc td{height:255px !important;}
+/* 선발 선수 정보 - 야구 */
+.tblAreaSt.bs thead th .logoImg{display:inline-block;width:25px;height:25px;margin-right:5px;vertical-align:top;}
+.tblAreaSt.bs thead th .logoImg img{width:25px;height:25px;}
+.tblAreaSt.bs thead th .tit{display:inline-block;line-height:25px;vertical-align:top;}
+.tblAreaSt.bs .playerImg{display:inline-block;}
+.tblAreaSt.bs .playerImg img{width:90px;height:102px;}
+.tblAreaSt.bs .playerImg .playerNm{display:block;margin-top:15px;font-weight:700;color:#222;text-decoration:underline;}
+
+
+/*** 게임구매 ***/
+/** 사전조건 본경안내 팝업 **/
+.popGtit{margin-bottom:10px;font-size:16px;font-weight:700;color:#222;line-height:1;}
+.gridArea + .popGtit{margin-top:20px;}
+
+/** 구매가능게임목록 **/
+.recmNoArea{padding:45px 0 52px 0;border-top:1px solid #ddd;text-align:center;}
+.recmNoArea p + p{margin-top:3px;}
+.recmNoArea .btn{margin-top:26px;}
+.tabList .recmNoArea{padding:56px 0 37px 0;border:0;}
+
+.infoBnrArea{margin:50px -5px 0;}
+.infoBnrArea:after{display:block;clear:both;content:'';}
+.infoBnrArea li{float:left;width:50%;padding:0 5px;}
+.infoBnrArea li a{display:block;height:154px;padding:53px 60px 0;background:#f8f8f8 url('/images/game/game_banner_tip.png') no-repeat 0 0;}
+.infoBnrArea li .bnrTit{position:relative;}
+.infoBnrArea li .bnrTit .logoImg{position:absolute;bottom:30px;left:0;}
+.infoBnrArea li .bnrTit .tit{display:inline-block;font-size:20px;font-weight:700;color:#1f2678;line-height:22px;}
+.infoBnrArea li .bnrTit .tit:after{content:'';display:inline-block;width:20px;height:20px;margin:1px 0 0 8px;background:url('/images/comm/btn_ico_20X20.png') no-repeat -17px -81px;vertical-align:top}
+.infoBnrArea li .desc{margin-top:6px;font-size:12px;color:#222;line-height:18px;}
+
+/** 구매투표지 **/
+/* 프로토 승부식 - 투표비중 차트 */
+.perbarList{padding:0 15px;}
+.perbarList li{display:table;table-layout:fixed;width:100%;font-size:12px;text-align:left;}
+.perbarList li .item_tit{display:table-cell;width:22px;}
+.perbarList li .item_bar{display:table-cell;width:100%;padding-right:10px;vertical-align:middle}
+.perbarList li .item_per{display:table-cell;width:42px;}
+.perbarList li .item_num{display:table-cell;width:70px;font-size:11px;color:#777;}
+.perbarList li .bar_bg{overflow:hidden;height:4px;border-radius:2px;background:#ddd;}
+.perbarList li .bar_bg .bar_per{height:100%;border-radius:inherit;}
+.perbarList .win{color:#c4113c;}
+.perbarList .win .bar_per{background:#d81526;}
+.perbarList .tie{color:#555;}
+.perbarList .tie .bar_per{background:#999;}
+.perbarList .lose{color:#1317bb;}
+.perbarList .lose .bar_per{background:#1317bb;}
+
+/* 투표현황 */
+.voteArea + .voteArea{padding-top:41px;background:url('/images/game/game_step_vote.png') no-repeat 50% 15px;}
+.guideBoxTbl{padding:10px 20px;border-bottom:1px solid #e0e0e0;background:#f8f8f8;}
+.guideBoxTbl .line{position:relative;}
+.guideBoxTbl .line + .line:before{content:'';display:inline-block;width:1px;height:10px;margin:0 10px -1px 6px;background:#3f3f3f;}
+/* 프로토 기록식 */
+.recordTblArea{display:table;table-layout:fixed;width:100%;}
+.recordTblArea .recordTblBox{display:table-cell;}
+.recordTblArea .recordTblBox + .recordTblBox{border-left:1px solid #ccc;}
+.recordTblArea .recordTblBox:before{display: none;}
+.recordTblArea .recordTblBox .tbl{margin:0;}
+
+.nameText{display:block;padding:0 5px;word-break: break-all;}
+
+/* 씨름토토 매치업 */
+.srtotoResultSelectArea.game{width:770px;}
+.srtotoResultSelectArea.game .srtotoResultSelectList.final dd .btnChkList input[type="checkbox"] + label{width:65px;}
+.srtotoResultSelectArea.game .srtotoResultSelectList.final dd .btnChkList li + li{margin-left:7px;}
+.srtotoResultSelectArea.game .srtotoResultSelectCont .srtotoResultSelectInr:after{left:110px;}
+.srtotoResultSelectArea.game .srtotoResultSelectCont .srtotoResultSelectInr + .srtotoResultSelectInr:after{left:auto;right:110px;}
+.srtotoMatchImg img{width:100%;}
+
+/** 맞춤조건구매 **/
+/* 추가설정 */
+.addSetArea{position:relative;}
+.addSetArea:after{display:block;clear:both;content:'';}
+.addSetArea .addSetInr{float:left;width:50%;padding:0 5px 0 0;}
+.addSetArea .addSetInr + .addSetInr{padding:0 0 0 5px;}
+.addSetArea.off:before{content:'';position:absolute;top:-1px;left:0;z-index:20;width:100%;height:100%;background:rgba(255,255,255,0.6);}
+.addSetArea .contTitle.lybox{padding-top:26px;margin-bottom:6px;}
+.addSetArea .contTitle.lybox .radioBox{line-height:16px;}
+.tblAdd .tbl.col th{padding:5px 8px 5px 12px;border-left:0;}
+.tblAdd .tbl.col th[rowspan]{border-right:1px solid #e0e0e0}
+.tblAdd .tbl.col td{padding:8px 8px 8px 12px;}
+.tblAdd .tbl.col td > .inputBox{min-width:inherit;margin:0;}
+.tblAdd .tbl.col td > .checkBox{margin-top:0;margin-bottom:0;}
+.tblAdd .chkBoxList{margin-top:-7px;}
+.tblAdd .chkBoxList:after{display:block;clear:both;content:''}
+.tblAdd .chkBoxList li{float:left;margin-right:18px;padding-top:7px;}
+.tblAdd .btnS + .tooltipHBox{margin-left:2px;}
+.add_chkBox{margin-top:-3px;}
+.add_chkBox:after{display:block;clear:both;content:'';}
+.add_chkBox .add_cmt{position:relative;margin-left:18px;padding-left:19px;}
+.add_chkBox .add_cmt:before{content:'';position:absolute;top:50%;left:0;width:2px;height:12px;margin-top:-6px;background:#ececec;}
+
+/* 조합결과보기 하단 공통 */
+table .expecMoney{text-align: right !important; color: #2e75b6 !important; font-weight: bold; padding-right: 8px !important; }
+.allResultArea{margin-top:34px;}
+.allResultArea .allNumBox .num{display:inline-block;font-size:12px;line-height:11px;}
+.allResultArea .allNumBox .num + .num{margin-left:11px;padding-left:11px;border-left:1px solid #e2e2e2;}
+.allResultArea .allNumBox .num em{font-weight:700;color:#2e75b6;}
+.allResultBox{display:table;table-layout:fixed;width:100%;margin-top:6px;padding:5px;background:#0082a8;}
+.allResultBox .totalCell{display:table-cell;position:relative;width:50%;padding:16px 30px 0 25px;color:#fff;vertical-align:top}
+.allResultBox .totalCell .totalCmt:after{display:block;clear:both;content:'';}
+.allResultBox .totalCell .totalCmt .tit{float:left;width:30%;font-size:16px;font-weight:700;}
+.allResultBox .totalCell .totalCmt .desc{float:right;width:70%;color:#e5e5e5;font-size:12px;}
+.allResultBox .totalCell .totalCmt2 .tit{font-size:16px;font-weight:700;}
+.allResultBox .totalCell .totalCmt2 .desc{display:block;margin-top:5px;color:#e5e5e5;font-size:12px;}
+.allResultBox .totalCell .totalNum{position:absolute;bottom:0;right:25px;bottom:19px;padding-right:17px;}
+.allResultBox .totalCell .totalNum .num{font-family:'Roboto', sans-serif;font-size:26px;line-height:30px;}
+.allResultBox .totalCell .totalNum span{position:absolute;right:0;bottom:3px;font-size:16px;}
+.allResultBox .blcCell{display:table-cell;width:50%;background:#fff;vertical-align:middle}
+.allResultBox .blcCell .blcList{padding:0 10px}
+.allResultBox .blcCell .blcList li{display:table;table-layout:fixed;width:100%;padding:17px 15px 17px 12px;}
+.allResultBox .blcCell .blcList li + li{border-top:1px solid #eee;}
+.allResultBox .blcCell .blcList li .tit{display:table-cell;position:relative;width:100px;padding-left:7px;}
+.allResultBox .blcCell .blcList li .tit:before{content:'';position:absolute;top:50%;left:0;width:2px;height:2px;margin-top:-1px;background:#777;font-size:14px;}
+.allResultBox .blcCell .blcList li .blcNum{display:table-cell;color:#222;text-align:right;}
+.allResultBox .blcCell .blcList li .blcNum .num{font-size:16px;font-weight:700;}
+
+/* 구매예약 팝업 */
+.buyReserTop{margin-bottom:10px;padding:15px 0 14px;background:#334466;font-size:18px;color:#fff;text-align:center;}
+.buyReserTop .time{color:#ffea00;}
+.buyReserCont{padding:20px 30px;border:1px solid #ddd;background:#f8f8f8;}
+.buyReserCont .buyReserTit{display:block;padding-bottom:7px;font-size:16px;font-weight:700;color:#334466;}
+.buyReserCont + p{margin:5px 0 0 30px;}
+
+/** 공지사항 **/
+.gameNoticeWrap{padding-top:30px;}
+.gameNoticeWrap .noticeViewWrap .noticeConBox{padding:30px 20px;}
+.gameNoticeWrap .noticeViewWrap .noticeConBox .tbl{margin-top:0;margin-bottom:0;}
+.gameNoticeWrap .noticeViewWrap .noticeConBox .tblArea + p{margin-top:25px;}
+
+/** 게임상세 - 맞대결정보 **/
+/* 구매현황 */
+.buyStateArea{display:table;table-layout:fixed;width:100%;border:1px solid #ddd;background:#fff;}
+.buyStateArea .buyStateBox{display:table-cell;padding:29px 30px;text-align:center;}
+.buyStateArea .buyStateBox:after{display:block;clear:both;content:''}
+.buyStateArea .buyStateBox .teamBox{display:inline-block;text-align:center;}
+.buyStateArea .buyStateBox .teamBox img{vertical-align:top}
+.buyStateArea .buyStateBox .teamBox .team_name{display:block;padding-top:9px;font-size:16px;font-weight:700;color:#222;}
+.buyStateArea .buyStateBox .stateGraphBox{display:inline-block;padding:20px 10px 10px;}
+.buyStateArea .buyStateBox .stateGraphBox .graph_bar{display:table;table-layout:fixed;width:300px;height:50px;}
+.buyStateArea .buyStateBox .stateGraphBox .graph_bar .bar{display:table-cell;position:relative;height:100%;padding:12px 0;}
+.buyStateArea .buyStateBox .stateGraphBox .graph_bar .tie::before{content:" ";position: absolute;left: -14px;width: 14px;top: 12px;bottom: 12px;background-color: #848484;}
+.buyStateArea .buyStateBox .stateGraphBox .graph_bar .tie::after{content:" ";position: absolute;right: -14px;width: 14px;top: 12px;bottom: 12px;background-color: #848484;}
+.buyStateArea .buyStateBox .stateGraphBox .graph_bar .bar.win{background:url('/images/game/game_win_arrow.png') no-repeat 100% 50%;z-index: 2;background-size:26px;}
+.buyStateArea .buyStateBox .stateGraphBox .graph_bar .bar.lose{background:url('/images/game/game_lose_arrow.png') no-repeat 0 50%;background-size:26px;}
+.buyStateArea .buyStateBox .stateGraphBox .graph_bar .bar > span{display:block;height:100%;}
+.buyStateArea .buyStateBox .stateGraphBox .graph_bar .bar.win > span{margin-right:20px;background:#ff352e;}
+.buyStateArea .buyStateBox .stateGraphBox .graph_bar .bar.tie > span{background:#848484;}
+.buyStateArea .buyStateBox .stateGraphBox .graph_bar .bar.lose > span{margin-left:20px;background:#2ea1ff;}
+.buyStateArea .buyStateBox .stateGraphBox .graph_bar .num{position:absolute;font-weight:700;line-height:1;white-space:nowrap;}
+.buyStateArea .buyStateBox .stateGraphBox .graph_bar .win .num{top:-15px;left:0;color:#D81526;}  /* 2021.12.07 웹접근성 텍스트 명도 수정 */
+.buyStateArea .buyStateBox .stateGraphBox .graph_bar .tie .num{bottom:-15px;left:50%;color:#757575;transform:translateX(-50%);-webkit-transform:translateX(-50%);-ms-transform:translateX(-50%);-o-transform:translateX(-50%);} /* 2021.12.07 웹접근성 텍스트 명도 수정 */
+.buyStateArea .buyStateBox .stateGraphBox .graph_bar .lose .num{top:-15px;right:0;color:#1317BB;} /* 2021.12.07 웹접근성 텍스트 명도 수정 */
+.buyStateArea .pastBox{display:table-cell;width:160px;padding:10px;background:#028299;color:#fff;text-align:center;vertical-align:middle}
+.buyStateArea .pastBox .btnPastPop{margin:10px 0 11px;background:none;font-size:14px;font-weight:700;color:#fff;}
+.buyStateArea .pastBox .btnPastPop:after{content:'';display:inline-block;width:5px;height:7px;margin-left:5px;background:url('/images/comm/btn_ico_20X20.png') no-repeat -65px -13px;}
+.buyStateArea .pastBox .accNumBox{padding:25px 0;border:1px solid #4ea8b8;font-size:18px;font-weight:700;line-height:normal;}
+.buyStateArea .pastBox .accNumBox .perNum{font-family:'Roboto', sans-serif;font-size:40px;line-height:30px;vertical-align:top}
+.buyStateArea .pastBox .accNumBox span{display:inline-block;vertical-align:bottom}
+.buyStateArea + .dashText{margin-top:6px;}
+.btnTopG{display:inline-block;height:15px;font-size:12px;color:#777;line-height:15px;}
+.btnTopG:after{content:'';display:inline-block;width:15px;height:15px;margin-left:5px;background:url('/images/comm/btn_ico_20X20.png') no-repeat 0 -81px;vertical-align:middle}
+
+/* 과거 고객예측률 팝업 */
+.pastPopTop{padding:16px 20px;border:1px solid #e0e0e0;background:#fafbfd;}
+.pastPopTop .accNumBox{display:inline-block;font-size:18px;font-weight:700;color:#028299;line-height:normal;vertical-align:middle}
+.pastPopTop .accNumBox .perNum{display:inline-block;font-family:'Roboto', sans-serif;font-size:40px;line-height:30px;vertical-align:top}
+.pastPopTop .accNumBox span{display:inline-block;vertical-align:bottom}
+.pastPopTop .descBox{display:inline-block;position:relative;margin-left:19px;padding-left:20px;line-height:18px;vertical-align:middle}
+.pastPopTop .descBox:before{content:'';position:absolute;top:50%;left:0;width:1px;height:28px;margin-top:-13px;background:#ddd;}
+.pastPopTop .descBox .desc{max-width:290px;font-size:12px;word-break:keep-all;}
+.pastPopTop + .tblArea{margin-top:10px;}
+
+/** 게임상세 - BET코치 **/
+.betCoachArea {}
+
+.homeAwayArea {position: relative;height: 132px;padding-top: 52px;}
+.homeAwayArea .btnMyBet {position: absolute;right: 15px;top: 20px;border-color: #aaa;}
+.homeAwayArea .btnMyBet span {display: inline-block;padding-left: 18px;font-size: 12px;background: url(/images/game/game_btn_myBet.png) no-repeat left center;}
+.homeAwayArea .homeTim {text-align: right;position: absolute;right: 50%;top: 52px;padding-right: 52px;}
+.homeAwayArea .homeTim > * {display: inline-block;vertical-align: top;font-size: 0;}
+.homeAwayArea .homeTim .haTxt {height: 60px;line-height: 60px;padding-right: 5px;font-size: 13px;color: #555;}
+.homeAwayArea .homeTim .haTit {height: 60px;line-height: 60px;padding-right: 20px;font-size: 24px;font-weight: 700;color: #222;}
+.homeAwayArea .homeTim .haImg {width: 60px;height: 60px;}
+.homeAwayArea .homeTim .haImg img {display: block;width: 100%;height: 100%;}
+.homeAwayArea .AwayTim {overflow: hidden;position: absolute;left: 50%;top: 52px;padding-left: 52px;}
+.homeAwayArea .AwayTim > * {float: right;display: inline-block;}
+.homeAwayArea .AwayTim .haTxt {height: 60px;line-height: 60px;padding-left: 5px;font-size: 13px;color: #555;}
+.homeAwayArea .AwayTim .haTit {height: 60px;line-height: 60px;padding-left: 20px;font-size: 24px;font-weight: 700;color: #222;}
+.homeAwayArea .AwayTim .haImg {width: 60px;height: 60px;}
+.homeAwayArea .AwayTim .haImg img {display: block;width: 100%;height: 100%;}
+.homeAwayArea .VsTxt {text-align: center;line-height: 60px;font-size: 20px;font-weight: 700;font-family:'Roboto', sans-serif;color:#222;}
+
+.expectationArea {padding: 40px 20px 30px;border-top: 1px solid #e0e0e0;}
+.expectationArea .eaArea {font-size: 0;}
+.expectationArea .eaArea:after {content: "";clear: both;display: block;}
+.expectationArea .eaArea > * {float: left;}
+.expectationArea .eaChart {}
+.expectationArea .eaDetail {position: relative;margin-left: 30px;}
+.expectationArea .eaDetail .badge {height: 20px;line-height: 18px;padding: 0 9px;}
+.expectationArea .eaDetail .eaTit {line-height: 32px;margin-top: 5px;font-size: 24px;font-weight: 700;color: #222;}
+.expectationArea .eaDetail .eaTit strong {display: inline-block;vertical-align: bottom;line-height: 37px;font-size: 30px;font-weight: 700;}
+.expectationArea .eaDetail .probabilityBox1 {margin-top: 8px;font-size: 0;}
+.expectationArea .eaDetail .probabilityBox1 > * {display: inline-block;text-align: center;vertical-align: bottom;margin-right: 3px;font-family:'Roboto', sans-serif;}
+.expectationArea .eaDetail .probabilityBox1 .num1 {width: 45px;height: 52px;line-height: 52px;border-radius: 2px;font-size: 36px;font-weight: 700;color: #fff;background-color: #028299;}
+.expectationArea .eaDetail .probabilityBox1 .num2 {width: 30px;height: 37px;line-height: 37px;border-radius: 2px;font-size: 24px;font-weight: 700;color: #fff;background-color: #028299;}
+.expectationArea .eaDetail .probabilityBox1 .point {width: 4px;height: 4px;border-radius: 2px;background-color: #028299;}
+.expectationArea .eaDetail .probabilityBox1 .percent {line-height: 24px;font-size: 24px;color: #555;}
+.expectationArea .eaDetail .probabilityBox2 {overflow: hidden;display: inline-block;vertical-align: top;margin-top: 10px;padding: 0 10px;border-radius: 2px;background-color: #e5e5e5;}
+.expectationArea .eaDetail .probabilityBox2 .num {float: left;position: relative;display: block;height: 22px;line-height: 22px;font-size: 12px;color: #555;}
+.expectationArea .eaDetail .probabilityBox2 .num + .num {padding-left: 24px;}
+.expectationArea .eaDetail .probabilityBox2 .num + .num:before,
+.expectationArea .eaDetail .probabilityBox2 .num + .num:after {content: "";position: absolute;left: 11px;top: 50%;width: 1px;height: 10px;margin-top: -5px;background-color: #dedede;}
+.expectationArea .eaDetail .probabilityBox2 .num + .num:after {left: 12px;background-color: #d3d3d3;}
+.expectationArea .eaDetail .snsBox {overflow: hidden;position: absolute;right: 0;top: 0;}
+.expectationArea .eaDetail .snsBox a {float: left;display: block;margin-left: 3px; height:20px;}
+.expectationArea .eaDetail .snsBox a:focus {outline: 1px dotted #000; outline:5px auto #4D90FE; outline-offset:-1px}
+.expectationArea .eaVote {float: right;text-align: center;height: 155px;padding: 65px 20px 0 38px;border-left: 1px solid #e0e0e0;}
+
+.expectationArea .eaVote .btnChkBox {display: block;}
+.expectationArea .eaVote .btnChkBox .btnChk {width: 62px;padding: 4px 0;font-size: 13px;}
+.expectationArea .eaVote .btnChkBox .btnChk + .btnChk{margin-left:4px;}
+.expectationArea .eaVote .btn {margin-top: 20px;font-weight:700;color: #222;}
+
+.betCoachArea.layoutCenter .homeAwayArea {padding: 0;height: 62px;}
+.betCoachArea.layoutCenter .expectationArea {padding-top: 0;border: 0 none;}
+.betCoachArea.layoutCenter .expectationArea .eaArea {text-align: center;}
+.betCoachArea.layoutCenter .expectationArea .eaArea > * {float: none;display: inline-block;vertical-align: top;text-align: left;}
+
+.expectationArea .quickSet {text-align: center;margin-top: 50px;}
+.expectationArea .quickSet .btnChkBox {height: 30px;border: 2px solid #eaeaea;border-radius: 15px;font-size: 0;background-color: #eaeaea;}
+.expectationArea .quickSet .btnChkBox .btnChk {width: 99px;height: 26px;line-height: 26px;padding: 0;border: 0 none;border-radius: 14px;font-size: 13px;color: #666;background-color: transparent;}
+.expectationArea .quickSet .btnChkBox .btnChk.on {font-weight: 700;color: #fff;background-color: #3d6f85;}
+.expectationArea .weightArea {margin-top: 26px;}
+.expectationArea .simulArea {}
+.expectationArea .simulArea .simulBar + .simulBar {margin-top: 10px;}
+.expectationArea .waTxt {display: block;text-align: right;line-height:16px;margin-top: 7px;font-size: 12px;color: #777;}
+
+.userStatistics {border-top: 1px solid #e0e0e0;}
+.userStatistics .usTable {overflow: hidden;}
+.userStatistics .usTable .rdobar span {width: 84px;}
+.userStatistics .usTable .tbTxt {line-height: 12px;margin-top: 9px;font-size: 12px;color: #555;}
+.userStatistics .usTable tr > *.pl20 {padding-left: 20px;}
+.userStatistics .usTop {line-height: normal;margin-top: 10px;}
+.userStatistics .usTop .btnTopG:after {vertical-align: top;}
+
+.usList {text-align: center;height: 80px;padding-top: 24px;margin-top: 40px;border: 1px solid #ddd;font-size: 0;background-color: #fff;}
+.usList > * {position: relative;display: inline-block;vertical-align: top;min-height: 30px;}
+.usList > *:after {content: "";clear: both;display: block;}
+.usList > * + * {margin-left: 41px;}
+.usList > * + *:before {content: "";position: absolute;left: -21px;top: 50%;display: block;width: 1px;height: 30px;margin-top: -15px;background-color: #ddd;}
+.usList > * .tit {float: left;display: block;line-height: 30px;font-size: 16px;font-weight: 700;color: #555;}
+.usList > * .num {float: right;display: block;line-height: 30px;font-size: 16px;font-weight: 700;color: #555;}
+.usList > * .num span {display: inline-block;vertical-align: top;line-height: 26px;margin-right: 3px;font-size: 20px;font-weight: 700;font-family:'Roboto', sans-serif;color: #222;}
+.usList .usBox1 {width: 200px;}
+.usList .usBox1 .usLink {display: inline-block;vertical-align: top;line-height: 26px;margin-right: 3px;font-size: 26px;font-weight: 700;font-family:'Roboto', sans-serif;text-decoration: underline;color: #c4113c;}
+.usList .usBox2 {width: 210px;}
+.usList .usBox3 {width: 208px;}
+.popCont .voteTitle + .usList{margin-top:6px;}
+
+/** 게임상세 - 분석글 **/
+.analyzeList{margin:-10px -5px 0 -6px;}
+.analyzeList:after{display:block;clear:both;content:'';}
+.analyzeList li{float:left;width:33.33%;padding:10px 5px 0;}
+.analyzeList li a{display:block;padding:20px;border:1px solid #ddd;background:#fff;border-radius:3px;}
+.analyzeList .analyzeTop:after{display:block;clear:both;content:'';}
+.analyzeList .analyzeTop .badge{float:left;}
+.analyzeList .analyzeTop .name{float:right;font-size:12px;line-height:22px;}
+.analyzeList .analyzeTop .name .medal{margin:1px 5px 0 0;vertical-align:top}
+.analyzeList .tit{overflow:hidden;display:block;height:46px;margin:15px 0 5px 0;font-size:14px;line-height:23px;word-break:keep-all;}
+.popConArea .commentArea .commentRegist{position:relative;padding-right:105px;}
+.popConArea .commentArea .commentRegist .textArea{width:100%;height:60px;}
+.popConArea .commentArea .commentRegist .btn{position:absolute;top:0;right:0;height:60px;}
+.popConArea .professionalProfile{border-right:0;border-left:0;}
+
+/*** 게임일정 ***/
+/* 일정/결과 */
+.caleandarList{position:relative;padding:0 16px;}
+.caleandarList ul{display:table;table-layout:fixed;width:100%;padding:0 24px;border-top:1px solid #ddd;background-color:#f8f8f8;}
+.caleandarList li{display:table-cell;}
+.caleandarList li > a{display:block;padding:19px 0 16px;text-align:center;}
+.caleandarList .day{font-family:Roboto;font-size:18px;font-weight: 400;line-height:normal;vertical-align:middle;}
+.caleandarList .dw{display:inline-block;margin:2px 0 0 5px;vertical-align:top;}
+.caleandarList .today{position:relative;}
+.caleandarList .today .flag{position:absolute;left:50%;top:-1px;width:38px;height:13px;margin-left:-19px;border-radius:0 0 5px 5px;background-color:#9c39cf;font-family:Roboto;color:#fff;font-size:10px;text-align:center;line-height:13px;}
+.caleandarList .today .day,
+.caleandarList .today.on .day,
+.caleandarList .today .dw,
+.caleandarList .today.on .dw{font-weight:700;color:#222;}
+.caleandarList .disabled .day,
+.caleandarList .disabled .dw{color:#999;}
+.caleandarList .disabled.active .day,
+.caleandarList .disabled.active .dw{color:#c4113c;}
+.caleandarList .on{position:relative;}
+.caleandarList .on:before{content:'';position:absolute;left:50%;top:16px;width:4px;height:4px;margin-left:-2px;border-radius:100%;background-color:#222;}
+.caleandarList .on.active:before{background-color:#c4113c;}
+.caleandarList .on .day,
+.caleandarList .on .dw{color:#555;}
+.caleandarList .on.active .day,
+.caleandarList .on.active .dw{color:#c4113c;}
+.caleandarList .btnPrev,
+.caleandarList .btnNext{overflow:hidden;position:absolute;top:50%;z-index:10;width:32px;height:32px;margin-top:-16px;border:none;background-image:url(/images/comm/calendar_btn.png);background-repeat:no-repeat;line-height:99em;}
+.caleandarList .btnPrev{left:0;background-position:0 -58px;}
+.caleandarList .btnNext{right:0;background-position:-32px -58px;}
+.caleandarList .btnPrev.disabled{background-position:-0 -92px;cursor:default;}
+.caleandarList .btnNext.disabled{background-position:-32px -92px;cursor:default;}
+ .calendarCtArea + .caleandarList{margin-top:15px;}
+/* 한눈에보기 */
+.calendarCtArea{position:relative;text-align:center;}
+.calendarCtArea .inBox{display:inline-block;position:relative;width:183px;}
+.calendarCtArea .btn{position:absolute;right:0;top:50%;margin:-11px 0 0 10px;vertical-align:top;}
+.calendarCtArea .btnPrev,
+.calendarCtArea .btnNext{overflow:hidden;position:absolute;top:50%;z-index:10;width:30px;height:30px;margin-top:-15px;background:url(/images/comm/calendar_btn.png) no-repeat 0 -26px;line-height:99em;}
+.calendarCtArea .btnPrev{left:0;-webkit-print-color-adjust: exact;}
+.calendarCtArea .btnNext{right:0;background-position:-30px -26px;-webkit-print-color-adjust: exact;}
+/* 한눈에보기 - grid*/
+.tblCalendar{margin-top:10px;}
+.tblCalendar .tbl thead th{padding:0;border-left:none;letter-spacing:-0.09em}
+.tblCalendar .tbl thead th.today{position:relative;background-color:#c4113c;color:#fff;}
+.tblCalendar .tbl thead th.today > div em{overflow:hidden;display:inline-block;position:absolute;left:50%;top:3px;z-index:10;width:3px;height:3px;margin-left:-2px;border-radius:100%;background-color:#fff;line-height:99em;}
+.tblCalendar .tbl thead th.sat{color:#2e75b6 !important;}
+.tblCalendar .tbl thead th.sun{color:#c4113c !important;}
+.tblCalendar .tbl tbody th{background:#fff;padding:0;text-align: left;}
+.tblCalendar .tbl tbody th.scdGameTit a{text-decoration:none;}
+.tblCalendar .tbl tbody th.scdGameTit > div{position:relative;height:56px;padding:7px 10px 10px 22px;text-align:left;}
+.tblCalendar .tbl tbody th.scdGameTit > div .icoGame{position:absolute;left:2px;top:10px;}
+.tblCalendar .tbl tbody th.scdGameTit > div .nameCld{display:inline-block;line-height:21px;}
+.tblCalendar .tbl tbody th.scdGameTit > div .btnBuyGvt{position:absolute;right:4px;bottom:8px;width:30px;height:18px;border:1px solid #999;background-color:#fff;color:#555;font-size:11px;text-align:center;line-height:17px;vertical-align:top;}
+.tblCalendar .tbl tbody td{height:56px;border-left:none;padding:0;}
+.tblCalendar .tbl tbody tr.pink td,.tblCalendar .tbl tbody tr.pink th{background-color: #fff1f1;}
+.tblCalendar .tbl tbody tr.pink2 td,.tblCalendar .tbl tbody tr.pink2 th{background-color: #fff1f1;}
+
+
+.tblCalendar .tbl th > div,
+.tblCalendar .tbl td > div{ position: relative;height: 100%;border-left:1px solid #e0e0e0;}
+.tblCalendar .tbl thead th > div {  padding:6px 0; }
+.tblCalendar .tbl tbody th > div {  border-left-width: 0  }
+.tblCalendar .tbl tbody td > div:before {content: '';position: absolute;width: 100%;height: 100%;left:-1px;right: -1px;box-sizing: content-box;padding-right: 2px;z-index: 2}
+.tblCalendar .tbl tbody td > div a.tooltipBtn {  position: absolute;width: 100%;height: 100%;left:0;top:0;z-index: 3}
+.tblCalendar .tbl tbody td > div .tooltipText {margin-top:42px;}
+.tblCalendar .tbl tbody td > div .tooltipText.bottom{margin-top: -32px;}
+.tblCalendar .tbl tbody td:nth-child(15n) ~ td > div .tooltipText{left:auto; right:0px;}
+.tblCalendar .tbl tbody tr td:last-child{}
+
+/* 한눈에보기 - grid (게임 컬러) */
+.tblCalendar .tbl thead th.bgPT{background-color:#cafcfb;}/*프로토*/
+.tblCalendar .tbl thead th.bgPTw{background-color:#e7fbe0;}/*프로토월드컵*/
+.tblCalendar .tbl thead th.bgSC{background-color:#feded9;}/*축구*/
+/*.tblCalendar .tbl thead th.bgSCw{background-color:컬러 미확정;}*//*축구월드컵*/
+.tblCalendar .tbl thead th.bgBS{background-color:#d4f2ff;}/*야구*/
+.tblCalendar .tbl thead th.bgBK{background-color:#fde4cc;}/*농구*/
+.tblCalendar .tbl thead th.bgVL{background-color:#f8d4fc;}/*배구*/
+.tblCalendar .tbl thead th.bgGF{background-color:#e6fec3;}/*골프*/
+.tblCalendar .tbl thead th.bgCR{background-color:#feebc3;}/*씨름*/
+.tblCalendar .tbl thead th.bgMI{background-color:#fcdaec;}/*토토OX*/
+.tblCalendar .tbl thead th.bgUO{background-color:#e8e8e8;}/*토토언더오버*/
+/* 한눈에보기 - grid (today) */
+.tblCalendar .tbl thead th.bgPT.today,/*프로토*/
+.tblCalendar .tbl thead th.bgPTw.today,/*프로토월드컵*/
+.tblCalendar .tbl thead th.bgSC.today,/*축구*/
+.tblCalendar .tbl thead th.bgSCw.today,/*축구월드컵*/
+.tblCalendar .tbl thead th.bgBS.today,/*야구*/
+.tblCalendar .tbl thead th.bgBK.today,/*농구*/
+.tblCalendar .tbl thead th.bgVL.today,/*배구*/
+.tblCalendar .tbl thead th.bgGF.today,/*골프*/
+.tblCalendar .tbl thead th.bgCR.today,/*씨름*/
+.tblCalendar .tbl thead th.bgMI.today,/*토토OX*/
+.tblCalendar .tbl thead th.bgUO.today{color:#555;}/*토토언더오버*/
+
+.tblCalendar .tbl thead th.bgPT.today em,/*프로토*/
+.tblCalendar .tbl thead th.bgPTw.today em,/*프로토월드컵*/
+.tblCalendar .tbl thead th.bgSC.today em,/*축구*/
+.tblCalendar .tbl thead th.bgSCw.today em,/*축구월드컵*/
+.tblCalendar .tbl thead th.bgBS.today em,/*야구*/
+.tblCalendar .tbl thead th.bgBK.today em,/*농구*/
+.tblCalendar .tbl thead th.bgVL.today em,/*배구*/
+.tblCalendar .tbl thead th.bgGF.today em,/*골프*/
+.tblCalendar .tbl thead th.bgCR.today em,/*씨름*/
+.tblCalendar .tbl thead th.bgMI.today em,/*토토OX*/
+.tblCalendar .tbl thead th.bgUO.today em{background-color:#555;}/*토토언더오버*/
+
+.tblCalendar th.bgPT{background-color:#cafcfb !important;}/*프로토,프로토월드컵*/
+.tblCalendar th.bgSC{background-color:#feded9 !important;}/*축구,축구월드컵*/
+.tblCalendar th.bgBS{background-color:#d4f2ff !important;}/*야구*/
+.tblCalendar th.bgBK{background-color:#fde4cc !important;}/*농구*/
+.tblCalendar th.bgVL{background-color:#f8d4fc !important;}/*배구*/
+.tblCalendar th.bgGF{background-color:#e6fec3 !important;}/*골프*/
+.tblCalendar th.bgCR{background-color:#feebc3 !important;}/*씨름*/
+.tblCalendar th.bgMI{background-color:#fcdaec !important;}/*토토OX*/
+.tblCalendar th.bgUO{background-color:#e8e8e8 !important;}/*토토언더오버*/
+
+.tblCalendar td.bgPT > div:before{background:url(/images/bg_game_pt.png) repeat-x 0 0;}/*프로토*/
+.tblCalendar td.bgPTw > div:before{background:url(/images/bg_game_ptw.png) repeat-x 0 0;}/*프로토월드컵*/
+.tblCalendar td.bgSC > div:before{background:url(/images/bg_game_sc.png) repeat-x 0 0;}/*축구*/
+.tblCalendar td.bgSCw > div:before{background:url(/images/bg_game_scw.png) repeat-x 0 0;}/*축구*/
+.tblCalendar td.bgBS > div:before{background:url(/images/bg_game_bs.png) repeat-x 0 0;}/*야구*/
+.tblCalendar td.bgBK > div:before{background:url(/images/bg_game_bk.png) repeat-x 0 0;}/*농구*/
+.tblCalendar td.bgVL > div:before{background:url(/images/bg_game_vl.png) repeat-x 0 0;}/*배구*/
+.tblCalendar td.bgGF > div:before{background:url(/images/bg_game_gf.png) repeat-x 0 0;}/*골프*/
+.tblCalendar td.bgCR > div:before{background:url(/images/bg_game_cr.png) repeat-x 0 0;}/*씨름*/
+.tblCalendar td.bgMI > div:before{background:url(/images/bg_game_mi.png) repeat-x 0 0;}/*토토OX*/
+.tblCalendar td.bgUO > div:before{background:url(/images/bg_game_uo.png) repeat-x 0 0;}/*토토언더오버*/
+/* 판매점 커뮤니티용_달력보기 */
+.gameiconArea{position:relative;margin-top:10px;padding:12px 0 11px 130px;background-color:#f8f8f8;-webkit-print-color-adjust: exact;}
+.gameiconArea .tit{position:absolute;left:20px;top:16px;padding-right:20px;border-right:1px solid #ddd;font-weight:700;color:#222;font-size:14px;line-height:15px;}
+.gameiconArea ul:after{content:'';display:block;clear:both;}
+.gameiconArea li{float:left;margin:0 17px 5px 0;}
+.gameiconArea li:last-child{margin:0;}
+.gameiconArea li span{font-size:12px;}
+.gameiconArea .icoGameGMI{position:relative;padding-left:20px;font-weight:700;}
+.gameiconArea .icoGameGMI:before{content:'';overflow:hidden;position:absolute;left:0;top:50%;width:15px;height:15px;margin-top:-8px;background-size:15px auto;vertical-align:top;}
+.gameiconArea .icoGameGMI.PT:before{background-image:url('/images/ico_game_pt.png');-webkit-print-color-adjust: exact;}/*프로토*/
+.gameiconArea .icoGameGMI.PTw:before{background-image:url('/images/ico_game_ptw.png');-webkit-print-color-adjust: exact;}/*프로토(월드컵)*/
+.gameiconArea .icoGameGMI.SC:before{background-image:url('/images/ico_game_sc.png');-webkit-print-color-adjust: exact;}/*축구*/
+.gameiconArea .icoGameGMI.SCw:before{background-image:url('/images/ico_game_scw.png');-webkit-print-color-adjust: exact;}/*축구(월드컵)*/
+.gameiconArea .icoGameGMI.BS:before{background-image:url('/images/ico_game_bs.png');-webkit-print-color-adjust: exact;}/*야구*/
+.gameiconArea .icoGameGMI.BK:before{background-image:url('/images/ico_game_bk.png');-webkit-print-color-adjust: exact;}/*농구*/
+.gameiconArea .icoGameGMI.VL:before{background-image:url('/images/ico_game_vl.png');-webkit-print-color-adjust: exact;}/*배구*/
+.gameiconArea .icoGameGMI.GF:before{background-image:url('/images/ico_game_gf.png');-webkit-print-color-adjust: exact;}/*골프*/
+.gameiconArea .icoGameGMI.CR:before{background-image:url('/images/ico_game_cr.png');-webkit-print-color-adjust: exact;}/*씨름*/
+.gameiconArea .icoGameGMI.MI:before{background-image:url('/images/ico_game_mi.png');-webkit-print-color-adjust: exact;}/*OX*/
+.gameiconArea .icoGameGMI.UO:before{background-image:url('/images/ico_game_uo.png');-webkit-print-color-adjust: exact;}/*언더오버*/
+
+.shdCalendar{margin-top:21px;border-top:1px solid #686970;-webkit-print-color-adjust: exact;}
+.shdCalendar table{table-layout:fixed;}
+.shdCalendar table thead th{padding:9px 0 8px;border-left:1px solid #eee;border-bottom:1px solid #d1d2d7;background-color:#fff;font-weight:700;color:#5c5f66;line-height:1;}
+.shdCalendar table thead th:last-child{border-right:1px solid #eee;}
+.shdCalendar table thead th.sat{color:#2e75b6;}
+.shdCalendar table thead th.sun{color:#c4113c;}
+.shdCalendar table tbody td{height:92px;padding:0;border-bottom:1px solid #eee;border-left:1px solid #eee;vertical-align:top;}
+.shdCalendar table tbody td:last-child{border-right:1px solid #eee;}
+.shdCalendar table tbody td .dayBox{display:block;height:30px;padding:5px 0 4px 10px;border-bottom:1px solid #eee;background-color:#f5f7fc;font-weight:700;color:#5c5f66; position:relative;-webkit-print-color-adjust: exact;}
+.shdCalendar table tbody td .infoBox{padding:15px 5px 15px 5px;}
+.shdCalendar table tbody td .infoBox .cell{position:relative;padding-left:20px;}
+.shdCalendar table tbody td .infoBox .cell + .cell{margin-top:7px;}
+.shdCalendar table tbody td .infoBox .cell .icoGame{position:absolute;left:0;top:0;}
+.shdCalendar table tbody td .infoBox .cell .tit,
+.shdCalendar table tbody td .infoBox .cell .time{font-size:12px;text-align:left;letter-spacing:-0.05em;line-height:16px;}
+.shdCalendar table tbody td .infoBox .cell .time{margin-top:2px;color:#cb4300;}
+
+.shdCalendar table tbody td .dayBox.periodFirst{background:url('/images/comm/arr_first02.png') no-repeat 0 0;}
+.shdCalendar table tbody td .dayBox.periodMid{background:url('/images/comm/arr_mid.png') repeat-x 0 0;}
+.shdCalendar table tbody td .dayBox.periodLast{background:url('/images/comm/arr_last02.png') no-repeat 0 0;}
+.shdCalendar table tbody td .dayBox.periodOneday{background:url('/images/comm/arr_oneday02.png') no-repeat 0 0;}
+.shdCalendar table tbody td .dayBox.periodMid:after{content:" ";height: 7px;position: absolute;right: -1px;width: 1px;top: 0;background-color: #ff8a00;}
+.shdCalendar table tbody td .dayBox.periodMid:before{content:" ";height: 7px;position: absolute;left: -1px;width: 1px;top: 0;background-color: #ff8a00;}
+
+
+.guideBox .logoGroup{position:absolute;right:29px;top:37px;}
+.guideBox .logoGroup img{display:block;}
+.guideBox .logoGroup img + img{margin-top:36px;}
+
+/*** 적중결과 ***/
+.teamVsBox {display: block;text-align: center;}
+.teamVsBox.typeVs {padding-bottom: 3px;}
+.categoryTxt {display: inline-block;}
+.icoGame + .categoryTxt {margin-left: 3px;}
+.trMatch td {background: #f1f9ff;font-weight: 700;color: #2e75b6;}
+/* 오프라인 적중결과 */
+.offResultArea{position:relative;margin-top:50px;padding:21px 19px;border:1px solid #ddd;background:#fcfcfc;}
+.offResultArea .imgBox{width:115px;border:1px solid #ddd;background:#fff;}
+.offResultArea .imgBox img{vertical-align:top}
+.offResultArea .imgBox p{height:29px;border-top:1px solid #ddd;font-size:12px;text-align:center;line-height:28px;}
+.offResultArea .txtBox{display:table-cell;width:100%;padding-left:20px;}
+.offResultArea .txtBox .tit{font-size:16px;color:#222;line-height:24px;}
+.offResultArea .txtBox .desc{margin-top:5px;}
+.offResultArea .txtBox .offNumBox{margin-top:11px;}
+.offResultArea .txtBox .offNumBox .inputBox{width:80px;min-width:inherit;text-align:center;}
+.offResultArea .txtBox .offNumBox .inputBox input[type="text"]{text-align:center;}
+.offResultArea .txtBox .offNumBox .dash{padding:0 4px 0 4px;}
+.offResultArea .txtBox .offNumBox .btn{vertical-align:top}
+.offResultArea .txtBox .offNumBox .inputBox + .btn{margin-left:6px;}
+.offResultArea .txtBox .iconText{margin-top:7px;}
+.offResultArea .tblArea{margin-top:20px;}
+
+/** 인쇄하기 - popup **/
+.windowPopup.printPopup .windowContent{padding:10px;}
+.printPopup {overflow: auto;height: 100%;}
+@media print {
+	.printPopup {overflow: visible;height: auto;width: 830px;}
+	
+}
+
+.printPopup .btnIco.print{position:absolute;top:8px;right:10px;border-color:#97badb;background:none;}
+.printPopup .btnIco.print:before{background-position:-100px 0}
+.printPopup .popBtnArea{padding-bottom:10px;}
+.printPopup .printTitBox{display:table;width:100%;padding:16px 19px;border:1px solid #ddd;border-top:2px solid #c4113c;box-shadow:0px 4px #f7f7f7;}
+.printPopup .printTitBox .cell{display:table-cell;vertical-align:middle}
+.printPopup .printTitBox .cell + .cell{text-align:right;}
+.printPopup .printTitBox .printTit{font-size:20px;font-weight:700;color:#222;line-height:25px;}
+.printPopup .printTitBox .printTit .icoGame{margin-right:4px;vertical-align:top}
+.printPopup .printTitBox .date{font-size:12px;color:#777;}
+.printPopup .gametopArea{margin:10px 0 0 0;border:1px solid #ddd;border-top:0;}
+.printPopup .guideBox.page{margin-top:20px;border:1px solid #ddd;}
+.printPopup .gametopArea + .lybox.setBar{margin-top:15px;}
+
+/*** 경기정보 ***/
+/** 공통 **/
+/* slider - 관심경기 */
+.interestArea{padding:40px 10px 0;}
+.infoGSliderArea{position:relative;width:auto !important;padding-right:0 !important;padding-left:0 !important;}
+.infoGSliderArea li{overflow:hidden;min-height:initial !important;padding:29px 34px 19px !important;background:#fafbfc;}
+.infoGSliderArea .dateBox{position:absolute;top:-26px;left:50%;width:180px;height:52px;margin-left:-90px;padding-top:26px;border-radius:50px;background:#fff;box-shadow:0 3px 8px #eee;text-align:center;vertical-align:text-bottom;}
+.infoGSliderArea .dateBox .date{display:inline-block;line-height:26px;}
+.infoGSliderArea .matchBox{display:table;width:100%;table-layout:fixed}
+.infoGSliderArea .matchBox .matchCell{display:table-cell;text-align:center;vertical-align:middle}
+.infoGSliderArea .matchBox .teamBox{display:block;}
+.infoGSliderArea .matchBox .teamBox .logoImg{overflow:hidden;display:table-cell;width:60px;height:60px;vertical-align:middle}
+.infoGSliderArea .matchBox .teamBox .logoImg img{vertical-align:top;}
+.infoGSliderArea .matchBox .teamBox .team_name{display:block;margin-top:5px;font-weight:700;color:#222;line-height:24px;text-decoration:underline;}
+.infoGSliderArea .matchBox .nameBox{position:relative;height:20px;}
+.infoGSliderArea .matchBox .nameBox .name{position:absolute;top:0;left:50%;width:100px;color:#777;transform:translateX(-50%);-webkit-transform:translateX(-50%);-ms-transform:translateX(-50%);-moz-transform:translateX(-50%);-o-transform:translateX(-50%);}
+.infoGSliderArea .matchBox .score{display:block;font-family:'Roboto';font-size:24px;font-weight:700;color:#222;vertical-align:middle}
+.infoGSliderArea .matchBox.baseball .score,
+.infoGSliderArea .matchBox.baseball .badge{margin-bottom:20px;}
+.infoGSliderArea .bx-prev{left:-12px !important;}
+.infoGSliderArea .bx-next{right:-12px !important;}
+
+/* slider - 하단 게임 배너 */
+.gameFavArea { margin-top:65px;}
+.gameFavArea.sliderArea .bx-wrapper{ margin-top: 17px; }
+.gameFavArea.sliderArea .bx-viewport .bxSlider > li { height: 157px;border-color:#c0c4cd; background-color: #fafbfc; }
+.gameFavArea.sliderArea .bx-viewport .bxSlider .graTitle { border-bottom: 1px #ddd solid;padding-top: 11px;padding-bottom: 11px;margin-top: 0px;text-align: left; }
+.gameFavArea.sliderArea .bx-viewport .bxSlider .graTitle strong {  font-size: 14px;color:#222;font-weight: 700 }
+.gameFavArea.sliderArea .bx-viewport .bxSlider .graEndDate { padding:10px 20px 10px;font-weight: 700;line-height: 1; }
+.gameFavArea.sliderArea .bx-viewport .bxSlider .graEndDate em {  color:#c4113c; }
+.gameFavArea.sliderArea .bx-viewport .bxSlider .btnBox {   }
+.gameFavArea.sliderArea .bx-viewport .bxSlider .divTitle {  margin:-19px -19px 4px; background-color: #334466; color: #fff; }
+
+.gameSelectArea {position: relative;display: inline-block;vertical-align: top;}
+.gameSelectArea .gameSelectSlider {padding: 15px;border-bottom: 1px solid #e0e0e0;background-color: #f8f8f8;}
+.gameSelectArea .gameSelectSlider .bx-wrapper {margin: 0 !important;}
+.gameSelectArea .btnOpen {position: absolute;left: 50%;bottom: -11px;display: block;width: 22px;height: 22px;margin-left: -11px;border: 1px solid #ddd;border-radius: 11px;background-color: #fff;z-index:1;}
+.gameSelectArea .btnOpen:after {content: "";position: absolute;left: 6px;top: 7px;display: block;width: 9px;height: 6px;background: url(/images/comm/slider_bg.png) no-repeat -128px -13px;}
+.gameSelectArea .bxSlider > li {border: 1px solid #ccc !important;padding: 0 !important;height: 110px;min-height: auto !important;background-color: #fff;}
+.gameSelectArea .bxSlider .sliderLink {display: block;height: 100%;}
+.gameSelectArea .bxSlider .graTitle {overflow: hidden;height: 40px;padding: 11px 19px 0;background-color: #f2f2f2;}
+.gameSelectArea .bxSlider .graTitle .icoGame {float: left;display: block;}
+.gameSelectArea .bxSlider .graTitle .sdTitle {float: left;display: block;line-height: 18px !important;margin-left: 5px;font-size: 16px;font-weight: 400;color: #555;}
+.gameSelectArea .bxSlider .graTitle [class*='badge'] {width: 50px;}
+.gameSelectArea .bxSlider .graTitle .badge.end {float: left;margin-left: 5px;}
+.gameSelectArea .bxSlider .graTitle .badgeF.purple {float: right;}
+.gameSelectArea .bxSlider .par {line-height: 21px;padding:13px 23px 0;font-size: 13px;color:#555;}
+.gameSelectArea .bxSlider > li.active {border-color: #222 !important;}
+.gameSelectArea .bxSlider > li.active .graTitle .sdTitle,
+.gameSelectArea .bxSlider > li.active .par {font-weight: 700;color: #222;}
+.gameSelectArea.active .gameSelectSlider {padding-right: 6px; padding-bottom: 6px;}
+.gameSelectArea.active .bxSlider {overflow: hidden;}
+.gameSelectArea.active .bxSlider li {float: left;width: 240px;margin: 0 9px 9px 0;}
+.gameSelectArea.active .btnOpen:after {background-position: -128px -19px;}
+
+/* LIVE 스코어 */
+.guideBox .btnHr{position:absolute;right:19px;bottom:19px;color:#fff;}
+/* LIVE 스코어 - 게임 목록 */
+.targetGm .tit{display:block;padding-bottom:7px;color:#222;font-size:16px;text-align:left;}
+.targetGm + .targetGm .tit{padding-top:18px;}
+.targetGm li{display:table;width:100%;padding:9px 9px 9px 19px;border:1px solid #eee;background-color:#fefefe;}
+.targetGm li + li{margin-top:2px;}
+.targetGm li .cell{display:table-cell;vertical-align:middle;}
+.targetGm li .cell.cellTit{width:343px;text-align:left;}
+/* LIVE 스코어 - icon */
+.targetGm .cell.cellTit .icoGameDTL{position:relative;padding-left:35px;font-weight:700;}
+.targetGm .cell.cellTit .icoGameDTL:before{content:'';overflow:hidden;position:absolute;left:0;top:50%;width:15px;height:15px;margin-top:-8px;background-size:15px auto;vertical-align:top;}
+.targetGm .cell.cellTit .icoGameDTL.PT:before{background-image:url('/images/ico_game_pt.png');}/*프로토*/
+.targetGm .cell.cellTit .icoGameDTL.PTw:before{background-image:url('/images/ico_game_ptw.png');}/*프로토(월드컵)*/
+.targetGm .cell.cellTit .icoGameDTL.SC:before{background-image:url('/images/ico_game_sc.png');}/*축구*/
+.targetGm .cell.cellTit .icoGameDTL.SCw:before{background-image:url('/images/ico_game_scw.png');}/*축구(월드컵)*/
+.targetGm .cell.cellTit .icoGameDTL.BS:before{background-image:url('/images/ico_game_bs.png');}/*야구*/
+.targetGm .cell.cellTit .icoGameDTL.BK:before{background-image:url('/images/ico_game_bk.png');}/*농구*/
+.targetGm .cell.cellTit .icoGameDTL.VL:before{background-image:url('/images/ico_game_vl.png');}/*배구*/
+.targetGm .cell.cellTit .icoGameDTL.GF:before{background-image:url('/images/ico_game_gf.png');}/*골프*/
+.targetGm .cell.cellTit .icoGameDTL.CR:before{background-image:url('/images/ico_game_cr.png');}/*씨름*/
+.targetGm .cell.cellTit .icoGameDTL.MI:before{background-image:url('/images/ico_game_mi.png');}/*OX*/
+.targetGm .cell.cellTit .icoGameDTL.UO:before{background-image:url('/images/ico_game_uo.png');}/*언더오버*/
+/* LIVE 스코어 - 범례 */
+.legendArea{margin-top:10px;text-align:right;line-height:1;}
+.legendArea .legendList{display:inline-block;}
+.legendArea .legendList:after{content:'';display:block;clear:both;}
+.legendArea .legendList li{float:left;position:relative;font-size:12px;}
+.legendArea .legendList li + li{margin-left:15px;}
+.legendArea .legendList li:before{content:'';display:inline-block;margin-right:4px;width:12px;height:12px;border-radius:2px;vertical-align:top;}
+.legendArea .legendList .under:before{background-color:#d4f2ff;}
+.legendArea .legendList .over:before{background-color:#fcf4e8;}
+/* LIVE 스코어 - 상단 타이틀 */
+.gameinfoArea{line-height:24px;}
+.gameinfoArea:after{content:'';display:block;clear:both;}
+.gameinfoArea .badgeB{float:left;}
+.gameinfoArea .titleGia{float:left;margin-left:12px;color:#222;font-size:16px;}
+.gameinfoArea .titleGia span{font-weight:400;}
+.gameinfoArea .date{float:left;margin-left:15px;}
+.gameinfoArea .badge{float:left;margin:3px 0 0 10px;}
+.tblArea + .gameinfoArea{margin-top:20px;}
+
+/* 맞대결 정보 - 상단 셀렉트 */
+.leagueSelArea{display:table;width:100%;margin-top:35px;}
+.leagueSelArea .col{display:table-cell;height:60px;line-height:60px;}
+.leagueSelArea .col:first-child{text-align:right;}
+.leagueSelArea .col.vs{width:105px;text-align:center;}
+.leagueSelArea .col.vs span{font-family:Roboto;font-weight:700;color:#222;font-size:20px;}
+.leagueSelArea .col .selectDiv.bottom{width:130px;margin-left:30px;line-height:normal;vertical-align:middle;}
+.leagueSelArea .col:first-child .selectDiv.bottom{margin-left:0;margin-right:30px;text-align:left}
+.leagueSelArea .col .logoImg{display:inline-block;width:60px;height:60px;vertical-align:top;}
+.leagueSelArea .col .logoImg img{width:60px;height:60px;}
+
+/* 팀/순위 정보 */
+.indiTitArea{margin-top:40px;text-align:center;}
+.indiTitArea .inBox{position:relative;display:inline-block;}
+.indiTitArea .inBox .tit{color:#222;font-size:20px;}
+.indiTitArea .btnPrev,
+.indiTitArea .btnNext{overflow:hidden;position:absolute;top:50%;z-index:10;width:30px;height:30px;margin-top:-15px;background:url(/images/comm/calendar_btn.png) no-repeat 0 -26px;line-height:99em;}
+.indiTitArea .btnPrev{left:-35px;}
+.indiTitArea .btnNext{right:-35px;background-position:-30px -26px;}
+
+/* 리그 팀/선수 정보 */
+.leagueInfoArea{position:relative;padding:20px;background:#d5e3f0 url(/images/game/game_bg_lginfo.png) no-repeat 100% 0;}
+.leagueInfoArea .thumBox{position:absolute;top:20px;bottom:20px;left:20px;}
+.leagueInfoArea .infoBox{background-color:#fff;}
+
+.leagueInfoArea.team .thumBox{width:140px;background-color:#eaf1f8;}
+.leagueInfoArea.team .thumBox .inr{padding:30px;background-color:#fff;}
+.leagueInfoArea.team .thumBox .inr .playerImg{width:80px;height:80px;}
+.leagueInfoArea.team .thumBox .inr .playerImg img{width:80px;height:80px;}
+.leagueInfoArea.team .thumBox .inr .cover img{width:80px;height:80px;}
+.leagueInfoArea.team .thumBox .inr2{background-color:#eaf1f8;text-align:center;}
+.leagueInfoArea.team .thumBox .inr2 .rank{display:block;margin-top:20px;}
+.leagueInfoArea.team .thumBox .inr2 .rank em{display:inline-block;font-family:Roboto;font-weight:700;color:#222;font-size:24px;vertical-align:top;margin-top:-2px;}
+.leagueInfoArea.team .infoBox{width:580px;margin-left:150px;padding:7px 0 7px 22px;}
+.leagueInfoArea.team .infoBox .list > li{padding:9px 0 10px;}
+.leagueInfoArea.team .infoBox .list > li + li{border-top:1px solid #eee;}
+.leagueInfoArea.team .infoBox .list > li a{display:inline-block;text-decoration:underline;}
+.leagueInfoArea.team .infoBox .list > li .lb{display:inline-block;width:120px;padding-left:15px;color:#0f4c81;}
+.leagueInfoArea.team .infoBox .list > li .lb:before{content:'';display:inline-block;width:4px;height:5px;margin:7px 5px 0 0;background:url(/images/comm/btn_ico_20X20.png) no-repeat -76px -2px;vertical-align:top;}
+.leagueInfoArea.team .infoBox .list > li .cgText{line-height:16px;}
+.leagueInfoArea.team .infoBox .list > li .cgText .num{margin-right:1px;font-weight:700;color:#222;font-size:16px;}
+.leagueInfoArea.team .infoBox .list > li.playerLi .plRow:after{content:'';display:block;clear:both;}
+.leagueInfoArea.team .infoBox .list > li.playerLi .plRow{position:relative;margin-top:10px;padding:0 40px 0 95px;min-height: 21px;}
+.leagueInfoArea.team .infoBox .list > li.playerLi .plRow .bedgePs{position:absolute;left:24px;top:0;display:inline-block;width:60px;border-radius:5px;background-color:#e9f3fc;font-size:12px;text-align:center;line-height:20px;}
+.leagueInfoArea.team .infoBox .list > li.playerLi .plRow a{float:left;margin-right:10px;font-weight:700;color:#222;}
+
+.leagueInfoArea.player .thumBox{width:130px;padding:20px;background-color:#fff;}
+.leagueInfoArea.player .thumBox .playerImg img{width:90px;height:102px;}
+.leagueInfoArea.player .infoBox{width:590px;margin-left:140px;padding:20px 22px 10px;}
+.leagueInfoArea.player .infoBox .titkLeague{padding:0 0 6px 15px;}
+.leagueInfoArea.player .infoBox .titkLeague .no{font-family:Roboto;color:#222;font-size:18px;}
+.leagueInfoArea.player .infoBox .titkLeague .teamN{color:#222;font-size:14px;vertical-align:top;}
+.leagueInfoArea.player .infoBox .titkLeague .no + .teamN:before{content:'';display:inline-block;width:1px;height:10px;margin:0 10px;background-color:#ddd;}
+.leagueInfoArea.player .infoBox .titkLeague .countryN .flagCountry{margin-right:1px;}
+.leagueInfoArea.player .infoBox .titkLeague .countryN .cn{vertical-align:top;}
+.leagueInfoArea.player .infoBox .titkLeague .teamN + .countryN:before{content:'';display:inline-block;width:1px;height:10px;margin:0 10px;background-color:#ddd;}
+.leagueInfoArea.player .infoBox .list:after{content:'';display:block;clear:both;}
+.leagueInfoArea.player .infoBox .list > li{float:left;width:50%;padding:9px 0;border-top:1px solid #eee;}
+.leagueInfoArea.player .infoBox .list > li:last-child{border-bottom:none;}
+.leagueInfoArea.player .infoBox .list > li:nth-child(even){border-left:1px solid #eee;}
+.leagueInfoArea.player .infoBox .list > li a{display:inline-block;text-decoration:underline;}
+.leagueInfoArea.player .infoBox .list > li .lb{display:inline-block;width:110px;padding-left:15px;color:#0f4c81;vertical-align:top;}
+.leagueInfoArea.player .infoBox .list > li .lb:before{content:'';display:inline-block;width:4px;height:5px;margin:7px 5px 0 0;background:url(/images/comm/btn_ico_20X20.png) no-repeat -76px -2px;vertical-align:top;}
+.leagueInfoArea.player .infoBox .list > li .lb + span{display:inline-block;vertical-align:top;}
+.leagueInfoArea.player .infoBox .list > li .lb .bkText{display:block;margin-left:9px;font-weight:400;font-size:12px;}
+.leagueInfoArea.player .infoBox .list > li .cgText{line-height:16px;}
+.leagueInfoArea.player .infoBox .list > li .cgText .num{margin-right:1px;font-weight:700;color:#222;font-size:16px;}
+.leagueInfoArea.player .infoBox .list > li.sgLi{width:100%;padding:14px 0;}
+.leagueInfoArea.player .infoBox .list > li.sgLi .lb{margin-top:17px;vertical-align:top;}
+.leagueInfoArea.player .infoBox .list > li.sgLi .sgCol{display:inline-block;width:70px;text-align:center;}
+.leagueInfoArea.player .infoBox .list > li.sgLi .sgCol + .sgCol{margin-left:30px;}
+.leagueInfoArea.player .infoBox .list > li.sgLi .sgCol span{font-weight:700;font-size:13px;}
+.leagueInfoArea.player .infoBox .list > li.sgLi .sgCol .num{margin-top:7px;}
+.leagueInfoArea.player .infoBox .list > li.sgLi .sgCol .num em{display:block;font-family:Roboto;font-weight:700;color:#222;font-size:22px;}
+.leagueInfoArea.player .infoBox .list > li.last{width:100%;}
+
+.leagueInfoArea.team2 .thumBox{width:130px;padding:20px;background-color:#fff;}
+.leagueInfoArea.team2 .thumBox .countryImg{text-align:center;}
+.leagueInfoArea.team2 .infoBox{width:590px;margin-left:140px;padding:20px 22px 10px;}
+.leagueInfoArea.team2 .infoBox .titCountry{padding:0 0 10px 15px;}
+.leagueInfoArea.team2 .infoBox .titCountry:after{content:'';display:block;clear:both;}
+.leagueInfoArea.team2 .infoBox .titCountry .text{float:left;color:#222;font-size:14px;}
+.leagueInfoArea.team2 .infoBox .titCountry .text2{float:left;color:#222;font-size:18px;}
+.leagueInfoArea.team2 .infoBox .titCountry .text + .text2:before{content:'';display:inline-block;width:1px;height:10px;margin:6px 10px 0;background-color:#ddd;vertical-align:top;}
+.leagueInfoArea.team2 .infoBox .list li{position:relative;padding:9px 15px 10px 153px;border-top:1px solid #eee;}
+.leagueInfoArea.team2 .infoBox .list li .lb{position:absolute;left:15px;top:8px;width:137px;color:#0f4c81;}
+.leagueInfoArea.team2 .infoBox .list li .lb:before{content:'';display:inline-block;width:4px;height:5px;margin:7px 5px 0 0;background:url(/images/comm/btn_ico_20X20.png) no-repeat -76px -2px;vertical-align:top;}
+
+/* 주요선수 */
+.mjplayerList{overflow:hidden;}
+.mjplayerList ul{margin:-10px 0 0 -10px;}
+.mjplayerList ul:after{content:'';display:block;clear:both;}
+.mjplayerList li{float:left;width:185px;height:211px;margin:10px 0 0 10px;border:1px solid #ddd;}
+.mjplayerList .hd{height:39px;border-bottom:1px solid #ddd;background-color:#f8f8f8;line-height:38px;}
+.mjplayerList .hd:after{content:'';display:block;clear:both;}
+.mjplayerList .hd .lb{float:left;margin-left:14px;font-weight:700;color:#334466;font-size:14px;}
+.mjplayerList .hd .lb .num{margin-left:4px;font-family:Roboto;font-weight:700;color:#028299;font-size:16px;vertical-align:bottom;}
+.mjplayerList .hd .rank{float:right;width:46px;height:38px;padding-right:8px;background:url(/images/game/game_lginfo_rank.png) no-repeat 0 0;color:#fff;font-size:12px;text-align:right;}
+.mjplayerList .hd .rank .num{display:inline-block;margin-top:-1px;font-family:Roboto;font-size:18px;vertical-align:top;}
+.mjplayerList .bd{padding:20px 0 17px;text-align:center;}
+.mjplayerList .bd .playerImg{display:inline-block;}
+.mjplayerList .bd .playerImg img{width:90px;height:102px;vertical-align:top;}
+.mjplayerList .bd .playerNm{display:block;margin-top:10px;font-weight:700;color:#222;text-decoration:underline;}
+
+/* 토토가이드 */
+.totoguideList{overflow:hidden;margin-top:10px;}
+.totoguideList ul{margin:-10px 0 0 -10px;}
+.totoguideList ul:after{content:'';display:block;clear:both;}
+.totoguideList li{float:left;width:50%;}
+.totoguideList a{display:block;margin:10px 0 0 10px;padding:10px 10px 14px 10px;border:1px solid #ddd;background-color:#fff;}
+.totoguideList a:after{content:'';display:block;clear:both;}
+.totoguideList .thumbImg{float:left;border:1px solid #ddd;box-shadow:4px 4px 0 0 #ddd;}
+.totoguideList .thumbImg img{width:90px;height:100px;vertical-align:top;}
+.totoguideList .discBox{float:left;display:table;width:266px;height:100px;padding-left:42px;}
+.totoguideList .discBox .cell{display:table-cell;vertical-align:middle;}
+.totoguideList .discBox .tit{display:block;color:#222;font-size:14px;}
+.totoguideList .discBox .srhNum{font-size:12px;}
+
+/* 라이브 팝업 */
+.windowPopup2 {height: 100%;}
+.windowPopup2 .popHeader {position: fixed;left: 0;right: 0;top: 0;overflow: hidden;height: 49px;border-bottom: 1px solid #262c36;padding: 13px 30px 0 20px;background-color: #313743;z-index: 1;}
+.windowPopup2 .popHeader h1 {float: left;line-height: 22px;font-size: 16px;font-weight: 700;color: #fff;}
+.windowPopup2 .popHeader .hMenu {float: right;}
+.windowPopup2 .popHeader .hMenu::after{content:"";display:table;clear:both;}
+.windowPopup2 .popHeader .hMenu li {float: left;}
+.windowPopup2 .popHeader .hMenu button.btn {height: 24px;line-height: 24px;border:0 none;border-radius: 12px;}
+.windowPopup2 .popHeader .hMenu button.btn:focus{outline:2px dotted #4D90FE;}
+.windowPopup2 .popHeader .hMenu .switchButton {margin-left: 5px;border:0 none;}
+.windowPopup2 .popHeader .hMenu .switchButton label {height: 24px;}
+.windowPopup2 .popHeader .hMenu .switchButton input:focus + label {/* outline: 2px dotted #fff; */outline:2px dotted #4D90FE;}
+.windowPopup2 .popHeader .hMenu .switchButton label:before {height: 20px;}
+.windowPopup2 .popHeader .hMenu .switchButton label .text,
+.windowPopup2 .popHeader .hMenu .switchButton label .off,
+.windowPopup2 .popHeader .hMenu .switchButton label .on {height: 24px;}
+.windowPopup2 .popHeader .hMenu .switchButton input:checked + label {background-color: #22639b;}
+.windowPopup2 .popHeader .hMenu .switchButton input:checked + label .on {color: #334466;}
+.windowPopup2 .popHeader .hMenu .renewalTime {display: inline-block;line-height: 24px;margin-left: 10px;font-size: 12px;color: #fff;}
+
+.windowPopup2 .popContainer {position: relative;height: 100%;padding-top: 50px;background-color: #334466;}
+.windowPopup2 .popContainer:after {content: "";position: absolute;left: 0;right: 0;top: 49px;display: block;height: 1px;background-color: #465b84;}
+.windowPopup2 .relayContent {position: absolute;left: 0;top:50px;bottom: 0;width: 273px;border-right: 1px solid #293652;}
+.windowPopup2 .relayContent:after {content:'';position: absolute;width: 1px;right: 16px;top: 38px;bottom:0px;background-color: #293652;overflow: hidden;}
+.windowPopup2 .relayTitle {height: 38px;padding: 0 0 0 18px;border-bottom: 1px solid #293652;}
+.windowPopup2 .relayTitle h2 {line-height: 37px;font-size: 13px;font-weight: 700;color: #33f3ff;}
+.windowPopup2 .relayList {
+    overflow-y: scroll;position: absolute;left: 0;right: 0;top: 38px;bottom: 0;
+    scrollbar-highlight-color:#ffff00;
+    scrollbar-arrow-color:#7383a4;
+    scrollbar-track-color:#334466;
+    scrollbar-face-color:#293652;
+    scrollbar-shadow-color:#7383a4;
+}
+
+.windowPopup2 .relayList::-webkit-scrollbar {  width: 16px;}
+.windowPopup2 .relayList::-webkit-scrollbar-thumb { background-color: #293652;border:3px #334466 solid; }
+.windowPopup2 .relayList::-webkit-scrollbar-track { background-color: #334466; }
+.windowPopup2 .relayList::-webkit-scrollbar-button:vertical:increment  { background:#334466 url('/images/game/liveWindow_scroll_bottom.png') no-repeat 50% 50% }
+.windowPopup2 .relayList::-webkit-scrollbar-button:vertical:decrement  { background:#334466 url('/images/game/liveWindow_scroll_top.png') no-repeat 50% 50% }
+
+
+.windowPopup2 .scoreArea {
+    scrollbar-highlight-color:#ffff00;
+    scrollbar-arrow-color:#7383a4;
+    scrollbar-track-color:#334466;
+    scrollbar-face-color:#293652;
+    scrollbar-shadow-color:#7383a4;
+}
+.windowPopup2 .scoreArea::-webkit-scrollbar {  width: 16px;}
+.windowPopup2 .scoreArea::-webkit-scrollbar-thumb { background-color: #293652;border:3px #334466 solid; }
+.windowPopup2 .scoreArea::-webkit-scrollbar-track { background-color: #334466; }
+.windowPopup2 .scoreArea::-webkit-scrollbar-button:horizontal:increment  { background:#334466 url('/images/game/liveWindow_scroll_right.png') no-repeat 50% 50% }
+.windowPopup2 .scoreArea::-webkit-scrollbar-button:horizontal:decrement  { background:#334466 url('/images/game/liveWindow_scroll_left.png') no-repeat 50% 50% }
+
+.windowPopup2 .scoreBox .gameDetail .tabList > div,
+.windowPopup2 .scrollArea {
+    scrollbar-highlight-color:#c1c1c1;
+    scrollbar-arrow-color:#c1c1c1;
+    scrollbar-track-color:#f1f1f1;
+    scrollbar-face-color:#c1c1c1;
+    scrollbar-shadow-color:#f1f1f1;
+ }
+
+.windowPopup2 .relayArea {  position: relative; }
+.windowPopup2 .relayArea .gameTitle {overflow: hidden;height: 38px;padding: 11px 0 0 14px;background-color: #425884;}
+.windowPopup2 .relayArea .gameTitle .icoGame {float: left;width: 16px;height: 16px;background-size: 16px auto;}
+.windowPopup2 .relayArea .gameTitle .title {float: left;margin-left: 11px;line-height: 16px;font-size: 14px;font-weight: 700;color: #fff;}
+.windowPopup2 .relayArea .gameList {}
+.windowPopup2 .relayArea .gameList li {height: 54px;padding: 0 0 0 18px;border-top: 1px solid #485776;border-bottom: 1px solid #293652;}
+.windowPopup2 .relayArea .gameList li > * {float: left;}
+.windowPopup2 .relayArea .gameList li .title {width: 71px;padding-top: 4px;}
+.windowPopup2 .relayArea .gameList li .title span {display: block;line-height: 21px;font-size: 13px;font-weight: 700;color: #fff;}
+.windowPopup2 .relayArea .gameList li .time {width: 50px;padding-top: 16px;}
+.windowPopup2 .relayArea .gameList li .time span {display: block;text-align: center;height: 19px;line-height: 19px;border-radius: 5px;font-size:11px;font-weight: 700;color: #fff;background-color: #028299;}
+.windowPopup2 .relayArea .gameList li .score {width: 49px;padding-top: 4px;}
+.windowPopup2 .relayArea .gameList li .score span {display: block;text-align: center;line-height: 21px;font-size: 14px;font-weight: 700;color: #ccd0d5;}
+.windowPopup2 .relayArea .gameList li .relay {width: 59px;padding-top: 15px;}
+.windowPopup2 .relayArea .gameList li .relay .btnRelay {display: block;text-align: center;width: 100%;height: 22px;border: 1px solid #fff;background-color: #334466;}
+.windowPopup2 .relayArea .gameList li .relay .btnRelay:focus{outline:2px dotted #4D90FE;}
+.windowPopup2 .relayArea .gameList li .relay .btnRelay .txt {display: inline-block;vertical-align: top;height: 20px;line-height: 20px;font-size: 12px;color: #fff;}
+.windowPopup2 .relayArea .gameList li .relay .btnRelay.active {border-color: #c4113c;background-color: #c4113c;}
+.windowPopup2 .relayArea .gameList li .relay .btnRelay.active .txt {padding-left: 12px;font-weight: 700;background: url(/images/game/game_relay_check.png) no-repeat left center;}
+
+.windowPopup2 .scoreContent {height: 100%;padding-left: 273px;border-left: 1px solid #465b84;}
+.windowPopup2 .scoreArea {overflow-x: auto;height: 100%;padding: 10px 0 0 10px;}
+.windowPopup2 .scoreAreaInner {height: 100%;padding-bottom: 10px;font-size: 0;white-space: nowrap;}
+.windowPopup2 .scoreAreaInner .ieRevision {display: inline-block;vertical-align: top;width: 10px;height: 100%;}
+
+.scoreBox {position: relative;display: inline-block;vertical-align: top;width: 320px;height: 100%;padding: 133px 0 0;border: 1px solid #293652;background-color: #fff;white-space: normal;}
+.scoreBox + .scoreBox {margin-left: 10px;}
+.scoreBox .gameInfo {position: absolute;left: 0;right: 0;top: 0;height: 133px;background-color: #0f4c81;}
+.scoreBox .gameInfo .giDate {position: absolute;left: 69px;right: 69px;top: 0;text-align: center;height: 26px;border-radius: 0 0 26px 26px;background-color: #22639b;}
+.scoreBox .gameInfo .giDate span {display: inline-block;vertical-align: top;line-height: 26px;font-size: 13px;color: #fff;}
+.scoreBox .gameInfo .giScore {position: relative;padding-top: 38px;}
+.scoreBox .gameInfo .giScore:after {content: "";display: block;clear: both;}
+.scoreBox .gameInfo .giScore .time {position: absolute;left: 50%;top: 64px;}
+.scoreBox .gameInfo .giScore .time span {display: block;text-align: center;width: 50px;height: 19px;line-height: 19px;margin-left: -25px;border-radius: 5px;font-size: 11px;font-weight: 700;color: #028299;background-color: #fff;}
+.scoreBox .gameInfo .giScore .tim {position: relative;width: 98px;margin-top:-7px;}
+.scoreBox .gameInfo .giScore .tim .logo {display: block;text-align: center;line-height: 1;height: 60px;}
+.scoreBox .gameInfo .giScore .tim .logo img {display: inline-block;width: 60px;height: 60px;}
+.scoreBox .gameInfo .giScore .tim .title {display: block;text-align: center;line-height: 17px;font-size: 13px;font-weight: bold;color: #fff;}
+.scoreBox .gameInfo .giScore .tim .starting {display: block;text-align: center;line-height: 17px;padding-top: 2px;font-size: 12px;color: #ccd0d5;}
+.scoreBox .gameInfo .giScore .tim .score {position: absolute;top: 28px;display: block;text-align: center;width: 56px;height: 28px;line-height: 28px;font-size: 22px;font-weight: 700;color: #fff;}
+.scoreBox .gameInfo .giScore .tim.home {float: left;}
+.scoreBox .gameInfo .giScore .tim.home .score {right: -31px;}
+.scoreBox .gameInfo .giScore .tim.away {float: right;}
+.scoreBox .gameInfo .giScore .tim.away .score {left: -31px;}
+.scoreBox .gameDetail {overflow: hidden;position: relative;height: 100%;}
+.scoreBox .gameDetail .tblArea .tbl {width: 319px;}
+.scoreBox .gameDetail .tblArea .tbl caption {position: absolute;}
+.scoreBox .gameDetail .tblArea .tbl tr > * {height: 18px;padding-top: 6px;padding-bottom: 6px;}
+.scoreBox .gameDetail .tblArea .tbl > thead + tbody > tr:first-child > th {border-top: 1px solid #aaaaaa;}
+.scoreBox .gameDetail .tabList {position: relative;height: 100%;}
+.scoreBox .gameDetail .tabList:after {content: "";position: absolute;left: 0;right: 0;top: 0;height: 10px;background-color: #f8f8f8;}
+.scoreBox .gameDetail .tabList.ui-tabs.base > ul {position: absolute;left: 0;right: 0;top: 10px;background-color: #fff;}
+.scoreBox .gameDetail .tabList > div {overflow-y: auto;height: 100%;padding: 18px;font-size: 13px;color: #555;background-color: #fff;}
+
+.scoreBox.sbSoccer .gameDetail {padding-top: 125px;}
+.scoreBox.sbSoccer .gameDetail .scoreTb {position: absolute;left: 0;right: 0;top: 0;}
+.scoreBox.sbSoccer .gameDetail .tabList {padding-top: 60px;}
+.scoreBox.sbSoccer .gameDetail .tabList.ui-tabs.base > ul > li > a {height: 49px;padding: 0;}
+.scoreBox.sbSoccer .gameDetail .tabList.ui-tabs.base > ul > li > a .txt {display: inline-block;vertical-align: top;line-height: 20px;padding-top: 3px;font-size: 13px;}
+.scoreBox.sbSoccer .gameDetail .tabList.ui-tabs.base > ul > li > a .txt.line1 {padding-top: 14px;}
+
+.scoreBox.sbBaseball .gameDetail {padding-top: 94px;}
+.scoreBox.sbBaseball .gameDetail .baseballTb {overflow: hidden;position: absolute;left: 0;right: 0;top: 0;}
+.scoreBox.sbBaseball .gameDetail .baseballTb::after{content:"";height:1px;width: 319px;background-color: #346;position:absolute;left:0px;top: 0px;z-index: 40;}
+.scoreBox.sbBaseball .gameDetail .baseballTb .tbData1 {float: left;width: 222px;}
+.scoreBox.sbBaseball .gameDetail .baseballTb .tbData1 .tbl {width: 100%;}
+.scoreBox.sbBaseball .gameDetail .baseballTb .tbData2 {float: right;width: 84px;margin-right: -1px;}
+.scoreBox.sbBaseball .gameDetail .baseballTb .tbData2 .tbl {width: 100%;}
+.scoreBox.sbBaseball .gameDetail .baseballTb .extensionBtn {position: absolute;right: 83px;top: 0;width: 14px;height: 100%;border: 1px solid #dedede;border-top-color:#0f4c81;background-color: transparent;z-index: 20;line-height: 99em;border-top-width: 0px;}
+.scoreBox.sbBaseball .gameDetail .baseballTb .extensionBtn:disabled{/* opacity:0.5; */background-color: #efefef;/* border-top-color: #334466; */top: 0px;}
+.scoreBox.sbBaseball .gameDetail .baseballTb .extensionBtn:after{content: "";position: absolute;left: 50%;top: 50%;width: 5px;height: 7px;margin-left:-2px;margin-top:-3px;background: transparent url(/images/game/game_baseballTb_arrow.png) no-repeat 0 0;}
+.scoreBox.sbBaseball .gameDetail .baseballTb .extensionBtn.prev:after {background-position: 0 -9px;}
+
+.scoreBox.sbBaseball .gameDetail .tabList {padding-top: 40px;}
+.scoreBox.sbBaseball .gameDetail .tabList.ui-tabs.base > ul > li > a {height: 29px;line-height: 28px;padding: 0;font-size: 13px;}
+
+.scoreBox.sbBasketball .gameDetail {padding-top: 94px;}
+.scoreBox.sbBasketball .gameDetail .scoreTb {position: absolute;left: 0;right: 0;top: 0;}
+
+.scoreBox.sbVolleyball .gameDetail {padding-top: 94px;}
+.scoreBox.sbVolleyball .gameDetail .scoreTb {position: absolute;left: 0;right: 0;top: 0;}
+.scoreBox.sbVolleyball .gameDetail .tabList.ui-tabs.base > ul > li > a {height: 29px;line-height: 28px;padding: 0;font-size: 13px;}
+.scoreBox.sbVolleyball .gameDetail .tabList > div {overflow-y: auto;height: 100%;padding: 18px;font-size: 13px;color: #555;background-color: #fff;}
+.scoreBox.sbVolleyball .gameDetail .tabList {  padding-top:40px; }
+
+.scoreBox .scrollArea { position: relative;overflow-y:auto;height: 100%;padding: 18px;font-size: 13px;color: #555;}
+
+/* BET코치 SNS 연결 팝업 */
+.windowPopup3 {min-height: 100%;text-align: center;background-color: #fff;}
+.windowPopup3 .popHeader {text-align: left;height: 45px;background-color: #0f4c81;}
+.windowPopup3 .popContainer {text-align: left;max-width: 480px;margin: 0 auto;}
+
+.participationWrap {}
+.participationWrap .popHeader {}
+.participationWrap .popHeader .headerInner {max-width: 480px;padding: 11px 0 0 20px;margin: 0 auto;}
+.participationWrap .popHeader .headerInner h1 {display: inline-block;vertical-align: top;}
+.participationWrap .popHeader .headerInner h1 img {display: block;}
+
+.participationWrap .popContainer {padding: 30px 20px 40px;background-color: #fff;}
+.participationWrap .paTitleArea {overflow: hidden;}
+.participationWrap .paTitleArea .title {float: left;line-height: 18px;font-size: 16px;font-weight: bold;color: #222;}
+.participationWrap .paTitleArea .title .icoGame {display: inline-block;vertical-align: top;width: 18px;height: 18px;margin-right: 5px;background-size: 18px auto;}
+.participationWrap .paTitleArea .numbering {float: right;line-height: 18px;font-size: 13px;color: #222;}
+.participationWrap .paTimArea {overflow: hidden;text-align: center;margin-top: 15px;padding: 0 25px 25px;border: 1px solid #ddd;}
+.participationWrap .paTimArea .patTop {display: inline-block;vertical-align: top;min-width: 250px;height: 27px;line-height: 26px;padding: 0 26px;border: 1px solid #eee;border-top: 0 none;border-radius: 0 0 27px 27px;box-shadow: 0px 0px 6px 3px #eee;}
+.participationWrap .paTimArea .patTop > * {display: inline-block;vertical-align: top;}
+.participationWrap .paTimArea .patTop .host {font-size: 13px;font-weight: 700;color: #0f4c81;}
+.participationWrap .paTimArea .patTop .date {margin-left: 20px;font-size: 13px;color: #555;}
+.participationWrap .paTimArea .patVs {position: relative;margin-top: 27px;}
+.participationWrap .paTimArea .patVs .home {position: absolute;right: 50%;top: 0;text-align: right;padding-right: 25px;font-size: 0;}
+.participationWrap .paTimArea .patVs .home .tit {display: inline-block;vertical-align: top;line-height: 42px;font-size: 18px;font-weight: 700;color: #222;}
+.participationWrap .paTimArea .patVs .home .tim {display: inline-block;vertical-align: top;width: 42px;height: 42px;margin-left: 20px;}
+.participationWrap .paTimArea .patVs .home .tim img {display: block;width: 100%;height: 100%;}
+.participationWrap .paTimArea .patVs .away {overflow: hidden;position: absolute;left: 50%;top: 0;padding-left: 25px;}
+.participationWrap .paTimArea .patVs .away .tit {float: right;display: block;line-height: 42px;font-size: 18px;font-weight: 700;color: #222;}
+.participationWrap .paTimArea .patVs .away .tim {float: right;display: block;width: 42px;height: 42px;margin-right: 20px;}
+.participationWrap .paTimArea .patVs .away .tim img {display: block;width: 100%;height: 100%;}
+.participationWrap .paTimArea .patVs .versus {height: 42px;line-height: 42px;font-size: 14px;font-weight:700;font-family:'Roboto',sans-serif;color: #222;}
+.participationWrap .paTimArea .patCon {margin-top: 18px;padding: 0 25px;}
+.participationWrap .paTimArea .patCon .garyBox {min-height: 50px;line-height: 24px;padding: 10px;border-radius: 4px;font-size: 16px;font-weight: 700;color: #555;background-color: #e6ebf7;}
+.participationWrap .paTimArea .patCon .garyBox .point1 {display: inline-block;vertical-align: bottom;line-height: 30px;font-size: 22px;font-weight: 700;color: #222;}
+.participationWrap .paTimArea .patCon .garyBox .point2 {display: inline-block;vertical-align: bottom;line-height: 30px;font-size: 24px;font-weight: 700;}
+.participationWrap .paInfoTxt {text-align: center;line-height: 23px;margin-top: 25px;font-size: 14px;font-weight: 700;color: #555;}
+.participationWrap .paBtn {text-align: center;margin-top: 25px;}
+
+/* 월드컵 */
+/* 월드컵 - (공통)나라 국기 */
+.dbCountryBox{display:inline-block;vertical-align:middle;}
+.flagCountry{display:inline-block;width: 25px;height: 19px;margin-right:10px;border:1px solid #707070;}
+.flagCountry + .flagCountry{margin-left:-8px;}
+.flagCountry img{width: 100%;height: 100%;vertical-align:top;}
+.flagCountry2{display:inline-block;width:90px;height: 67px;border:1px solid #ddd;vertical-align:top;}
+.flagCountry2 img{width:100%;height: 100%;vertical-align:top;}
+.flagCountry2 + .btn.btnS{margin-top:10px;}
+.flagCountry2 .flag-wrapper{height:100% !important; box-shadow: none;}
+
+.worldCupWrap {}
+.worldCupWrap .tabList {margin-top: 20px;}
+.worldCupWrap .vsDIv .vsBold {font-size: 14px;font-weight: 700;font-family: 'Roboto',sans-serif;color: #222;}
+.worldCupWrap thead .vsDIv > div:first-child {padding-right: 35px;}
+.worldCupWrap thead .vsDIv > div:last-child {padding-left: 35px;}
+.worldCupWrap thead .vsDIv > div:last-child .center {left: -13px;margin: 0;}
+.worldCupWrap tbody .vsDIv > div:first-child {padding-right: 17px;}
+.worldCupWrap tbody .vsDIv > div:last-child {padding-left: 17px;}
+.worldCupWrap tbody .vsDIv > div:last-child .center {left: -12px;margin: 0;}
+
+.worldCupWrap .vsDIv .nationalType {}
+.worldCupWrap .vsDIv .nationalType .nationalTit {display: inline-block;vertical-align: top;font-size: 13px;font-weight: 700;text-decoration: underline;color: #222;}
+.worldCupWrap .vsDIv .nationalType .nationalFlag {display: inline-block;vertical-align: top;width: 31px;height: 19px;border: 1px solid #707070;}
+.worldCupWrap .vsDIv .nationalType .nationalFlag img {display: block;width: 100%;height: 100%;}
+.worldCupWrap .vsDIv .nationalType:first-child {padding-right: 27px;}
+.worldCupWrap .vsDIv .nationalType:first-child .nationalTit {margin-right: 5px;}
+.worldCupWrap .vsDIv .nationalType:last-child {padding-left: 27px;}
+.worldCupWrap .vsDIv .nationalType:last-child .center {left: -12px;margin: 0;}
+.worldCupWrap .vsDIv .nationalType:last-child .nationalTit {margin-left: 5px;}
+
+.worldCupWrap .gridArea + .bulletText02 {margin-top: 5px;}
+
+.groupGameArea {padding: 20px 0 19px;margin-bottom: 10px;border-top: 2px solid #000;border-bottom: 1px solid #ddd;background-color: #f8f8f8;}
+.groupGameArea .groupList {text-align: center;}
+.groupGameArea .groupList .tabButton {vertical-align: top;}
+.groupGameArea .groupList .tabButton li {width: 62px;}
+.groupGameArea .groupSelect {text-align: center;margin-top: 20px;}
+.groupGameArea .groupSelect ul {overflow: hidden;display: inline-block;vertical-align: top;}
+.groupGameArea .groupSelect ul li {float: left;}
+.groupGameArea .groupSelect ul li + li {margin-left: 40px;}
+.groupGameArea .groupSelect ul li .gsImg {display: block;width: 100px;height: 72px;border: #dddddd solid 1px;}
+.groupGameArea .groupSelect ul li .gsImg .flag-wrapper{width: 100% !important; height:100% !important; box-shadow:none;}
+.groupGameArea .groupSelect ul li .gsImg img {width: 100%;height: 100%;}
+.groupGameArea .groupSelect ul li .gsTit {display: inline-block;vertical-align: top;line-height: 18px;margin-top: 7px;font-size: 13px;font-weight: 700;text-decoration: underline;color: #222;}
+/* 월드컵 - 결승 토너먼트 일정 */
+.finalTnmArea{padding:20px 0;border:1px solid #ddd;border-top:2px solid #000;background-color:#f8f8f8;}
+.finalTnmArea img{width:768px;vertical-align:top;}
+/* 월드컵 - 팀,선수 정보 / 팀 소개 */
+.gameIntroArea .contTitle.lybox{padding-top:0;}
+.gameIntroArea .contTitle.lybox h5 + .btnLink{margin-left:10px;vertical-align:top;}
+.gameIntroArea .textCont{margin-top:-11px;color:#222;}
+.gameIntroArea .textCont + .contTitle.lybox{margin-top:36px;}
+
+.tbl td.tdPlayerImg{padding-top:40px;padding-bottom:40px;}
+.tbl td.tdPlayerImg .btnLink{display:block;margin-top:7px;color:#222;text-decoration:underline;}
+
+/* media query */
+@media all and (max-width: 479px) {
+.participationWrap .popHeader {height: 36px;}
+.participationWrap .popHeader .headerInner {padding: 11px 0 0 16px;}
+.participationWrap .popHeader .headerInner h1 img {width: 60px;height: 15px;}
+
+.participationWrap .popContainer {padding: 28px 16px;}
+
+.participationWrap .paTitleArea .title {line-height: 16px;font-size: 15px;}
+.participationWrap .paTitleArea .numbering {line-height: 16px;font-size: 12px;}
+
+.participationWrap .paTimArea {margin-top: 12px;padding: 0 19px 19px;}
+.participationWrap .paTimArea .patTop {min-width: auto;height: 24px;line-height: 23px;padding: 0 30px;border-radius: 0 0 24px 24px;}
+.participationWrap .paTimArea .patTop .host {font-size: 12px;}
+.participationWrap .paTimArea .patTop .date {margin-left: 12px;font-size: 12px;}
+
+.participationWrap .paTimArea .patVs {margin-top: 20px;}
+.participationWrap .paTimArea .patVs .home .tit {line-height: 24px;font-size: 16px;}
+.participationWrap .paTimArea .patVs .home .tim {width: 24px;height: 24px;margin-left: 12px;}
+.participationWrap .paTimArea .patVs .away .tit {line-height: 24px;font-size: 16px;}
+.participationWrap .paTimArea .patVs .away .tim {width: 24px;height: 24px;margin-right: 12px;}
+.participationWrap .paTimArea .patVs .versus {height: 24px;line-height:24px;font-size: 16px;}
+
+.participationWrap .paTimArea .patCon {padding-left: 0;padding-right: 0;}
+.participationWrap .paTimArea .patCon .garyBox {min-height: 32px;line-height: 21px;padding: 10px;font-size: 13px;}
+.participationWrap .paTimArea .patCon .garyBox .point1 {line-height: 21px;font-size: 16px;}
+.participationWrap .paTimArea .patCon .garyBox .point2 {line-height: 21px;font-size: 16px;}
+
+.participationWrap .paInfoTxt {line-height: 18px;margin-top: 18px;font-size: 13px;}
+.participationWrap .paBtn {margin-top: 18px;}
+.participationWrap .paBtn .btn {width: 100%;}
+}
+
+
+.graphTblAreaTog{}
+.graphTblAreaTog .bts{position:absolute;right: 0;top: 0px;}
+.graphTblAreaTog .btn.table{min-width: 100px;}
+.graphTblAreaTog .area{display:none;}
+.graphTblAreaTog .area.show{}
+.graphTblAreaTog .area.graph{}
+.graphTblAreaTog .area.table{max-height: 290px;overflow-y: auto;margin-top: 20px;}
+.graphTblAreaTog .graphArea .nocBox{padding-top: 106px;}
+.graphTblAreaTog .graphArea .nocBox p{}
+
+
+
+/* 적중결과 팝업 */
+.hitResultPop .linkWrap{
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 200px;
+    border-right: 1px solid #ddd;
+}
+.hitResultPop .linkWrap .popConArea{
+    box-sizing: border-box;
+    padding: 20px;
+}
+.hitResultPop .imgWrap{
+    margin-left: 220px;
+    text-align: center !important;
+}
+.hitResultPop .imgWrap img{
+    float: inherit;
+    display: none;
+    margin: 0 auto;
+}
+
+
+/*프로토승부식로딩시 정렬*/
+.tabLoading li{display: inline-block; width: 33.3%; float: left; text-align: center;}
+
+
+/*프로토승부식 추가*/
+.gameMainArea .keywordWrap{
+    display:inline-block;
+    width: 423px;
+    float: left;
+    margin-right: 10px;
+    text-align: right;
+}
+.gameMainArea .keywordWrap span{margin: 2px 0;}
+.gameMainArea .schTextIcon{
+    background: url(/images/comm/table_ico_desc_w.png) no-repeat right 10px center;
+    text-align: left;
+    background-color: #0068b7;
+    border: 1px solid #0068b7;
+    color: #fff;
+}
+.gameMainArea .schTextIconOpen{
+    background: url(/images/comm/table_ico_asc_w.png) no-repeat right 10px center;
+    text-align: left;
+    background-color: #0068b7;
+    border: 1px solid #0068b7;
+    color: #fff;
+}
+.gameMainArea .schDetailArea{margin-bottom: 20px;}
+.gameMainArea .schDetailArea .gamesortArea{margin-bottom: 0 !important;}
+.gameMainArea .schDetailArea .schDetailWrap{
+    margin: 0px -19px 30px;
+    padding-bottom: 20px;
+    border: 0;
+    border-bottom: 1px solid #ddd;
+}
+/* .gameMainArea .schDetailArea .schDetailWrap dl{margin-bottom: 20px;}
+.gameMainArea .schDetailArea .schDetailWrap dt{display: inline-block;width: 110px;padding: 5px 0 5px 19px;vertical-align: top;font-weight: 800;background-color: #eff2fa;border-bottom: 1px solid #dedede;}
+.gameMainArea .schDetailArea .schDetailWrap dd{display: inline-block;width: 655px;padding: 5px 0 5px 10px;border-bottom: 1px solid #dedede;}*/
+.gameMainArea .schDetailArea .schArea .checkBox{margin-right: 10px; margin-left: 0;}
+.gameMainArea .schDetailArea .schArea label{width: 75px;}
+.gameMainArea .schDetailArea .schArea .checkWrap{padding-left: 82px;position: relative;}
+.gameMainArea .schDetailArea .schArea .checkWrap .allCheck{position: absolute;left: 10px;top: 0;width: 70px;}
+.gameMainArea .schDetailArea .schArea .checkWrap .checkBox{margin: 3px 10px 4px 0;} 
+.schDetailArea .schArea:before{display: none !important;}
+.gameMainArea .schDetailArea .schArea{margin: 0 -19px;}
+.gameMainArea .schDetailArea .schArea .checkWrap.dayWrap label{width: auto; margin-right: 15px;}
+.gameMainArea .schDetailArea .schArea .btnArea{padding: 20px 0;/* background-color: #dedede; */margin-top: 0;border-bottom: 1px solid #dedede;}
+.gameMainArea .schDetailArea .schArea .tbl.col th{padding: 0 20px;text-align: center;border-left: 0;}
+.gameMainArea .schDetailArea .schArea .tbl.col{border-top: 2px solid #dedede;}
+
+/*게임 일정*/
+.liveDisabled {opacity:0; color:#949494}

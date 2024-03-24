@@ -1,0 +1,471 @@
+$(function(){
+	// 시뮬레이션 바 점 클릭 이벤트
+	$(document).on("click", ".bc-dot-btn", function(e) {
+		// 직접설정 클릭으로 변경?
+		var weight = parseInt($(this).val()); 
+		//(접근성)pub js코드 추가
+		var $self = $(this);
+		var perNum = $self.text();
+		// console.log("check this perNum",perNum);
+		$self.closest(".graphBox").find(".bar > span").css('width', perNum);
+		$self.closest(".dotList").find("button").removeAttr("title");
+		$self.attr("title", "선택됨");
+
+		$(this).parents(".graphBox").find(".bc-data-percent").css("width", weight + "%");
+		
+		var template = $(this).parents(".betCoachArea");
+		var simulBar = $(this).parents(".bc-data-sb");
+		var prediction = template.data().prediction;
+		var weightPredCode = $(simulBar).find(".bc-popup-btn").data("pred-cd");
+		var param = {
+			prediction : prediction, 
+			predCode : weightPredCode, 
+			weight: weight, 
+			bcReqClCd : template.data().bcReqClCd
+		};
+		
+		betCoach.barChange(param).done(function(response){
+			$(template).data(response);  
+			betCoach.util.simulBarWeightConvert(template, response.prediction.weightList); 
+			
+			betCoachDrawer.noDataGraph(template, response.prediction);
+			betCoachDrawer.donut(template, response.prediction);
+			betCoachDrawer.vote(template, response.prediction); 
+			
+			var btns = $(template).find(".bc-data-ws-btn")
+			$(btns).removeClass("on");
+			$(btns).each(function(i) {
+				var selector = $(this);
+				var span = $(selector).find(".bc-data-ws");
+				if(span.text()=="직접설정"){ 
+					$(selector).addClass("on").attr('title', '선택됨');
+					
+				}
+			});
+		});
+
+	});
+
+	// 가중치 설정 버튼 클릭 : 안정 중립 모험 직접설정 버튼
+	$(document).on("click", ".bc-data-ws-btn", function(e) {
+		var selector = $(this);
+		// console.log("check selector :", $(selector));
+		$(selector).parent().find("button").removeClass("on");
+		var weight = $(selector).data();
+		
+		var res = $(selector).parents(".betCoachArea").data();
+		var param = {adminWeight : weight, prediction : res.prediction, bcReqClCd : res.bcReqClCd};
+		// console.log("check 가중치 설정 버튼 클릭 adminWeightChange param ::",param);
+		betCoach.adminWeightChange(param).done(function(response){
+			var template = $(selector).parents(".betCoachArea");
+			$(template).data(response); 
+			betCoach.util.simulBarWeightConvert(template, response.prediction.weightList);
+
+			betCoachDrawer.noDataGraph(template, response.prediction);
+			betCoachDrawer.donut(template, response.prediction);
+			betCoachDrawer.vote(template, response.prediction);
+			selector.addClass("on").attr('title', '선택됨');
+		});
+	});
+	// 시뮬레이션 바 Info 버튼 클릭 이벤트 (팝업 호출)
+	$(document).on("click", ".bc-popup-btn", function(e) { 
+		var selector = e.target;
+
+		var weightName = $(selector).data("weight"); 
+
+		var weightPredCode = $(selector).data("pred-cd");
+		var jspFileName = weightPredCode.toLowerCase();
+		var res = $(selector).parents(".betCoachArea").data();
+		var weightList = res.prediction.weightList;
+		var sourceData = null;
+		for (var i in weightList){
+			var WL = weightList[i]; 
+			if(weightPredCode == WL.predictionCode){
+				sourceData = JSON.parse(JSON.stringify(WL));
+			}
+		}
+		var popupSize;
+		var smallPopList = ["sc003","sc004","sc007","bs002","bs003","bs004","bk003","bk007","vl007"];
+		var largePopList = ["bs006","bs007","vl004"];
+		var largeBPopList = ["vl002"]; 
+		for(var i in smallPopList){
+			if(jspFileName == smallPopList[i]){
+				// console.log("check smallPopList name ::",jspFileName+"||"+smallPopList[i]);
+				popupSize = "small";
+			}
+		}
+		for(var i in largePopList){
+			if(jspFileName == largePopList[i]){
+				// console.log("check largePopList name ::",jspFileName+"||"+largePopList[i]);
+				popupSize = "large";
+			}
+		}
+		for(var i in largeBPopList){
+			if(jspFileName == largeBPopList[i]){
+				// console.log("check largeBPopList name ::",jspFileName+"||"+largeBPopList[i]);
+				popupSize = "largeB";
+			}
+		}
+		popupSize = popupSize=="small"? popupSize : popupSize=="large"? popupSize : popupSize=="largeB"? popupSize :"base";
+		var param = {
+			title : weightName,
+			weight : sourceData,
+			res : res,
+			uri : "/"+ jspFileName,
+			size : popupSize
+		}
+		betCoach.openPop(param);
+	});
+	// 배당률 승/무/패 클릭
+	$(document).on("click", ".bc-btn-allot", function(e) {
+		var selector = $(this); 
+		$(selector).parent().find("button").removeClass("on");
+		$(selector).addClass("on");
+
+	});
+	// 투표지 적용 이벤트.
+	$(document).on("click", ".bc-btn-slip", function(e) {
+		if(!isLogin){
+			// BF0132 confirm 
+			if (confirm(getMessage("BF0133"))) { // 로그인 후 My Bet코치로 이동하실 수 있습니다.로그인하겠습니까?
+				openLoginPop("betCoach.util.reload");
+			}
+			return; 
+		} 
+		
+		var betCoachArea = $(this).parents(".betCoachArea");
+		var betCoachAreaData = betCoachArea.data();
+		var row = betCoachAreaData.rowIdx;	// Parent에서 받은 rowIdx
+		
+		var bcAllotArea = $(betCoachArea).find(".bc-allot-area").find(".bc-btn-allot");
+		var col = 1;						// 벳코치에서 사용자가 선택한 승 무 패 승:1,무:2,패:3
+		var selectorClass = "";
+		$(bcAllotArea).each(function(i) {
+			var selector = $(this);
+			var voteIndex = selector.context.className.indexOf("on");
+			if(voteIndex != -1){
+				// console.log("check selector::",selector.context.className);
+				// console.log("check selector split::",selector.context.className.split(" ")[0]);
+				selectorClass = selector.context.className.split(" ")[0];
+				if(selectorClass=="winBtn"){
+					col = 1;
+				}else if(selectorClass=="drawBtn"){
+					col = 2;
+				}else if(selectorClass=="lossBtn"){
+					col = 3;
+				}
+			}
+		}); 
+		var checkRateParam ={
+			gmTs : betCoachAreaData.prediction.betCoachGame.gmTs,
+			handiType : 0,
+			gameSeq : betCoachAreaData.prediction.betCoachGame.gameSeq,
+			seqNo: betCoachAreaData.prediction.betCoachGame.seqNo
+		};
+		// 벳코치 투표지 적용하기 : 배당률 사용가능 여부 체크
+		betCoach.checkRateInfo(checkRateParam).done(function(serverResponseData){
+			// console.log("check checkRateInfo serverResponseData::",serverResponseData);
+			// validatePutSlip 시작
+			/* 투표지 담기 처리자 */
+			if( betCoachAreaData.gmId == "G101"){//프로토 승부식인 경우만 배당률이 있기 때문에 진행
+				var validatePutSlip = betCoach.util.validatePutSlip(betCoachAreaData.prediction, serverResponseData.checkResult);
+				// $(betCoachArea).find(".bc-btn-slip").attr("disabled", true);
+				// $(betCoachArea).find(".bc-btn-slip").css({"color":"#999", "cursor":"default"});
+				betLoader.end();
+				// console.log("check validatePutSlip ::",validatePutSlip);
+			}
+			betCoachAreaData.prediction.checkMyPick = col;
+			var putSlipParam = {
+				prediction : betCoachAreaData.prediction, 
+				checkResult : serverResponseData,
+				bcReqClCd : betCoachAreaData.bcReqClCd
+			}; 
+			//벳코치 투표지 적용하기 : insert Query3개 사용 Transaction 로직 시작
+			betCoach.predictionJoin(putSlipParam).done(function(response){
+				 // console.log("check putSlip response ::", response);
+				if(response.pred_seq !=null || response.pred_seq != undefined){
+					// console.log('check setBetcoachSlipMarking param ::',row+"||"+col);
+					slipUtil.setBetcoachSlipMarking(row, col);	//Parent 페이지에 사용자 투표지 적용결과 Return
+					
+				}
+				
+			});
+		});
+	});
+
+	// My BET코치 팝업 호출 버튼 클릭
+	$(document).on("click", ".btnMyBet", function(e){
+		if(!isLogin){
+			// BF0132 confirm 
+			if (confirm(getMessage("BF0132"))) { // 로그인 후 My Bet코치로 이동하실 수 있습니다.로그인하겠습니까?
+				openLoginPop("betCoach.util.reload");
+			}
+			return; 
+		}else{ 
+			myBetCoachPop();
+			
+		}
+	});
+
+	//사용자참여 적중통게 검색 버튼
+	$(document).on("click", ".bc-hr-search", function(e){
+		var selector = $(this).parents().find(".betCoachArea");
+		betCoach.getHitRate(selector); 
+	});
+
+
+	$(document).on("change", "input[name='hitRateSeperator']", function(e){
+		 
+		var seperator = $("input[name='hitRateSeperator']:checked").val();
+		
+		var area = $(this).parents(".bc-hr-search-area");
+		var start = $(area).find(".bt-hr-start");
+		var end = $(area).find(".bt-hr-end");
+		
+		var startVal = $(start).val();
+		var endVal = $(end).val();
+		
+		if(seperator == "monthly"){
+			$(start).hide().betDatePicker('destroy').toggleClass("bt-hr-start");
+			$(end).hide().betDatePicker('destroy').toggleClass("bt-hr-end");
+
+			var monthStart = $(area).find(".bt-hr-monthly-start");
+			$(monthStart).betMonthPicker().addClass("bt-hr-start").show();
+			betCoach.util.checkDisplay($(monthStart).parent().find(".ui-monthpicker-trigger"));
+			$(monthStart).data("beforeChange", startVal);
+			
+			var monthEnd = $(area).find(".bt-hr-monthly-end");
+			$(monthEnd).betMonthPicker().addClass("bt-hr-end").show();
+			betCoach.util.checkDisplay($(monthEnd).parent().find(".ui-monthpicker-trigger"));
+			$(monthEnd).data("beforeChange", endVal);
+			 
+			$(area).find(".ui-datepicker-trigger").hide();
+			$(area).find(".bc-hit-rate-con-txt").text("최대 3년까지 검색 가능합니다.");
+		}  
+		else{
+			$(start).hide().betMonthPicker('destroy').toggleClass("bt-hr-start");
+			$(end).hide().betMonthPicker('destroy').toggleClass("bt-hr-end");
+			
+			var dayStart = $(area).find(".bt-hr-daily-start");
+			$(dayStart).betDatePicker().addClass("bt-hr-start").show();
+			betCoach.util.checkDisplay($(dayStart).parent().find(".ui-datepicker-trigger"));
+			
+			var dayEnd = $(area).find(".bt-hr-daily-end");
+			$(dayEnd).betDatePicker().addClass("bt-hr-end").show();
+			betCoach.util.checkDisplay($(dayEnd).parent().find(".ui-datepicker-trigger"));
+			
+			$(area).find(".ui-monthpicker-trigger").hide();
+			$(area).find(".bc-hit-rate-con-txt").text("최대 1개월까지 검색 가능합니다.");
+			
+		}
+		
+	});
+	//적중참여통계 팝업 호출
+	$(document).on("click", ".bc-hr-rate", function(e){
+		//2020-11-18 검색조건의 날짜가 팝업의 상단에 그대로 출력되므로 조건을 다시한번 확인되도록 추가함
+		// 검색 기준 : daily || monthly
+		var seperator = $('div.bc-hit-rate-rdobar').find("input[name='hitRateSeperator']:checked").val();
+		if (seperator != "monthly" && seperator != "daily") return false;
+		
+		var betCoachArea = $(this).parents(".betCoachArea");
+		
+		var start = $(betCoachArea).find(".bt-hr-start").val();
+		var end = $(betCoachArea).find(".bt-hr-end").val();
+		
+		//조회날짜 유효성 검증
+		if (start != null && end != null) {
+			var resultBool = betCoach.util.validateDate(seperator,start, end);
+			if (!resultBool) return;
+		}
+		
+		var param = {
+			title: "적중참여통계",
+			uri: "/bcHitRate",
+			size : "largeB"
+		}
+		var popupResult = betCoach.openPop(param);
+		var popup = $(popupResult.popupId); 
+		
+		var chartGuid = $(popup).attr('id') + "_PopChartArea";
+		var gridGuid = $(popup).attr('id') + "_PopGridArea";
+
+		var chartParam = $(betCoachArea).find(".bc-hr-chart").data("chartData");
+		var gridParam = $(betCoachArea).find(".bc-hr-grid").data("gridData");
+		
+		$(popup).find(".bc-chart-get").attr("id", chartGuid);
+		$(popup).find(".bc-grid-get").attr("id", gridGuid);
+		
+		if(gridParam){
+			chartParam.bindto = "#" + chartGuid;
+			chartParam.padding = {top : 10,
+					bottom : 10,
+					right : 20,
+					left : 30};
+			var chart = bb.generate(chartParam);
+			var grid = betCoachDrawer.hitRateGridResult(betCoachArea, gridParam, gridGuid);
+		}else{
+			var grid = betCoachDrawer.hitRateGridResult(betCoachArea, gridParam, gridGuid);
+		}
+		
+		var simulSetting = $(betCoachArea).find(".bc-hr-weight-type").find("option:selected").text();
+		var sportsItem = $(betCoachArea).find(".bc-hr-sport-type").find("option:selected").text();
+		var totalHitRate = $(betCoachArea).find(".bc-hr-rate").text();
+		var participants = $(betCoachArea).find(".bc-hr-participants").text();
+		var successCount = $(betCoachArea).find(".bc-hr-success").text();
+		  
+		$(popup).find(".bc-hr-search-date").text("조회기간: " + start + " ~ " + end);
+		$(popup).find(".bc-hr-weight-type").text(simulSetting);
+		$(popup).find(".bc-hr-sport-type").text(sportsItem);
+		$(popup).find(".bc-pop-hr-rate").text(totalHitRate);
+		$(popup).find(".bc-hr-participants").text(participants); 
+		$(popup).find(".bc-hr-success").text(successCount); 
+		
+	});
+	
+	// 벳코치 SNS 카카오톡 공유하기
+	$(document).on("click", ".bc-sns-kakao-btn", function(e){
+		if(!isLogin){ 
+			// BF0141 confirm 
+			if (confirm(getMessage("BF0141"))) { // 로그인 후 SNS 공유하기 사용 가능합니다. \r\n 로그인 하시겠습니까?
+				openLoginPop("betCoach.util.reload");
+			} 
+			return; 
+		}
+		var betCoachArea = $(this).parents(".betCoachArea");
+		var data = betCoachArea.data();
+		sharebetCaochSNS(data, "K");
+		
+	});
+	// 벳코치 SNS 네이버 밴드 공유하기
+	$(document).on("click", ".bc-sns-naver-btn", function(e){
+		if(!isLogin){ 
+			// BF0141 confirm 
+			if (confirm(getMessage("BF0141"))) { // 로그인 후 SNS 공유하기 사용 가능합니다. \r\n 로그인 하시겠습니까?
+				openLoginPop("betCoach.util.reload");  
+			} 
+			return; 
+		}
+		var betCoachArea = $(this).parents(".betCoachArea");
+		var data = betCoachArea.data();
+		sharebetCaochSNS(data, "N");
+	});
+	// 벳코치 SNS 페이스북 공유하기
+	$(document).on("click", ".bc-sns-facebook-btn", function(e){
+		if(!isLogin){ 
+			// BF0141 confirm 
+			if (confirm(getMessage("BF0141"))) { // 로그인 후 SNS 공유하기 사용 가능합니다. \r\n 로그인 하시겠습니까?
+				openLoginPop("betCoach.util.reload");  
+			} 
+			return; 
+		}
+		var betCoachArea = $(this).parents(".betCoachArea");
+		var data = betCoachArea.data();
+		sharebetCaochSNS(data, "F");
+	});
+	// 벳코치 SNS 트위터 공유하기
+	$(document).on("click", ".bc-sns-twitter-btn", function(e){
+		if(!isLogin){ 
+			// BF0141 confirm 
+			if (confirm(getMessage("BF0141"))) { // 로그인 후 SNS 공유하기 사용 가능합니다. \r\n 로그인 하시겠습니까?
+				openLoginPop("betCoach.util.reload");
+			} 
+			return; 
+		}
+		var betCoachArea = $(this).parents(".betCoachArea");
+		var data = betCoachArea.data();
+		sharebetCaochSNS(data, "T");
+	});
+
+	//사용자 참여 적중통계 표 보기, 차트 보기 버튼클릭이벤트
+	$(document).on("click",".bc-btnGraphTblTog", function(){
+		var gridData = $(document).find(".bc-hr-grid").data("gridData");
+		var chartData = $(document).find(".bc-hr-chart").data("chartData");
+		if(gridData==undefined && chartData==undefined){
+			$(".bc-hr-pop-chart-area").hide();
+			$(".bc-hr-pop-grid-area").hide();
+			if( $(this).text().indexOf("표 보기") > -1 ) {
+				$(this).html("<span class='blind'>사용자참여 종합적중률</span>차트 보기");
+				$(".bc-hr-no-chart").hide();
+				$(".bc-hr-no-grid").show();
+			}else{
+				$(this).html("<span class='blind'>사용자참여 종합적중률</span>표 보기");
+				$(".bc-hr-no-grid").hide();
+				$(".bc-hr-no-chart").show();
+			}
+		}else{
+			if( $(this).text().indexOf("표 보기") > -1 ) {
+				$(this).html("<span class='blind'>사용자참여 종합적중률</span>차트 보기");
+				$(".bc-hr-pop-chart-area").hide();
+				$(".bc-hr-pop-grid-area").show();
+				$(window).resize();
+			}else{
+				$(this).html("<span class='blind'>사용자참여 종합적중률</span>표 보기");
+				$(".bc-hr-pop-grid-area").hide();
+				$(".bc-hr-pop-chart-area").show();
+			}
+		}
+	});
+});
+function myBetCoachPop(){
+	var param = {
+			title: "MY BET코치",
+			uri: "/myBetCoach",
+			size : "largeB" 
+		}
+	betCoach.openPop(param);
+}
+function sharebetCaochSNS(data, shareType){
+//	var betCoachArea = $(this).parents(".betCoachArea");
+//	var prediction = betCoachArea.data();
+//	console.log("check sns data::",data);
+	var calculatorHitAmt = 0;
+	var prediction = data.prediction;
+
+	var allotWin  = betCoach.util.numFormatCase("rateAllot",prediction.allotWin,".");
+	var allotDraw = betCoach.util.numFormatCase("rateAllot",prediction.allotDraw,".");
+	var allotLoss = betCoach.util.numFormatCase("rateAllot",prediction.allotLoss,".");
+	var topAllot = allotWin > allotDraw ? (allotWin > allotLoss ? allotWin : allotLoss) : (allotDraw > allotLoss ? allotDraw : allotLoss);
+	
+	if(prediction.simulResult== "1"){//승
+		calculatorHitAmt = 1000 * Number(allotWin);
+	}else if(prediction.simulResult== "2"){//무
+		calculatorHitAmt = 1000 * Number(allotDraw);
+	}else if(prediction.simulResult== "3"){//패
+		calculatorHitAmt = 1000 * Number(allotLoss);
+	}else if(prediction.simulResult== "4"){//해당데이터없음
+		calculatorHitAmt = 0;
+	}else if(prediction.simulResult== "5"){//접전
+		calculatorHitAmt = 1000 * Number(topAllot);
+	}
+	
+	var loginId = login.getLoginInfo().id;
+	var loginName = login.getLoginInfo().name;
+//	//TODO : test data setting
+//	if(loginId=="") {
+//		loginId= "testId"; loginName="충*신"; 
+//	}
+//	var rowIdx = $(betCoachArea).find(".bc-sns-row-idx").text();
+	var rowIdx = data.rowIdx; 						//프로토 승부식, 축구토토 승무패인경우 =>betGameType = "G"
+	var tabIdx = recordTabId[recordTabId.length-1]; //맞대결정보 =>betGameType = "D"
+	var betGameType="G";
+	if(rowIdx == undefined){
+		rowIdx = tabIdx;
+		betGameType = "D";
+	}
+	var snsInParam = {
+		gmId : prediction.betCoachGame.gmId.toString(), 
+		gmTs : prediction.betCoachGame.gmTs.toString(), 
+		gmOsidTs : prediction.betCoachGame.gmOsidTs.toString(), 
+		gmSeq : prediction.betCoachGame.gameSeq,
+		gmNm : prediction.betCoachGame.gameName.replace(/ /g,''),
+		shareType : shareType,
+		predResult : prediction.simulResult,
+		shareUserId : loginId,
+		shareUserNm : loginName,   
+		hitAmt : calculatorHitAmt,
+		rowIdx : rowIdx,
+		betGameType : betGameType
+	};
+	console.log("check snsInParam ::",snsInParam);
+	betCoach.shareSNS(snsInParam);
+}

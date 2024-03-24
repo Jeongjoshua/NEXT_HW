@@ -1,0 +1,1008 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<script type="text/javascript">
+	</script>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<link href="/images/comm/favicon.ico" rel="shortcut icon">
+<link href="/images/comm/favicon.png" rel="apple-touch-icon-precomposed">
+
+<script type="text/javascript" class="init"></script>
+
+<!-- 라이브러리 영역  -->
+<script type="text/javascript" src="/js/jquery.js"></script>
+<script type="text/javascript" src="/js/jquery-ui.js"></script>
+<script type="text/javascript" src="/js/jquery.bxslider.min.js"></script>
+<script type="text/javascript" src="/js/jquery.dataTables.min.origin.js"></script>
+<script type="text/javascript" src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script type="text/javascript" src="/js/jquery.ui.monthpicker.js"></script>
+<script type="text/javascript" src="/js/jquery.history.js"></script>
+<script type="text/javascript" src="/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="/js/buttons.html5.min.js"></script>
+<script type="text/javascript" src="/js/jszip.min.js"></script>
+
+<!-- 퍼블리싱팀 영역 -->
+<link href="/css/ui-common.css" type="text/css" rel="stylesheet">  
+<script type="text/javascript" src="/js/ui-common.js"></script>
+
+<!-- 공통개발팀 영역 -->
+<script type="text/javascript" src="/js/requestClient.js"></script>
+<script type="text/javascript" src="/js/BUICommon.js"></script>
+<script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="/js/loading-common.js"></script>
+<script type="text/javascript" src="/js/code-common.js"></script>
+<script type="text/javascript" src="/js/serialize-common.js"></script>
+<script type="text/javascript" src="/js/grid-common.js"></script>
+<script type="text/javascript" src="/js/message-common.js"></script>
+<script type="text/javascript" src="/js/login.js"></script>
+
+
+<!-- BET코치 영역 header 일괄 적용 여부 검토 --> 
+<link href="/js/betcoach/betcoach.style.css" type="text/css" rel="stylesheet">
+<script type="text/javascript" src="/js/betcoach/betcoach.js"></script> 
+<script type="text/javascript" src="/js/betcoach/betcoach.drawer.js"></script>
+<script type="text/javascript" src="/js/betcoach/betcoach.util.js"></script>
+<script type="text/javascript" src="/js/betcoach/betcoach.on.js"></script>
+<script type="text/javascript" src="/js/betcoach/date-common.js"></script>
+</head>
+<body>
+	
+	
+	
+	
+		
+			
+
+
+
+
+
+<div class="contents">
+
+	<div class="locationArea">
+		<ul>
+			<li>홈</li>
+			<li>게임구매</li>
+			<li class="lot" title="현재페이지">적중결과</li>
+		</ul>
+	</div>
+	
+	<div class="contTitle">
+		<h3>적중결과</h3>
+	</div>
+
+	<div class="schArea">
+		<table class="tbl col">
+			<caption>검색조건 목록은(는) 적중결과 발표일, 게임선택을(를) 나타낸 표</caption>
+			<colgroup>
+				<col style="width:130px">
+				<col style="width:*">
+			</colgroup>
+			<tbody>
+				<tr>
+					<th scope="row">기간선택</th>
+					<td>
+						<div class="rdobar">
+							<span>
+								<input type="radio" name="rdobar" id="rdo_today">
+								<label for="rdo_today">오늘</label>
+							</span>
+							<span>
+								<input type="radio" name="rdobar" id="rdo_week">
+								<label for="rdo_week">1주일</label>
+							</span>
+							<span>
+								<input type="radio" name="rdobar" id="rdo_month1">
+								<label for="rdo_month1">1개월</label>
+							</span>
+							<span>
+								<input type="radio" name="rdobar" id="rdo_month2">
+								<label for="rdo_month2">2개월</label>
+							</span>
+							<span>
+								<input type="radio" name="rdobar" id="rdo_month3" checked>
+								<label for="rdo_month3">3개월</label>
+							</span>
+						</div>
+						<span class="inputCalendarBox">
+							<input type="text" class="inputCalendar" id="ica_fromDt" value="" title="시작 날짜 입력(YYYY-MM-DD)" autocomplete="off">
+						</span>
+						<span class="term">~</span>
+						<span class="inputCalendarBox">
+							<input type="text" class="inputCalendar" id="ica_endDt" value="" title="마지막 날짜 입력(YYYY-MM-DD)" autocomplete="off">
+						</span>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">게임선택</th>
+					<td>
+						<span class="selectBox w130">
+							<select class="selectMenu" title="게임유형 선택" id="sbx_gmCase">
+								<option value="">게임유형전체</option>
+							</select>
+						</span>
+						<span class="selectBox w165">
+							<select class="selectMenu" title="게임종류 선택" id="sbx_gmType">
+								<option>게임종류전체</option>
+							</select>
+						</span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="btnArea">
+			<button type="button" class="btnSch" id="btn_sch">검색</button>
+		</div>
+	</div>
+	<div class="lybox setBar">
+		<div class="cell">
+			<span class="totalsum" id="spn_winrstTot">총 <strong class="fcBlue"></strong>건</span>
+		</div>
+		<div class="cell">
+			<!-- 웹접근성_0526 -->
+			<div class="selectDiv w88">
+				<button>
+					<span class="blind">출력 목록 개수 선택 펼치기</span>
+					<span class="seltxt">10개씩</span>
+				</button>
+				<div class="list">
+					<ul>
+						<li><a href="javascript:;" data-len="10" title="선택됨">10개씩</a></li>
+						<li><a href="javascript:;" data-len="20">20개씩</a></li>
+						<li><a href="javascript:;" data-len="30">30개씩</a></li>
+						<li><a href="javascript:;" data-len="60">60개씩</a></li>
+					</ul>
+				</div>
+			</div>
+			<!-- //웹접근성_0526 -->
+		</div>
+	</div>
+	<div class="gridArea">
+		<table class="tbl" id="grd_winrstList" style="width:100%">
+			<caption>적중결과 목록</caption>
+			<!-- <colgroup>
+				<col style="width:*">
+				<col style="width:129px">
+				<col style="width:111px">
+			</colgroup> -->
+			<thead>
+				<tr>
+					<!-- <th scope="col">게임명</th>
+					<th scope="col">발표일</th>
+					<th scope="col">나의적중결과</th> -->
+					<th scope="col" style="width:auto">게임명</th>
+					<th scope="col" style="width:129px">발표일</th>
+					<th scope="col" style="width:111px" id="th_myWinrst">나의적중결과</th>
+				</tr>
+			</thead>
+		</table>
+	</div>
+	
+	<div class="btnArea tac">
+		<button type="button" class="btn btnB red" role="link" id="btn_buyNWinrst">구매/적중내역</button>
+	</div>
+	
+	
+
+<div class="offResultArea">
+
+	<div class="lybox">
+		<div class="cell">
+			<div class="imgBox">
+				<img src="/images/game/game_serial_num.gif" alt="투표권 고유번호 예시">
+				<p>투표권 고유번호</p>
+			</div>
+		</div>
+		
+		<div class="txtBox" id="div_txtBox">
+			<strong class="tit">오프라인 적중결과 확인!</strong>
+			<p class="desc">오프라인에서 구매하신 분은 투표권 구매 후 받으신 영수증 하단의<br>투표권 고유번호 15자리를 입력하시면 적중결과를 확인하실 수 있습니다.</p>
+			<div class="offNumBox">
+				<span class="inputBox">
+					<input id="ibx_serial_1" type="text" title="영수증 하단의 투표권 고유번호 15자리중 1번~4번 자리" maxlength="4" style="text-transform:uppercase;" autocomplete="off">
+				</span>
+				<span class="dash">-</span>
+				<span class="inputBox">
+					<input id="ibx_serial_2" type="text" title="영수증 하단의 투표권 고유번호 15자리중 5번~8번 자리" maxlength="4" style="text-transform:uppercase;" autocomplete="off">
+				</span>
+				<span class="dash">-</span>
+				<span class="inputBox">
+					<input id="ibx_serial_3" type="text" title="영수증 하단의 투표권 고유번호 15자리중 9번~12번 자리" maxlength="4" style="text-transform:uppercase;" autocomplete="off">
+				</span>
+				<span class="dash">-</span>
+				<span class="inputBox">
+					<input id="ibx_serial_4" type="text" title="영수증 하단의 투표권 고유번호 15자리중 13번~15번 자리" maxlength="3" style="text-transform:uppercase;" autocomplete="off">
+				</span>
+				<button id="btn_inqOffWinrst" type="button" class="btn btnM blue">적중조회</button>
+				<button id="btn_reset" type="button" class="btn btnM bBorder" style="display:none;">초기화</button>
+			</div>
+			<p class="iconText">&lsquo;적중결과 처리중&rsquo;에는 영수증 조회가 불가능합니다.<br>적중결과 발표 이후에 조회하시기 바랍니다.</p>
+		</div>
+		
+		<div class="txtBox" id="div_onTest" style="display:none;">
+			<strong class="tit">오프라인 적중결과 시스템 점검</strong>
+			<p class="desc">오프라인 투표권 시스템의 품질 향상을 위한, 시스템 점검 작업으로 인하여,<br>오프라인 투표권 적중결과 조회가 불가능하오니, 양해 부탁 드립니다.</p>
+			<p class="fcBlue2 mt5"><span class="fwb">점검 일시</span></p>
+		</div>
+		
+	</div>
+	
+	<div class="tblArea gray" id="div_offWinrst" style="display:none;">
+		<table class="tbl col" id="tbl_offwinrst">	
+			<caption>오프라인 적중결과 목록은(는) 상태, 게임명, 구매일시, 구매에 사용한 금액을(를) 나타낸 표</caption>
+			<colgroup>
+				<col style="width:15.7%">
+				<col style="width:34.3%">
+				<col style="width:15.7%">
+				<col style="width:34.3%">
+			</colgroup>
+			<tbody>
+				<tr id="tr_saleInfo">
+					<th scope="row"><span class="dot">상태</span></th>
+					<td colspan="3"><strong class="fcBlue2">판매중</strong></td>
+				</tr>
+				<tr id="tr_hitInfo">
+					<th scope="row"><span class="dot">적중결과</span></th>
+					<td></td>
+					<th scope="row"><span class="dot">적중 투표매수</span></th>
+					<td></td>
+				</tr>
+				<tr id="tr_gmInfo">
+					<th scope="row"><span class="dot">게임명</span></th>
+					<td></td>
+					<th scope="row"><span class="dot">구매일시</span></th>
+					<td></td>
+				</tr>
+				<tr id="tr_amtInfo">
+					<th scope="row"><span class="dot">총투표금액</span></th>
+					<td colspan="3"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+</div>
+
+<script>
+	var offWinrst = {};
+	
+	//QR코드 조회
+	offWinrst.serial = ''.trim().toUpperCase();
+	
+	$(function() {
+		offWinrst.reset();
+		
+		$("#btn_inqOffWinrst").bind("click", function() {
+			offWinrst.inq();
+		});
+		$("#btn_reset").bind("click", function() {
+			offWinrst.reset();
+		});
+		$('#ibx_serial_1, #ibx_serial_2, #ibx_serial_3, #ibx_serial_4').bind('keyup', function(ev) {
+			var value = $(this).val().replace(/[^0-9A-Za-z]/g, '');
+			$(this).val(value);
+		});
+		//일부 android 기기에서 maxlength 적용 안되는 경우가 있는듯 해서 추가
+		$('#ibx_serial_1, #ibx_serial_2, #ibx_serial_3, #ibx_serial_4').bind('keypress', function(ev) {
+			if(this.value.length >= $(this).attr('maxlength')) return false;
+		});
+		
+		if(offWinrst.serial.length >= 15) {
+			$('#ibx_serial_1').val(offWinrst.serial.substr(0, 4));
+			$('#ibx_serial_2').val(offWinrst.serial.substr(4, 4));
+			$('#ibx_serial_3').val(offWinrst.serial.substr(8, 4));
+			$('#ibx_serial_4').val(offWinrst.serial.substr(12, 3));
+			offWinrst.inq();
+		}
+	});
+	
+	/**
+	 * 오프라인 적중결과 화면 초기상태로 리셋
+	 */
+	offWinrst.reset = function() {
+		$("#div_txtBox .iconText").html('&lsquo;적중결과 처리중&rsquo;에는 영수증 조회가 불가능합니다.<br>적중결과 발표 이후에 조회하시기 바랍니다.');
+		$('#div_txtBox .iconText').show();
+		$("#div_txtBox").show();
+		$("#div_offWinrst").hide();
+		$("#btn_reset").hide();
+		$("#div_onTest").hide();
+		$("#div_txtBox .offNumBox input").val('');
+		$("#div_txtBox .offNumBox input").prop('disabled', false);
+		$("#btn_inqOffWinrst").prop('disabled', false);
+	}
+	
+	/**
+	 * 오프라인 적중결과 조회 후 화면 공통 이벤트
+	 * @param 조회실패 여부
+	 */
+	offWinrst.onInqEvent = function(flag) {
+		$("#div_txtBox .offNumBox input").prop('disabled', true);
+		$("#btn_inqOffWinrst").prop('disabled', true);
+		$("#btn_reset").show();
+		//조회 실패시 적중테이블 show 안함
+		if(!flag) $("#div_offWinrst").show();
+	}
+	
+	/**
+	 * 오프라인 적중결과 데이터 조회
+	 */
+	offWinrst.inq = function() {
+		var serial1 = $('#ibx_serial_1').val().trim().toUpperCase();
+		var serial2 = $('#ibx_serial_2').val().trim().toUpperCase();
+		var serial3 = $('#ibx_serial_3').val().trim().toUpperCase();
+		var serial4 = $('#ibx_serial_4').val().trim().toUpperCase();
+		var fullSerial = serial1 + serial2 + serial3 + serial4;
+		
+		if(fullSerial.length < 15) {
+			alert('투표권 고유번호가 입력되지 않았습니다.\n투표권을 입력해 주세요.');			
+			if(serial1.length < 4){
+				$('#ibx_serial_1').focus();
+			} else if(serial2.length < 4){
+				$('#ibx_serial_2').focus();
+			} else if(serial3.length < 4){
+				$('#ibx_serial_3').focus();
+			} else if(serial4.length < 3){
+				$('#ibx_serial_4').focus();
+			}
+			return;
+		}
+		requestClient.requestPostMethod('/gamebuy/winrst/inqWinrstOffline.do',{ serial : fullSerial }, false, offWinrst.inqCallback);
+	}
+	
+	/**
+	 * 오프라인 적중결과 화면 draw
+	 * @param 조회 데이터
+	 */
+	offWinrst.draw = function(data) {
+		var saleStatusCode = {
+			0 : '미판매',
+			1 : '판매중', 
+			10 : '적중안됨',
+			21 : '적중',
+			22 : '환불',
+			31 : '적중금 환급기간 만료',
+			32 : '환불금 지불기간 만료',
+			91 : '취소처리'
+		};
+		var winOff = data.result;
+		winOff.ucSaleStatus = Number(winOff.ucSaleStatus); 
+		if(winOff.ucSaleStatus == 0) {
+			$('#div_txtBox .iconText').html('&lsquo;적중결과 처리중&rsquo;이거나 투표권 번호가 정확하지 않을 경우 영수증 조회가 불가능합니다.');
+			offWinrst.onInqEvent(true);
+		} else {
+			var tmp = '';
+			switch(winOff.ucSaleStatus) {
+				case 1: 
+				case 10:
+				case 22:
+				case 32:
+				case 91:
+					$('#tr_hitInfo').hide();
+					
+					tmp = '<th scope="row"><span class="dot">총투표금액</span></th>';
+					tmp += '<td colspan="3">'+ betmanOnlineFront.setNumberComma(winOff.llSalePrice) +'원</td>';
+					$('#tr_amtInfo').html(tmp);
+					break;
+				case 21:
+				case 31:
+					if(winOff.gmId == 'G101' || winOff.gmId == 'G102') {
+						tmp = '<th scope="row"><span class="dot">적중결과</span></th>';
+						tmp += '<td colspan="3">적중</td>';
+					} else {
+						var rankTxt = winOff.gmTypeCd == 'Victory' && winOff.ucRanking && winOff.ucRanking != '당첨' ? '('+ winOff.ucRanking +')' : '';
+						tmp = '<th scope="row"><span class="dot">적중결과</span></th>';
+						tmp += '<td>적중'+ rankTxt +'</td>';
+						tmp += '<th scope="row"><span class="dot">적중 투표매수</span></th>';
+						tmp += '<td>'+ winOff.uiPrizeNum +'</td>';
+					}
+					$('#tr_hitInfo').html(tmp);
+					$('#tr_hitInfo').show();
+					
+					tmp = '<th scope="row"><span class="dot">총투표금액</span></th>';
+					tmp += '<td>'+ betmanOnlineFront.setNumberComma(winOff.llSalePrice) +'원</td>';
+					tmp += '<th scope="row"><span class="dot">환급/환불금액</span></th>';
+					tmp += '<td>'+ betmanOnlineFront.setNumberComma(winOff.llPrize) +'원</td>';
+					$('#tr_amtInfo').html(tmp);
+					break;
+				default : 
+					return;
+			}
+			$('#tr_saleInfo td strong').html(saleStatusCode[winOff.ucSaleStatus]);
+			$('#tr_gmInfo td:eq(0)').html(winOff.szGameName +' '+ winOff.uiProdTs +'회차');
+			var saleTime = new Date(
+					winOff.stSaleTime.substr(0, 4) + '/' + //year
+					winOff.stSaleTime.substr(4, 2) + '/' + //month
+					winOff.stSaleTime.substr(6, 2) + ' ' + //date
+					winOff.stSaleTime.substr(8, 2) + ':' + //hour
+					winOff.stSaleTime.substr(10, 2)+ ':' + //min
+					winOff.stSaleTime.substr(12, 2));      //sec
+			$('#tr_gmInfo td:eq(1)').html(betmanOnlineFront.getDateFullFormatDayOfWeek(saleTime, 'y-mm-dd', ':'));
+			offWinrst.onInqEvent();
+		}
+		$('#div_txtBox .iconText').hide();
+	}
+	
+	/**
+	 * 오프라인 적중결과 데이터 조회 콜백
+	 * @param Map 오프라인 적중결과
+	 */
+	offWinrst.inqCallback = function(data) {
+		if(!data.result) {
+			if(data.message == 'DISCONNECT') {
+				var dc = data.disconnect;
+				$('#div_onTest p:eq(0)').html(betmanOnlineFront.unescapeString(dc.INFRM_MSG_CTT));//오프라인 투표권 시스템의 품질 향상을 위한, 시스템 점검 작업으로 인하여,<br>오프라인 투표권 적중결과 조회가 불가능하오니, 양해 부탁 드립니다.
+				$('#div_onTest p:eq(1)').html('<span class="fwb">점검 일시</span> : '+ dc.ISOL_STA_DTM +' ~ '+ dc.ISOL_END_DTM);
+				$('#div_txtBox').hide();
+				$('#div_onTest').show();
+			} else { //FAIL
+				$('#div_txtBox .iconText').html('&lsquo;적중결과 처리중&rsquo;이거나 투표권 번호가 정확하지 않을 경우 영수증 조회가 불가능합니다.');
+			}
+			offWinrst.onInqEvent(true);
+		} else {
+			offWinrst.draw(data);
+		}
+	}
+</script>
+	
+</div>
+<script>
+var listTable;
+var gmType = [];
+
+//list&view 현재 화면에 복귀 했을때 유지가 필요한 값들 정의
+var pageParams = {
+	sbx_gmCase : '',
+	sbx_gmType : '',
+	ica_fromDt : betmanOnlineFront.getDateFullFormatDayOfWeek( new Date( new Date().setMonth( new Date().getMonth() - 3 ) ), 'yy.mm.dd', null, true), //3개월 전
+	ica_endDt : betmanOnlineFront.getDateFullFormatDayOfWeek( new Date(), 'yy.mm.dd', null, true),
+	rdo : 'month3',
+	curPage : 1,
+	perPage : 10
+};
+if('Y' == 'Y') pageParams.isIFR = 'Y';
+
+$(function() {
+	// list&view 화면 초기 진입시 과거 history가 있으면 초기 값 변경
+	if(Object.keys(History.getState().data).length > 0) {
+		pageParams = betmanOnlineFront.newJsonObj(History.getState().data);
+	}
+	
+	init();
+	drawPageParams();
+	initWinrstList();
+	
+	// list&view 페이지 변경 감지
+	History.Adapter.bind(window,'statechange',function(){
+		// 값이 변경되었으면 필요한 부분 다시 그리기
+		if(JSON.stringify(pageParams) != JSON.stringify(History.getState().data)) {
+			pageParams = betmanOnlineFront.newJsonObj(History.getState().data);
+			if(Object.keys(History.getState().data).length == 0) {
+				pageParams = {
+					sbx_gmCase : '',
+					sbx_gmType : '',
+					ica_fromDt : betmanOnlineFront.getDateFullFormatDayOfWeek( new Date( new Date().setMonth( new Date().getMonth() - 3 ) ), 'yy.mm.dd', null, true), //3개월 전
+					ica_endDt : betmanOnlineFront.getDateFullFormatDayOfWeek( new Date(), 'yy.mm.dd', null, true),
+					rdo : 'month3',
+					curPage : 1,
+					perPage : 10
+				};
+				if('Y' == 'Y') pageParams.isIFR = 'Y';
+			}
+			drawPageParams();
+			
+			if(listTable) {
+				listTable.destroy();
+				listTable = null;
+			}
+			initWinrstList();
+			//inqWinrstList(pageParams.perPage);
+		}
+	});
+})
+
+/**
+ * 최초 이벤트 부착 함수 (목록화면 상단)
+ */
+function init() {
+	$("#ica_fromDt").datepicker("option", "dateFormat", "yy.mm.dd");
+	$("#ica_fromDt").datepicker("option", "onClose", 
+		function(formattedDate) {
+			var fromDt = $("#ica_fromDt");
+			var endDt = $("#ica_endDt");
+			if(fromDt.datepicker("getDate").getTime() > endDt.datepicker("getDate").getTime()) {
+				//alert( getMessage("A00046") ); //시작일자가 종료일자보다 클 수 없습니다.
+				endDt.datepicker("setDate", fromDt.datepicker("getDate"));
+			}
+			$('input[name="rdobar"]').prop('checked', false);
+			pageParams.rdo = '';
+			pageParams.ica_fromDt = formattedDate;
+		}
+	);
+	$("#ica_endDt").datepicker("option", "dateFormat", "yy.mm.dd");
+	$("#ica_endDt").datepicker("option", "onClose", 
+		function(formattedDate) {
+			var fromDt = $("#ica_fromDt");
+			var endDt = $("#ica_endDt");
+			if(fromDt.datepicker("getDate").getTime() > endDt.datepicker("getDate").getTime()) {
+				//alert( getMessage("A00046") ); //시작일자가 종료일자보다 클 수 없습니다.
+				fromDt.datepicker("setDate", endDt.datepicker("getDate"));
+			}
+			$('input[name="rdobar"]').prop('checked', false);
+			pageParams.rdo = '';
+			pageParams.ica_endDt = formattedDate;
+		}
+	);
+	$("#rdo_today").bind("click", function() {
+		var date = new Date();
+		$("#ica_endDt").datepicker("setDate", date);
+		pageParams.ica_endDt = betmanOnlineFront.getDateFullFormatDayOfWeek(date, 'yy.mm.dd', null, true);
+		$("#ica_fromDt").datepicker("setDate", date);
+		pageParams.ica_fromDt = betmanOnlineFront.getDateFullFormatDayOfWeek(date, 'yy.mm.dd', null, true);
+		pageParams.rdo = 'today';
+	});
+	
+	$("#rdo_week").bind("click", function() {
+		var date = new Date();
+		$("#ica_endDt").datepicker("setDate", date);
+		pageParams.ica_endDt = betmanOnlineFront.getDateFullFormatDayOfWeek(date, 'yy.mm.dd', null, true);
+		date.setDate(date.getDate() - 7);
+		$("#ica_fromDt").datepicker("setDate", date);
+		pageParams.ica_fromDt = betmanOnlineFront.getDateFullFormatDayOfWeek(date, 'yy.mm.dd', null, true);
+		pageParams.rdo = 'week';
+	});
+	
+	$("#rdo_month1").bind("click", function() {
+		var date = new Date();
+		$("#ica_endDt").datepicker("setDate", date);
+		pageParams.ica_endDt = betmanOnlineFront.getDateFullFormatDayOfWeek(date, 'yy.mm.dd', null, true);
+		date.setMonth(date.getMonth() - 1);
+		$("#ica_fromDt").datepicker("setDate", date);
+		pageParams.ica_fromDt = betmanOnlineFront.getDateFullFormatDayOfWeek(date, 'yy.mm.dd', null, true);
+		pageParams.rdo = 'month1';
+	});
+	
+	$("#rdo_month2").bind("click", function() {
+		var date = new Date();
+		$("#ica_endDt").datepicker("setDate", date);
+		pageParams.ica_endDt = betmanOnlineFront.getDateFullFormatDayOfWeek(date, 'yy.mm.dd', null, true);
+		date.setMonth(date.getMonth() - 2);
+		$("#ica_fromDt").datepicker("setDate", date);
+		pageParams.ica_fromDt = betmanOnlineFront.getDateFullFormatDayOfWeek(date, 'yy.mm.dd', null, true);
+		pageParams.rdo = 'month2';
+	});
+	
+	$("#rdo_month3").bind("click", function() {
+		var date = new Date();
+		$("#ica_endDt").datepicker("setDate", date);
+		pageParams.ica_endDt = betmanOnlineFront.getDateFullFormatDayOfWeek(date, 'yy.mm.dd', null, true);
+		date.setMonth(date.getMonth() - 3);
+		$("#ica_fromDt").datepicker("setDate", date);
+		pageParams.ica_fromDt = betmanOnlineFront.getDateFullFormatDayOfWeek(date, 'yy.mm.dd', null, true);
+		pageParams.rdo = 'month3';
+	});
+	
+	$("#btn_sch").bind("click", function() {
+		pageParams.sbx_gmCase = $('#sbx_gmCase').val();
+		pageParams.sbx_gmType = $('#sbx_gmType').val();
+		pageParams.curPage = 1;
+		betmanOnlineFront.changeUrl(pageParams);
+		inqWinrstList();
+	});
+	$('.selectDiv ul li a').bind('click',function() {
+	    $(this).parent().siblings().children('a').attr('title','');
+	    $(this).attr('title','선택됨');
+	    
+	    pageParams.sbx_gmCase = $('#sbx_gmCase').val();
+		pageParams.sbx_gmType = $('#sbx_gmType').val();
+	    pageParams.curPage = 1;
+	    pageParams.perPage = $(this).data('len');
+	    betmanOnlineFront.changeUrl(pageParams);
+	    inqWinrstList(pageParams.perPage);
+	});
+	$("#btn_buyNWinrst").bind("click", function() {
+		if(!isLogin) {
+			openLoginPopMark("/main/mainPage/mypage/myPurchaseWinList.do");
+		} else {
+			location.href = "/main/mainPage/mypage/myPurchaseWinList.do";
+		}
+	});
+	
+	requestClient.requestPostMethod('/buyPsblGame/inqScheduleSltList.do',{code:'ALL'}, false, onGmCaseInqCallback);
+	requestClient.requestPostMethod('/buyPsblGame/inqScheduleSltList.do',{code:'P_ALL'}, false, onGmTypeInqCallback);
+}
+
+/**
+ * pageParams 화면에 draw
+ */
+function drawPageParams() {
+	$('#sbx_gmCase').val(pageParams.sbx_gmCase);
+	$('#sbx_gmCase').selectmenu('refresh');
+	setGmTypeSbx(pageParams.sbx_gmCase);
+	$("#ica_fromDt").datepicker("setDate", pageParams.ica_fromDt);
+	$("#ica_endDt").datepicker("setDate", pageParams.ica_endDt);
+	if(!pageParams.rdo) $('input[name="rdobar"]').prop('checked', false);
+	else $('#rdo_'+pageParams.rdo).prop('checked', true);
+	$('.selectDiv .seltxt').html(pageParams.perPage + '개씩');
+	$('.selectDiv .list a').attr('title', '');
+	$('.selectDiv .list a[data-len='+pageParams.perPage+']').attr('title', '선택됨');
+}
+
+/**
+ * 목록조회 그리드 최초 생성 함수
+ */
+function initWinrstList() {
+	$('#sbx_gmType').selectmenu('refresh');
+	$('#sbx_gmCase').selectmenu('refresh');
+	
+	var cols = [
+		{
+			data : "GM_NM", //표시할 데이터명
+			title : "게임명",
+			orderable : false,
+			render : function(data, type, row) { //표시할 데이터 렌더링
+				var protoRecGame = row.PROTO_RECORD_GAME ? " (" + row.PROTO_RECORD_GAME + ")" : "";
+				var uri = '/main/mainPage/gamebuy/winrstDetl'+('Y' == 'Y' ? 'IFR' : '')+'.do?' + "gmId=" + row.GM_ID + "&gmTs=" + row.GM_TS;
+				for(var key in pageParams) {
+					uri += '&' + key + '=' + pageParams[key];
+				}
+				
+				return "<a href='"+ uri +"'>" + row.GM_NM + " " + row.ROUND + "회차" + protoRecGame + "</a>";
+			}
+		},
+		{
+			data : "RSLT_ANNC_DTM",
+			title : "발표일",
+			render : function(data, type, row) { //표시할 데이터 렌더링
+				if(row.GM_ID == "G101" && row.GM_TS > 2563) { //승부식은 - 표시
+					return "-";
+				}
+				return data;
+			}
+		},
+		{
+			data : "BUY_ST_CD",
+			title : "나의적중결과",
+			orderable : false,
+			render : function(data, type, row) {
+				if(data == "1") return "적중안됨"
+				else if(["2","4","5","6"].indexOf(data) > -1) return "<a href='/main/mainPage/mypage/myPurchaseWinList.do' class='fcRed textUnder'>적중됨</a>";
+				else return "-";
+			}
+		}
+	];
+	//아이프레임으로 호출시 컬럼 제거
+	if('Y' == 'Y') {
+		cols.pop();
+		onIframe();
+	}
+	
+	var colDefs = [
+		{
+			targets : 0,
+			createdCell : function(cell, cellData, rowData, row, col) { //셀 생성할때마다 실행되는 함수 정의
+				var isWorldCup;
+				if(rowData.GM_ID == 'G102') isWorldCup = betmanOnlineFront.getIsWorldCup(rowData.GM_ID, rowData.ROUND, rowData.ROUND_YEAR);
+				else isWorldCup = betmanOnlineFront.getIsWorldCup(rowData.GM_ID, rowData.GM_TS);
+				
+				$(cell).addClass( "icoGameTd " + rowData.MCH_SPORT_CD + (isWorldCup ? 'w' : '') );
+			}
+		}
+	];
+	
+	var gridParam = {
+		ordering : false,
+        url : "/gamebuy/winrst/inqWinrstList.do",
+        columns : cols,
+        columnDefs : colDefs,
+        stateSave : false,
+        drawCallback : function(data) {
+        	$('#spn_winrstTot strong').text( betmanOnlineFront.setNumberComma(data._iRecordsTotal) );
+        }
+    };
+	
+	gridParam.pageLength = pageParams.perPage ? pageParams.perPage : 10;
+	if(pageParams.curPage) {
+		gridParam.displayStart = (pageParams.curPage - 1) * gridParam.pageLength;
+	}
+	
+	var formData = function () {
+		return {
+			mbrNum : '',
+			fromDt : $("#ica_fromDt").val(),
+			endDt : $("#ica_endDt").val(),
+			gmIds : $("#sbx_gmType").val(),
+			perPage : pageParams.perPage,
+			start : (pageParams.curPage - 1) * pageParams.perPage + 1
+		};
+	};
+	listTable = $("#grd_winrstList").betGrid(gridParam, formData);
+	
+	/* list&view */
+	// 페이지 변경 이벤트 추가
+	$("#grd_winrstList").on('page.dt', function(){
+		pageParams.curPage = listTable.page() + 1;
+	    betmanOnlineFront.changeUrl(pageParams);
+	});
+}
+
+/**
+ * 목록조회 데이터 리로드 함수
+ * @param Number 목록조회 페이지
+ */
+function inqWinrstList(rowLen) {
+	if(rowLen && typeof rowLen === 'number') listTable.page.len(rowLen);
+
+	listTable.ajax.reload();
+}
+
+/**
+ * 목록 상단 셀렉트박스 콜백 함수
+ * @param List 셀렉트박스 목록
+ */
+function onGmCaseInqCallback(data) {
+	var slt = $('#sbx_gmCase');
+	slt.empty();
+	
+	$('<option>').text('게임유형전체').val('').appendTo(slt);
+	data.sltCodeList.forEach(function(el) {
+		$('<option>').text(el.codeName).val(el.code).appendTo(slt);
+	});
+	
+	// 게임유형 버튼 클릭 이벤트
+	slt.on("selectmenuchange", function() {
+		//alert("게임유형 버튼 기능 구동");
+		setGmTypeSbx($(this).val(), true);
+	});
+	
+	// 게임유형 selectBox 클릭 이벤트 - 접근성 대응. 22.01. jmcho
+	$('#sbx_gmCase').change( function() {
+		//alert("게임유형 셀렉트박스 변경 실행== " + $(this).val());			
+		setGmTypeSbx($(this).val(), true);
+	});
+	
+	// list&view 최초 로딩 변수 초기화 처리
+	if(pageParams.sbx_gmCase) {
+		slt.val(pageParams.sbx_gmCase);
+	}
+	
+	slt.selectmenu('refresh');
+}
+
+/**
+ * 목록 상단 셀렉트박스 콜백 함수
+ * @param List 셀렉트박스 목록
+ */
+function onGmTypeInqCallback(data) {
+	gmType = data.sltCodeList
+	var slt = $('#sbx_gmType');
+	slt.empty();
+	
+	$('<option>').text('게임종류전체').val('').appendTo(slt);
+	gmType.forEach(function(el) {
+		$('<option>').text(el.codeName).val(el.gmId).appendTo(slt);
+	});
+	
+	// list&view 최초 로딩 변수 초기화 처리
+	if(pageParams.sbx_gmType) {
+		slt.val(pageParams.sbx_gmType);	
+	}
+	slt.selectmenu('refresh');
+	
+	if(pageParams.sbx_gmCase) {
+		setGmTypeSbx(pageParams.sbx_gmCase);
+	}
+}
+
+/**
+ * 목록 상단 셀렉트박스 세팅 함수
+ * @param String 1단계 셀렉트박스 value
+ * @param bool 초기 value 초기화 여부
+ */
+function setGmTypeSbx(code, isClear) {
+	var slt = $('#sbx_gmType');
+	slt.empty();
+	
+	if(code === '') {
+		$('<option>').text('게임종류전체').val('').appendTo(slt);
+		gmType.forEach(function(el) {
+			$('<option>').text(el.codeName).val(el.gmId).appendTo(slt);
+		});
+	} else {
+		gmType.forEach(function(el) {
+			if(el.code.indexOf(code) > -1)
+				$('<option>').text(el.codeName).val(el.gmId).appendTo(slt);
+		});
+	}
+	// list&view 최초 로딩 변수 초기화 처리
+	if(!isClear && pageParams.sbx_gmType) {
+		slt.val(pageParams.sbx_gmType);
+	}
+	
+	slt.selectmenu('refresh');
+}
+
+/**
+ * 목록->구매/적중내역 목록 페이지 이동
+ */
+function goBuyNWinrst() {
+	 if(isLogin) {
+		 location.href = '/main/mainPage/mypage/myPurchaseWinList.do';
+	 } else {
+		 openLoginPopMark('/main/mainPage/mypage/myPurchaseWinList.do');
+	 }
+}
+
+/**
+ * iFrame 화면 작업 함수
+ */ 
+function onIframe() {
+	$('#th_myWinrst').remove();
+	$('.locationArea').hide();
+	$('.contTitle').hide();
+	$('.btnArea .btn').hide();
+	$('.offResultArea').hide();
+}
+</script>
+
+<script>
+	$(document).ready(function() {
+		$('html, body').css('background','#fff');
+		$('.contents').css('border', '0');
+		$('.contInner').css('border', '0');
+	});
+</script>
+		
+		
+	
+	
+	
+	
+	
+	<!-- 건전 팝업 추가-->
+ 	
+
+
+
+
+<link href='/css/ui-common.css' type='text/css' rel='stylesheet'>
+<script type='text/javascript' src='/js/jquery-ui.js'></script>
+<dialog id='asideletter' class='time-letter1-layer' style='user-select: auto; display:none;' tabindex='0' >
+	<div class='time-letter1' id='divLetter' style='user-select: auto;'>
+		<strong class='letter-title' style='user-select: auto;' >
+		<span id='loginTime'>60분</span>
+		<em style='user-select: auto;'>경과하였습니다.</em>
+			<p>잠시 쉬어가면 어떨까요?</p>
+		</strong>
+		<button class='letter-btn2' id='selfTestBtn' onclick='' style='user-select: auto; display:none;'>셀프진단평가</button>
+		<button class='letter-btn' id='logoutBtn' onclick='' style='user-select: auto;'>로그아웃</button>
+		<div class='layer-close' id='popupClose' style='user-select: auto;' tabindex='0'>
+			<span class='hidden' style='user-select: auto;'>닫기</span>
+		</div>
+	</div>
+</dialog>
+<script>
+function detectIE(){
+	var isIE = false;
+	var userAgent = window.navigator.userAgent;
+	
+	var oldIE = userAgent.indexOf('MSIE ');
+	var newIE = userAgent.indexOf('Trident/');
+	
+	if((oldIE > -1 )|| (newIE > -1 )){
+		isIE = true;
+	}
+	
+	return isIE;
+}
+// ready
+$(document).ready(function() {
+	
+		
+	// 팝업 닫기
+	var popupCloseBtn = document.getElementById('popupClose');
+	
+	popupCloseBtn.addEventListener('click', function() {
+		popupClose();
+	});
+	
+	popupCloseBtn.addEventListener('keydown',  function(event) {
+		if(event.key === 'Enter'){
+			popupClose();
+		}
+	});
+	
+	// 셀프테스트 이동(새탭)
+	document.getElementById('selfTestBtn').addEventListener('click',  function() {
+		popupClose();
+		window.open('/main/mainPage/healthiness/selfTest.do', '_blank');
+		return false;
+	});
+	
+	// logout 버튼
+	document.getElementById('logoutBtn').addEventListener('click', function() {
+		popupClose();
+		openLogoutPop();
+	});
+	
+	var popupDialog = document.getElementById('asideletter');
+	var closeBtn = document.getElementById('popupClose');
+	
+	popupDialog.addEventListener('keydown',  function(event) {
+		if(event.key === 'Tab'){
+			if(event.shiftKey){
+				if(document.activeElement === popupDialog){
+					closeBtn.focus();
+					event.preventDefault();
+				}				
+			}else{
+				if(document.activeElement === closeBtn){
+					popupDialog.focus();
+					event.preventDefault();
+				}				
+			}
+		}
+	});
+
+}); // ready
+
+// 건전 팝업(60분) 열기
+function popupOpen(e){
+	var popup = document.getElementById('asideletter');
+	if(e != null ){
+		//popup 닫힐때 60분 기준으로 초기화
+		popupClose(); // popup 초기화
+		document.getElementById('loginTime').innerHTML = '60분';
+		document.getElementById('divLetter').className = 'time-letter1';
+	}
+	var isIE = detectIE();
+	popup.style.display = 'block';
+	if(!isIE){
+		popup.show();	
+	}	
+	popup.focus();
+}
+
+// 건전팝업 닫기 
+function popupClose() {
+	var popup = document.getElementById('asideletter');
+	var isIE = detectIE();
+	if(!isIE){	
+		popup.classList.add('hide');
+		popup.addEventListener('animationend', function() {
+			popup.close();
+			popup.classList.remove('hide');
+			popup.removeEventListener('animationend', arguments.callee, false);
+			popup.style.display = 'none';
+		}, false);
+	}else{
+		popup.style.display = 'none';
+	}
+}
+
+// 건전 팝업(90분) 열기
+function popup90Open(){
+	document.getElementById('loginTime').innerHTML = '90분';
+	document.getElementById('divLetter').className = 'time-letter2';
+	document.getElementById('selfTestBtn').style.display = 'block';
+	popupOpen();
+}
+
+// 로그아웃
+function openLogoutPop() {
+ 	if(chkSlipState() == false) return;
+ 	var url = '/sub/subPage/mbrsvc/logoutPop.do';
+ 	var title = '로그아웃';
+	BUICommon.openModalByUrl(url, title, 'small');
+}
+</script>
+</html>
+
+ </body>
+</html>

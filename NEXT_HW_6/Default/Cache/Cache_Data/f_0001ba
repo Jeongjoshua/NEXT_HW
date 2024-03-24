@@ -1,0 +1,1265 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<script type="text/javascript">
+	</script>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<link href="/images/comm/favicon.ico" rel="shortcut icon">
+<link href="/images/comm/favicon.png" rel="apple-touch-icon-precomposed">
+
+<script type="text/javascript" class="init"></script>
+
+<!-- 라이브러리 영역  -->
+<script type="text/javascript" src="/js/jquery.js"></script>
+<script type="text/javascript" src="/js/jquery-ui.js"></script>
+<script type="text/javascript" src="/js/jquery.bxslider.min.js"></script>
+<script type="text/javascript" src="/js/jquery.dataTables.min.origin.js"></script>
+<script type="text/javascript" src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script type="text/javascript" src="/js/jquery.ui.monthpicker.js"></script>
+<script type="text/javascript" src="/js/jquery.history.js"></script>
+<script type="text/javascript" src="/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="/js/buttons.html5.min.js"></script>
+<script type="text/javascript" src="/js/jszip.min.js"></script>
+
+<!-- 퍼블리싱팀 영역 -->
+<link href="/css/ui-common.css" type="text/css" rel="stylesheet">  
+<script type="text/javascript" src="/js/ui-common.js"></script>
+
+<!-- 공통개발팀 영역 -->
+<script type="text/javascript" src="/js/requestClient.js"></script>
+<script type="text/javascript" src="/js/BUICommon.js"></script>
+<script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="/js/loading-common.js"></script>
+<script type="text/javascript" src="/js/code-common.js"></script>
+<script type="text/javascript" src="/js/serialize-common.js"></script>
+<script type="text/javascript" src="/js/grid-common.js"></script>
+<script type="text/javascript" src="/js/message-common.js"></script>
+<script type="text/javascript" src="/js/login.js"></script>
+
+
+<!-- BET코치 영역 header 일괄 적용 여부 검토 --> 
+<link href="/js/betcoach/betcoach.style.css" type="text/css" rel="stylesheet">
+<script type="text/javascript" src="/js/betcoach/betcoach.js"></script> 
+<script type="text/javascript" src="/js/betcoach/betcoach.drawer.js"></script>
+<script type="text/javascript" src="/js/betcoach/betcoach.util.js"></script>
+<script type="text/javascript" src="/js/betcoach/betcoach.on.js"></script>
+<script type="text/javascript" src="/js/betcoach/date-common.js"></script>
+</head>
+<body>
+	
+	
+	
+	
+		
+			
+
+
+
+
+
+<div class="contents game">
+
+	
+
+
+
+<div class="contInner">
+
+	<div class="locationArea">
+		<ul>
+			<li>홈</li>
+			<li>게임구매</li>
+			<li class="lot" title="현재페이지">적중결과</li>
+		</ul>
+	</div>
+
+	<div class="contTitle">
+		<h3>적중결과 <span class="titSub" id="spn_detlGmNm"></span></h3>
+	</div>
+
+	<div class="gametopArea">
+		<ul class="gametopList">
+			<li>
+				<span class="tit">발매기간</span>
+				<p class="desc" id="spn_detlSaleDtm"></p>
+			</li>
+			<li>
+				<span class="tit">적중결과 발표일</span>
+				<p class="desc" id="spn_detlRsltDtm"></p>
+			</li>
+			<li>
+				<span class="tit">환급(환불)기간</span>
+				<p class="desc" id="spn_detlPayoDtm"></p>
+			</li>
+		</ul>
+		<ul class="gameInfoBox dashText fcBlue" id="spn_detlPayInfo"></ul>
+	</div>
+</div>
+	
+	<div class="contInner box">
+	
+		<div id="div_detlOldToto" class="pt40" style="display:none"></div>
+		<div id="div_detlPrtNToto">
+			<!-- 프로토 승부식 -->
+				
+
+
+<div class="contTitle lybox">
+	<h4>경기결과 및 적중결과</h4>
+</div>
+<div class="mb10">
+	<span class="selectBox w95">
+		<select class="selectMenu" id="sbx_vicSport" title="종목 선택">
+			<option value="">종목전체</option>
+		</select>
+	</span>
+	<span class="selectBox w130">
+		<select class="selectMenu" id="sbx_vicLeag" title="대회 선택">
+			<option value="">대회전체</option>
+		</select>
+	</span>
+	<span class="selectBox w95" id="selSglYn" style="display:none;">
+		<select class="selectMenu" id="sbx_sglYn" title="조합 한경기 선택">
+			<option value="">조합</option>
+			<option value="1">한경기</option>
+		</select>
+	</span>
+	<span class="selectBox w130">
+		<select class="selectMenu" id="sbx_vicType" title="게임유형2 선택">
+			<option value="">게임유형전체</option>
+		</select>
+	</span>
+	<span class="selectBox w135">
+		<select class="selectMenu" id="sbx_vicOrder" title="정렬조건 선택">
+			<option value="asc">경기번호 낮은순</option>
+			<option value="desc">경기번호 높은순</option>
+		</select>
+	</span>
+	<button type="button" class="btn btnM" onclick="schDetlProtoVic();">검색</button>
+</div>
+
+<div class="tblArea noPadd">
+	<table class="tbl" id="grd_detlProtoVic" style="width:100%">
+		<caption>경기결과 및 적중결과 목록</caption>
+		<colgroup>
+			<col style="width:4%">
+			<col style="width:10%">
+			<col style="width:9%">
+			<col style="width:11.5%">
+			<col style="width:8%">
+			<col style="width:19.8%">
+			<col style="width:7%">
+			<col style="width:7%">
+			<col style="width:7%">
+			<col style="width:9.8%">
+			<col style="width:7.6%">
+		</colgroup>
+		<thead>
+			<tr>
+				<th scope="col" class="fwb" style="border-left:none;">번호</th>
+				<th scope="col" class="fwb">종목/대회</th>
+				<th scope="col" class="fwb">경기일시</th>
+				<th scope="col" class="fwb">적중결과발표일</th>
+				<th scope="col" class="fwb">유형</th>
+				<th scope="col" class="fwb">
+					<div class="vsDIv">
+						<div>홈팀</div>
+						<div><span class="center">vs</span> 원정팀</div>
+					</div>
+				</th>
+				<!-- Datatable Ajax 처리시 컬럼수,헤더수 다르면 에러, colspan 해도 에러나서 아래처럼 바꿈 -->
+				<th scope="col" class="fwb"></th>
+				<th scope="col" class="fwb" style="border-left:none;">배당률</th>
+				<th scope="col" class="fwb" style="border-left:none;"></th>
+				<th scope="col" class="fwb">경기결과</th>
+				<th scope="col" class="fwb">적중결과</th>
+				<th scope="col" class="fwb"></th>
+				<th scope="col" class="fwb"></th>
+				<th scope="col" class="fwb"></th>
+				<th scope="col" class="fwb"></th>
+			</tr>
+		</thead>
+	</table>
+</div>
+<div class="guideBox gray">
+	<strong class="guideTit">프로토 승부식 경기결과 및 적중결과 적용기준</strong>
+	<ul class="dashText">
+		<li>- 축구 : 경기시작부터 후반 종료 시까지(연장전/승부차기 제외)</li>
+		<li>- 야구&amp;농구&amp;배구 : 경기시작부터 최종 경기 종료 시까지(연장전 포함)</li>
+	</ul>
+</div>
+<style>
+table.dataTable thead th:after { top: 0px; margin-top: 29px; right: 50% !important; margin-right:-3px; }
+table.dataTable thead tr { height:39px; }
+</style>
+<script>
+var winrstPrtVic = {};
+// $(function() {
+// 	inqDetlBodyProtoVic('G101','240037');
+// });
+var sglYn = "N";
+/**
+ * 프로토 승부식 상세조회 데이터 조회함수
+ * @param 게임ID, 게임회차
+ */
+function inqDetlBodyProtoVic(gmId, gmTs) {
+	sglYn = "N";
+	
+	var param = {
+		gmId : gmId,
+		gmTs : gmTs
+	};
+	requestClient.requestPostMethod("/gamebuy/winrst/inqWinrstDetlBody.do", param, true, onDetlProtoVicInqCallback);
+}
+
+/**
+ * 프로토 승부식 상세조회 데이터 콜백함수
+ * @param List 게임정보 및 적중결과
+ */
+function onDetlProtoVicInqCallback(data) {
+	var sportCode = { SC : '축구' , BS : '야구' , BK : '농구' , VL : '배구' , CR : '씨름', F1 : 'F1', HD : '핸드볼', BD : '바둑'};
+	var cols = [ //컬럼 정의
+		{
+			data : "GM_SEQ",
+			orderable : false
+		},
+		{ 
+			data : "PR_LL_WIN_LEAG_NM",
+			orderable : false,
+			render : function(data, type, row) {
+				return "<span class='icoGame small " + row.MCH_SPORT_CD + (row.GM_LEAG_CD == 'SC099' ? 'w' : '') + "'>" + sportCode[row.MCH_SPORT_CD] + "</span><span class='db'>" + data + "</span>"
+			}
+		},
+		{ 	
+			data : "MCH_DTM",
+			orderable : false,
+			render : function(data, type, row) {
+			//	return ((row.HOME_TEAM.trim() == "미정" || row.AWAY_TEAM.trim() == "미정") && row.MCH_DTM.indexOf(" 00:00") > -1 ) ? "미정" : data;
+				if( row.FIX_MCH_DTM == 'N' && row.MCH_DTM.indexOf("00:00") > -1 ) {
+					row.MCH_DTM = row.MCH_DTM.replace('00:00','미정') ;
+				}
+				return data;
+			}
+		},
+		{
+			data : "WL_RSLT_ANNC_DTM",
+			orderable : false
+		},
+		{ 
+			data : "HANDI_VAL", // 0:일반   5:홀짝   9:언더오버   2,12:핸디캡    13: 승1패    14: 승5패
+			orderable : false,
+			render : function(data, type, row) {
+				var txt = "";
+				if(row.SGL == "1") {
+					txt = "<span class='badge_type' title='한경기구매'>S</span><br>";
+					sglYn = "Y";
+				}
+
+				if(data == 0) {
+					return txt + "<span class='badge gray'>일반</span>";
+					//return "<div><span class='badge_type' title='싱글'>S</span><span class='badge_type live' title='라이브'>L</span></div><span class='badge gray'>일반</span>";
+				} else if (data == 5) {
+					return txt + "<span class='badge green'>홀짝</span>";
+				} else if (data == 9) {
+					return txt + "<span class='badge green'>언더오버</span>";
+				} else if (data == 2 || data == 12){ //"2","12"
+					return txt + "<span class='badge orange'>핸디캡</span>";
+					//return "<div><span class='badge_type' title='싱글'>S</span></div><span class='badge orange'>핸디캡</span>";
+				} else if (data == 13) {
+					return txt + "<span class='badge purple'>승1패</span>";
+				} else if (data == 14) {
+					return txt + "<span class='badge purple'>승5패</span>";
+				}
+			}
+		},
+		{ 
+			data : "HOME_TEAM",
+			render : function(data, type, row) {
+				var txt = "";
+				if(row.HANDI_VAL == "9")
+					txt = "<span class='udPoint fcGreen'>U/O " + betmanOnlineFront.fixDecimal(row.HANDI_WIN, 1) + "</span>";
+				else if(row.HANDI_VAL == "2" || row.HANDI_VAL == "12")
+					txt = "<span class='udPoint "+ (row.HANDI_WIN  > 0 ? "fcOrange'>H +" : "fcBlue3'>H ") + betmanOnlineFront.fixDecimal(row.HANDI_WIN, 1) + "</span>";
+				return "<div class='vsDIv'><div>" + data + txt + "</div><div><span class='center'>vs</span> " + row.AWAY_TEAM + "</div></div>";
+			},
+			orderable : false
+		
+		},
+		{ 
+			data : "ODDS_WIN",
+			render : function(data, type, row) {
+				var txt = row.HANDI_VAL == "9" ? "U" : row.HANDI_VAL == "5" ? "홀" : "승";
+				return txt + "<br>" + betmanOnlineFront.fixDecimal(data, 2);
+			},
+			orderable : false
+		},
+		{ 
+			data : "ODDS_DRAW",
+			render : function(data, type, row) {
+				if (data == "0") return "-";
+				let str = "무";
+				if (row.HANDI_VAL == 13) {
+					str = "①";
+				} else if (row.HANDI_VAL == 14){
+					str = "⑤";
+				}
+				return str + "<br>" + betmanOnlineFront.fixDecimal(data, 2);
+			},
+			orderable : false
+		},
+		{ 
+			data : "ODDS_LOSE",
+			render : function(data, type, row) {
+				var txt = row.HANDI_VAL == "9" ? "O" : row.HANDI_VAL == "5" ? "짝" : "패";
+				return txt + "<br>" + betmanOnlineFront.fixDecimal(data, 2);
+			},
+			orderable : false
+		},
+		{ 
+			data : "MCH_SCORE",
+			render : function(data, type, row) {
+				if(row.GAME_RESULT == null) {
+					return "<strong class='fc222'>-</strong>";
+				}
+				if(data) {
+					var scores = data.split(":");
+					if (row.GAME_RESULT != "4") {
+						if(row.HANDI_VAL == "9" || row.HANDI_VAL == "5") {
+							return "<strong class='fc222'>" + scores[0] + "</strong>";
+						}
+						return "<strong class='fc222'>" + scores.join(" : ") + "</strong>";
+					} else {
+						if (scores[0].length > 0) {
+							return "<strong class='fc222'>" + scores.join(" : ") + "</strong>";
+						}
+						return "<strong class='fc222'>-</strong>";
+					}
+				}
+				return "<strong class='fc222'>-</strong>";
+			},
+			orderable : false
+		},
+		{ 
+			data : "GAME_RESULT",
+			className : "tdGray",
+			render : function(data, type, row) {
+				var txt;
+				switch(data) {
+				case "0" : 
+					txt = row.HANDI_VAL == "9" ? "U" : row.HANDI_VAL == "5" ? "홀" : "승";
+					return "<span class='badgeF red'>" + txt +"</span>";
+				case "1" :
+					let str = "무";
+					if (row.HANDI_VAL == 13) {
+						str = "①";
+					} else if (row.HANDI_VAL == 14) {
+						str = "⑤";
+					}
+					return "<span class='badgeF gray'>" + str + "</span>";
+				case "2" : 
+					txt = row.HANDI_VAL == "9" ? "O" : row.HANDI_VAL == "5" ? "짝" : "패";
+					return "<span class='badgeF blue'>" + txt + "</span>";
+				case "4" :
+					return "<span class='badge end'>취소</span>";
+				default : //null (적중결과 미발표)
+					return "";
+				}							
+			},
+			orderable : false
+		}, //검색용 컬럼 (hide처리됨)
+		{
+			data : "MCH_SPORT_CD"
+		},
+		{
+			data : "LEAG_CD_NM"
+		},
+		{
+			data : "HANDI_VAL",
+			render : function(data, type, row) {
+				return data == 12 ? 2 : data; //검색 위해 핸디캡은 2로 통일
+			}
+		},
+		{
+			data : "SGL"
+		}
+	];
+	
+	var gridParam = {
+		info : false,
+		ordering : true,
+		//order : [[0, "asc"]], // 디퐅트로 index 0번 컬럼 오름차순 정렬
+		paging : false,
+		searching : true,
+		columns : cols,
+		list : data.detlBody
+    };
+	detlTable = $("#grd_detlProtoVic").betGrid(gridParam);
+	
+	setSbxProtoVic(data.detlBody);
+}
+
+/**
+ * 새로운 object 생성
+ * @date 2020.04.20
+ * @param obj
+ * @author 김슬기
+ */
+ function newJsonObj(obj){
+	if( typeof obj == 'object' ){
+		var objStr = JSON.stringify(obj);
+		return JSON.parse(objStr);
+	}else{
+		return obj;
+	}
+}
+
+/**
+ * json array 정렬 (원본 데이터를 변경하지 않는다.)
+ * @date 2020.04.20
+ * @param dl_obj = json array
+ * @param name = 정렬 기준 key
+ * @author 김슬기
+ */
+function dlSort(dl_obj, name) {
+	var newDl = newJsonObj(dl_obj);
+	if(typeof newDl == 'object' && newDl.length ){
+		newDl.sort(function(a,b){
+			if( a[name] == b[name] ) return 0;
+			return a[name] > b[name] ? 1 : -1;
+		});
+		return newDl;
+	}else{
+		return dl_obj;
+	}
+}
+
+/**
+ * json array 정렬 후 중복 제거 (원본 데이터를 변경하지 않는다.)
+ * @date 2020.04.20
+ * @param dl_obj = json array
+ * @param name = 정렬 기준 key
+ * @author 김슬기
+ */
+function dlSortUniq(dl_obj, name){
+	var newDl = dlSort(dl_obj, name);
+	if(typeof newDl == 'object' && newDl.length ){
+		var old = '';
+		for(var i=newDl.length-1; i>-1; i--){
+			if(newDl[i][name] == old){
+				newDl.splice(i,1);
+			}else{
+				old = newDl[i][name];
+			}
+		}
+		return newDl;
+	}else{
+		return dl_obj;
+	}
+}
+
+/**
+ * 프로토 승부식 상세보기 조회조건 세팅 함수
+ * @param List 적중결과
+ */
+function setSbxProtoVic(detlBody) {
+	
+	var sbxSport = dlSortUniq(detlBody, "MCH_SPORT_CD");
+	var sbxLeag = dlSortUniq(detlBody, "LEAG_CD_NM");
+	winrstPrtVic.sbxLeag = sbxLeag; //종목 변경시 리그 세팅용 변수
+	var sbxType = dlSortUniq(detlBody, "HANDI_VAL");
+	
+	//스포츠 종목 조회조건 세팅
+	var _sportsType = {	SC : '축구', BS : '야구', BK : '농구', VL : '배구' };
+	var slt = $('#sbx_vicSport');
+	slt.empty();
+	
+	$('<option>').text('종목전체').val('').appendTo(slt);
+	for(var key in _sportsType) {
+		if(sbxSport.map(function(e) { return e.MCH_SPORT_CD; }).indexOf(key) !== -1) {
+			$('<option>').text(_sportsType[key]).val(key).appendTo(slt);
+		}
+	}
+	
+	// 종목선택 버튼 클릭 이벤트
+	slt.on('selectmenuchange', function() { 
+		//alert("종목선택 버튼 기능 구동");
+		setLeagSbx(this.value); 
+	});
+	
+	// 종목선택 selectBox 클릭 이벤트 - 접근성 대응. 22.01. jmcho
+	$('#sbx_vicSport').change( function() {
+		//alert("종목선택 셀렉트박스 변경 실행== " + $(this).val());			
+		setLeagSbx(this.value); 	
+	}); 
+	
+	slt.selectmenu('refresh');
+	
+	//대회 종류 조회조건 세팅
+	setLeagSbx();
+	
+	//게임 유형 조회조건 세팅
+	var _handiType = {	0 : '일반', 2 : '핸디캡', 5 : '홀/짝', 9 : '언더오버', 12 : '핸디캡', 13: '승1패', 14: '승5패' };
+	slt = $('#sbx_vicType');
+	slt.empty();
+	
+	$('<option>').text('게임유형전체').val('').appendTo(slt);
+	for(var key in _handiType) {
+		if(sbxType.map(function(e) { return e.HANDI_VAL == "12" ? "2" : e.HANDI_VAL.toString(); }).indexOf(key) !== -1) {
+			$('<option>').text(_handiType[key]).val(key).appendTo(slt);
+		}
+	}
+	slt.selectmenu('refresh');
+	//검색용 컬럼 hide처리
+	detlTable.columns([11,12,13,14]).visible(false);
+	
+	//싱글 게임이 있을 경우에만 보임
+	if(sglYn == "Y") {
+		$("#selSglYn").show();
+	}
+	else {
+		$("#selSglYn").hide();
+	}
+}
+
+/**
+ * 대회 조회조건 세팅 함수
+ * @param List 적중결과
+ */
+function setLeagSbx(sport) {
+	var sbxLeag = winrstPrtVic.sbxLeag;
+	var slt = $('#sbx_vicLeag');
+	slt.empty();
+	
+	$('<option>').text('대회전체').val('').appendTo(slt);
+	$.each(sbxLeag, function(key, val){
+		if(!sport || sport == val.MCH_SPORT_CD) {
+			$('<option>').text(val.PR_LL_WIN_LEAG_NM).val(val.LEAG_CD_NM).appendTo(slt);
+		}
+	});
+	slt.selectmenu('refresh');
+}
+
+/**
+ * 프로토 승부식 상세보기 필터링 이벤트 함수
+ */
+function schDetlProtoVic() {
+	if(!detlTable) return;
+	
+	var filter = {
+		schSport : $("#sbx_vicSport").val(),
+		schLeag : $("#sbx_vicLeag").val(),
+		schType : $("#sbx_vicType").val(),
+		ordering : $("#sbx_vicOrder").val(),
+		sglYn : $("#sbx_sglYn").val()
+	};
+	
+	detlTable.column(11).search(filter.schSport);//.draw();
+	detlTable.column(12).search(filter.schLeag);//.draw();
+	detlTable.column(13).search(filter.schType);//.draw();
+	detlTable.column(0).order(filter.ordering);//.draw();
+	detlTable.column(14).search(filter.sglYn);//.draw();
+	detlTable.draw();
+}
+</script>
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+		</div>
+		<div class="btnArea tac">
+			<button type="button" class="btn btnB sBorder" role="link" id="btn_prevGm">이전회차</button>
+			<button type="button" class="btn btnB sBorder" role="link" id="btn_nextGm">다음회차</button>
+			<button type="button" class="btn btnB sky" role="link" id="btn_toList">목록</button>
+			<button type="button" class="btn btnB red" role="link" id="btn_buyNWinrst">구매/적중내역</button>
+		</div>
+		
+		
+
+<div class="offResultArea">
+
+	<div class="lybox">
+		<div class="cell">
+			<div class="imgBox">
+				<img src="/images/game/game_serial_num.gif" alt="투표권 고유번호 예시">
+				<p>투표권 고유번호</p>
+			</div>
+		</div>
+		
+		<div class="txtBox" id="div_txtBox">
+			<strong class="tit">오프라인 적중결과 확인!</strong>
+			<p class="desc">오프라인에서 구매하신 분은 투표권 구매 후 받으신 영수증 하단의<br>투표권 고유번호 15자리를 입력하시면 적중결과를 확인하실 수 있습니다.</p>
+			<div class="offNumBox">
+				<span class="inputBox">
+					<input id="ibx_serial_1" type="text" title="영수증 하단의 투표권 고유번호 15자리중 1번~4번 자리" maxlength="4" style="text-transform:uppercase;" autocomplete="off">
+				</span>
+				<span class="dash">-</span>
+				<span class="inputBox">
+					<input id="ibx_serial_2" type="text" title="영수증 하단의 투표권 고유번호 15자리중 5번~8번 자리" maxlength="4" style="text-transform:uppercase;" autocomplete="off">
+				</span>
+				<span class="dash">-</span>
+				<span class="inputBox">
+					<input id="ibx_serial_3" type="text" title="영수증 하단의 투표권 고유번호 15자리중 9번~12번 자리" maxlength="4" style="text-transform:uppercase;" autocomplete="off">
+				</span>
+				<span class="dash">-</span>
+				<span class="inputBox">
+					<input id="ibx_serial_4" type="text" title="영수증 하단의 투표권 고유번호 15자리중 13번~15번 자리" maxlength="3" style="text-transform:uppercase;" autocomplete="off">
+				</span>
+				<button id="btn_inqOffWinrst" type="button" class="btn btnM blue">적중조회</button>
+				<button id="btn_reset" type="button" class="btn btnM bBorder" style="display:none;">초기화</button>
+			</div>
+			<p class="iconText">&lsquo;적중결과 처리중&rsquo;에는 영수증 조회가 불가능합니다.<br>적중결과 발표 이후에 조회하시기 바랍니다.</p>
+		</div>
+		
+		<div class="txtBox" id="div_onTest" style="display:none;">
+			<strong class="tit">오프라인 적중결과 시스템 점검</strong>
+			<p class="desc">오프라인 투표권 시스템의 품질 향상을 위한, 시스템 점검 작업으로 인하여,<br>오프라인 투표권 적중결과 조회가 불가능하오니, 양해 부탁 드립니다.</p>
+			<p class="fcBlue2 mt5"><span class="fwb">점검 일시</span></p>
+		</div>
+		
+	</div>
+	
+	<div class="tblArea gray" id="div_offWinrst" style="display:none;">
+		<table class="tbl col" id="tbl_offwinrst">	
+			<caption>오프라인 적중결과 목록은(는) 상태, 게임명, 구매일시, 구매에 사용한 금액을(를) 나타낸 표</caption>
+			<colgroup>
+				<col style="width:15.7%">
+				<col style="width:34.3%">
+				<col style="width:15.7%">
+				<col style="width:34.3%">
+			</colgroup>
+			<tbody>
+				<tr id="tr_saleInfo">
+					<th scope="row"><span class="dot">상태</span></th>
+					<td colspan="3"><strong class="fcBlue2">판매중</strong></td>
+				</tr>
+				<tr id="tr_hitInfo">
+					<th scope="row"><span class="dot">적중결과</span></th>
+					<td></td>
+					<th scope="row"><span class="dot">적중 투표매수</span></th>
+					<td></td>
+				</tr>
+				<tr id="tr_gmInfo">
+					<th scope="row"><span class="dot">게임명</span></th>
+					<td></td>
+					<th scope="row"><span class="dot">구매일시</span></th>
+					<td></td>
+				</tr>
+				<tr id="tr_amtInfo">
+					<th scope="row"><span class="dot">총투표금액</span></th>
+					<td colspan="3"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+</div>
+
+<script>
+	var offWinrst = {};
+	
+	//QR코드 조회
+	offWinrst.serial = ''.trim().toUpperCase();
+	
+	$(function() {
+		offWinrst.reset();
+		
+		$("#btn_inqOffWinrst").bind("click", function() {
+			offWinrst.inq();
+		});
+		$("#btn_reset").bind("click", function() {
+			offWinrst.reset();
+		});
+		$('#ibx_serial_1, #ibx_serial_2, #ibx_serial_3, #ibx_serial_4').bind('keyup', function(ev) {
+			var value = $(this).val().replace(/[^0-9A-Za-z]/g, '');
+			$(this).val(value);
+		});
+		//일부 android 기기에서 maxlength 적용 안되는 경우가 있는듯 해서 추가
+		$('#ibx_serial_1, #ibx_serial_2, #ibx_serial_3, #ibx_serial_4').bind('keypress', function(ev) {
+			if(this.value.length >= $(this).attr('maxlength')) return false;
+		});
+		
+		if(offWinrst.serial.length >= 15) {
+			$('#ibx_serial_1').val(offWinrst.serial.substr(0, 4));
+			$('#ibx_serial_2').val(offWinrst.serial.substr(4, 4));
+			$('#ibx_serial_3').val(offWinrst.serial.substr(8, 4));
+			$('#ibx_serial_4').val(offWinrst.serial.substr(12, 3));
+			offWinrst.inq();
+		}
+	});
+	
+	/**
+	 * 오프라인 적중결과 화면 초기상태로 리셋
+	 */
+	offWinrst.reset = function() {
+		$("#div_txtBox .iconText").html('&lsquo;적중결과 처리중&rsquo;에는 영수증 조회가 불가능합니다.<br>적중결과 발표 이후에 조회하시기 바랍니다.');
+		$('#div_txtBox .iconText').show();
+		$("#div_txtBox").show();
+		$("#div_offWinrst").hide();
+		$("#btn_reset").hide();
+		$("#div_onTest").hide();
+		$("#div_txtBox .offNumBox input").val('');
+		$("#div_txtBox .offNumBox input").prop('disabled', false);
+		$("#btn_inqOffWinrst").prop('disabled', false);
+	}
+	
+	/**
+	 * 오프라인 적중결과 조회 후 화면 공통 이벤트
+	 * @param 조회실패 여부
+	 */
+	offWinrst.onInqEvent = function(flag) {
+		$("#div_txtBox .offNumBox input").prop('disabled', true);
+		$("#btn_inqOffWinrst").prop('disabled', true);
+		$("#btn_reset").show();
+		//조회 실패시 적중테이블 show 안함
+		if(!flag) $("#div_offWinrst").show();
+	}
+	
+	/**
+	 * 오프라인 적중결과 데이터 조회
+	 */
+	offWinrst.inq = function() {
+		var serial1 = $('#ibx_serial_1').val().trim().toUpperCase();
+		var serial2 = $('#ibx_serial_2').val().trim().toUpperCase();
+		var serial3 = $('#ibx_serial_3').val().trim().toUpperCase();
+		var serial4 = $('#ibx_serial_4').val().trim().toUpperCase();
+		var fullSerial = serial1 + serial2 + serial3 + serial4;
+		
+		if(fullSerial.length < 15) {
+			alert('투표권 고유번호가 입력되지 않았습니다.\n투표권을 입력해 주세요.');			
+			if(serial1.length < 4){
+				$('#ibx_serial_1').focus();
+			} else if(serial2.length < 4){
+				$('#ibx_serial_2').focus();
+			} else if(serial3.length < 4){
+				$('#ibx_serial_3').focus();
+			} else if(serial4.length < 3){
+				$('#ibx_serial_4').focus();
+			}
+			return;
+		}
+		requestClient.requestPostMethod('/gamebuy/winrst/inqWinrstOffline.do',{ serial : fullSerial }, false, offWinrst.inqCallback);
+	}
+	
+	/**
+	 * 오프라인 적중결과 화면 draw
+	 * @param 조회 데이터
+	 */
+	offWinrst.draw = function(data) {
+		var saleStatusCode = {
+			0 : '미판매',
+			1 : '판매중', 
+			10 : '적중안됨',
+			21 : '적중',
+			22 : '환불',
+			31 : '적중금 환급기간 만료',
+			32 : '환불금 지불기간 만료',
+			91 : '취소처리'
+		};
+		var winOff = data.result;
+		winOff.ucSaleStatus = Number(winOff.ucSaleStatus); 
+		if(winOff.ucSaleStatus == 0) {
+			$('#div_txtBox .iconText').html('&lsquo;적중결과 처리중&rsquo;이거나 투표권 번호가 정확하지 않을 경우 영수증 조회가 불가능합니다.');
+			offWinrst.onInqEvent(true);
+		} else {
+			var tmp = '';
+			switch(winOff.ucSaleStatus) {
+				case 1: 
+				case 10:
+				case 22:
+				case 32:
+				case 91:
+					$('#tr_hitInfo').hide();
+					
+					tmp = '<th scope="row"><span class="dot">총투표금액</span></th>';
+					tmp += '<td colspan="3">'+ betmanOnlineFront.setNumberComma(winOff.llSalePrice) +'원</td>';
+					$('#tr_amtInfo').html(tmp);
+					break;
+				case 21:
+				case 31:
+					if(winOff.gmId == 'G101' || winOff.gmId == 'G102') {
+						tmp = '<th scope="row"><span class="dot">적중결과</span></th>';
+						tmp += '<td colspan="3">적중</td>';
+					} else {
+						var rankTxt = winOff.gmTypeCd == 'Victory' && winOff.ucRanking && winOff.ucRanking != '당첨' ? '('+ winOff.ucRanking +')' : '';
+						tmp = '<th scope="row"><span class="dot">적중결과</span></th>';
+						tmp += '<td>적중'+ rankTxt +'</td>';
+						tmp += '<th scope="row"><span class="dot">적중 투표매수</span></th>';
+						tmp += '<td>'+ winOff.uiPrizeNum +'</td>';
+					}
+					$('#tr_hitInfo').html(tmp);
+					$('#tr_hitInfo').show();
+					
+					tmp = '<th scope="row"><span class="dot">총투표금액</span></th>';
+					tmp += '<td>'+ betmanOnlineFront.setNumberComma(winOff.llSalePrice) +'원</td>';
+					tmp += '<th scope="row"><span class="dot">환급/환불금액</span></th>';
+					tmp += '<td>'+ betmanOnlineFront.setNumberComma(winOff.llPrize) +'원</td>';
+					$('#tr_amtInfo').html(tmp);
+					break;
+				default : 
+					return;
+			}
+			$('#tr_saleInfo td strong').html(saleStatusCode[winOff.ucSaleStatus]);
+			$('#tr_gmInfo td:eq(0)').html(winOff.szGameName +' '+ winOff.uiProdTs +'회차');
+			var saleTime = new Date(
+					winOff.stSaleTime.substr(0, 4) + '/' + //year
+					winOff.stSaleTime.substr(4, 2) + '/' + //month
+					winOff.stSaleTime.substr(6, 2) + ' ' + //date
+					winOff.stSaleTime.substr(8, 2) + ':' + //hour
+					winOff.stSaleTime.substr(10, 2)+ ':' + //min
+					winOff.stSaleTime.substr(12, 2));      //sec
+			$('#tr_gmInfo td:eq(1)').html(betmanOnlineFront.getDateFullFormatDayOfWeek(saleTime, 'y-mm-dd', ':'));
+			offWinrst.onInqEvent();
+		}
+		$('#div_txtBox .iconText').hide();
+	}
+	
+	/**
+	 * 오프라인 적중결과 데이터 조회 콜백
+	 * @param Map 오프라인 적중결과
+	 */
+	offWinrst.inqCallback = function(data) {
+		if(!data.result) {
+			if(data.message == 'DISCONNECT') {
+				var dc = data.disconnect;
+				$('#div_onTest p:eq(0)').html(betmanOnlineFront.unescapeString(dc.INFRM_MSG_CTT));//오프라인 투표권 시스템의 품질 향상을 위한, 시스템 점검 작업으로 인하여,<br>오프라인 투표권 적중결과 조회가 불가능하오니, 양해 부탁 드립니다.
+				$('#div_onTest p:eq(1)').html('<span class="fwb">점검 일시</span> : '+ dc.ISOL_STA_DTM +' ~ '+ dc.ISOL_END_DTM);
+				$('#div_txtBox').hide();
+				$('#div_onTest').show();
+			} else { //FAIL
+				$('#div_txtBox .iconText').html('&lsquo;적중결과 처리중&rsquo;이거나 투표권 번호가 정확하지 않을 경우 영수증 조회가 불가능합니다.');
+			}
+			offWinrst.onInqEvent(true);
+		} else {
+			offWinrst.draw(data);
+		}
+	}
+</script>
+		
+	</div>
+	
+</div>
+
+<script>
+var detlTable;
+var pageParams = {
+	sbx_gmCase : '',
+	sbx_gmType : '',
+	ica_fromDt : '2023.12.23',
+	ica_endDt : '2024.03.23',
+	rdo : 'month3',
+	curPage : '1',
+	perPage : '10',
+};
+if('Y' == 'Y') pageParams.isIFR = 'Y';
+
+$(function() {
+	var param = {
+		"gmId" : "G101",
+		"gmTs" : "240037"
+	};
+	requestClient.requestPostMethod("/gamebuy/winrst/inqWinrstDetl.do", param, true, onDetlInqCallback);
+});
+
+/**
+ * 상세조회 데이터 처리 콜백함수. 상세조회 게임ID별 분기처리
+ * @param Map 게임정보 및 발매,환급,투표내역 정보
+ */
+function onDetlInqCallback(data) {
+	var detlTop = data.detlTop;
+	var detlFooter = data.detlFooter; //게임 종목에 따라  {} 혹은 { list : [{},{}]} 구조로 받음
+	var detlOldToto = data.detlOldToto;
+	
+	if(detlOldToto) {
+		$('#div_detlPrtNToto').remove();
+		setDetlTop(detlOldToto);
+		bindEvent(detlOldToto);
+		$("#div_detlOldToto").html(betmanOnlineFront.unescapeString(detlOldToto.GM_RSLT_CTT));
+		$('#div_detlOldToto').show();
+		return;
+	}
+	setDetlTop(detlTop);
+	bindEvent(detlTop);
+	if("Y" == "Y") {
+		onIframe();
+	}
+	switch(detlTop.GM_ID) {
+		case "G101" : //프로토 승부식
+			winrstPrtVic.gmStCd = detlTop.GM_ST_CD;
+			inqDetlBodyProtoVic(detlTop.GM_ID, detlTop.GM_TS); //승부식은 body영역 콜백으로 호출
+			break;
+		case "G003" : //농구토토 스코어 단식
+		case "G011" : //축구토토 승무패
+		case "G024" : //야구토토 승1패
+		case "G027" : //농구토토 승5패
+		case "G057" : //야구 런앤런
+			setDetlWdlFooter(detlFooter);
+			break;
+		case "G048" : //골프토토 1대11
+			setDetlGf1vs11Footer(detlFooter);
+			break;
+		case "G005" : //농구스페셜 트리플
+		case "G006" : //야구토토 랭킹 스트레이트
+		case "G008" : //축구스페셜 더블
+		case "G010" : //골프토토 6/45
+		case "G013" : //씨름토토 123
+		case "G016" : //축구스페셜 트리플
+		case "G017" : //야구스페셜 트리플
+		case "G020" : //골프토토 스페셜 *구
+		case "G021" : //씨름토토 매치업
+		case "G029" : //배구스페셜 트리플
+		case "G036" : //골프스페셜 6명 *중간
+		case "G038" : //축구스페셜+ 트리플
+		case "G042" : //농구스페셜+ 트리플
+		case "G051" : //야구스페셜+ 트리플
+		case "G056" : //농구스페셜N 트리플
+		case "G060" : //골프스페셜 7명 *신규
+		case "G062" : //토토OX 트리플
+		case "G063" : //야구토토 랭킹 스트레이트
+		case "G065" : //야구토토 랭킹 스트레이트
+		case "G068" : //토토언더오버 7경기
+			setDetlSpclFooter(detlFooter);
+			break;
+		case "G009" : //축구토토 매치
+		case "G012" : //야구토토 매치
+		case "G015" : //농구토토 매치
+		case "G018" : //배구토토 세트스코어
+		case "G019" : //배구토토 매치
+		case "G022" : //농구토토 W매치
+		case "G026" : //야구토토 매치
+		case "G028" : //골프토토 승무패
+		case "G031" : //배구토토 매치
+		case "G033" : //야구타임어택 트리플
+		case "G034" : //야구토토 매치
+		case "G049" : //골프토토 승무패
+			setDetlMatFooter(detlFooter);
+			break;
+	}
+}
+
+/**
+ * 상세조회 공통 상단 데이터 세팅 함수
+ * winrstTop.jsp 안에 넣으면 .contents.game .contInner + .contInner, .gameMainArea + .contInner {margin-top 10px} 적용 안됨..
+ * @param Map 게임정보
+ */
+function setDetlTop(d) {
+	var protoRecGame = d.PROTO_RECORD_GAME ? " (" + d.PROTO_RECORD_GAME + ")" : "";
+	var gmNmTit = "";
+	var gameInfoTextListTmp = "";
+	
+	gmNmTit += d.GM_NM + " " + d.ROUND + "회차";
+	gmNmTit += protoRecGame;
+	gmNmTit += " [" + d.SALE_END_DTM.substr(3, 2) + "월 " + d.SALE_END_DTM.substr(6, 2) + "일 " + d.SALE_END_DTM.substr(9, 1) + "요일]";
+	
+	$("#spn_detlGmNm").html(gmNmTit);
+	if(d.GM_ID == "G101") {
+		$("#spn_detlSaleDtm").html(d.SALE_STA_DTM + " ~ 경기별 10분전 마감");
+		gameInfoTextListTmp += '<li>- 회차 발매마감은 경기일시 기준 마지막 두 번째 경기 10분전까지 혹은 한경기구매로 지정된 마지막 경기 10분 전까지 입니다.</li>';
+		if(d.GM_TS > 160052) {
+			$("#spn_detlRsltDtm").html("최종 경기종료 당일 예정");
+			$("#spn_detlPayoDtm").html("선택한 모든 대상경기의 적중결과<br>발표일 익일(지급개시일)부터 1년간");
+			gameInfoTextListTmp += '<li>- 환급(환불)의 지급시기는 적중결과 발표 당일부터 지급 가능합니다.</li>';
+		} else {
+			$('#spn_detlRsltDtm').text('경기개최 당일 적중결과 발표');
+			$('#spn_detlPayoDtm').html('선택한 모든 대상경기의 적중결과<br> 발표일 익일부터 1년간');
+		}
+		$("#spn_detlPayInfo").html(gameInfoTextListTmp);
+	} else if(d.GM_ID == "G102") {
+		
+		//alert('winrstDetl.jsp		d.ROUND_YEAR==='+d.ROUND_YEAR+'		d.ROUND ==='+d.ROUND );
+		
+		// 상품운영팀 요청으로 기록식 2024/26회차에 한하여 마감일시 별도 표기 
+		if(d.ROUND_YEAR == '2024' && d.ROUND == '26'){
+			$("#spn_detlSaleDtm").html(d.SALE_STA_DTM + " ~ "+d.SALE_END_DTM );
+		}else{
+			$("#spn_detlSaleDtm").html(d.SALE_STA_DTM + " ~ 게임별 10분전 마감");
+		}
+		
+		var compareDate = d.ROUND_YEAR + d.SALE_STA_DTM.substr(3, 2) + d.SALE_STA_DTM.substr(6, 2);
+		if (compareDate >= "20160701") {
+			$("#spn_detlRsltDtm").html("최종 경기종료 당일 예정");
+			$("#spn_detlPayoDtm").html("해당 게임의 적중결과<br>발표일 익일(지급개시일)부터 1년간");
+			$("#spn_detlProtoRecDtm").html("적중결과 발표일 : " + d.RSLT_ANNC_DTM.substr(0, 11) + " / 환급(환불)기간 : " + d.PAYO_STA_DTM.substr(0, 11) + " ~ " + d.PAYO_END_DTM.substr(0, 11));
+			gameInfoTextListTmp += '<li>- 환급(환불)의 지급시기는 적중결과 발표 당일부터 지급 가능합니다.</li>';
+			$("#spn_detlPayInfo").html(gameInfoTextListTmp);
+		} else {
+			$('#spn_detlRsltDtm').text('경기개최 당일 적중결과 발표');
+			$('#spn_detlPayoDtm').html('해당 유형의 적중결과 발표일 익일부터 1년간');
+		}
+	} else {
+		$("#spn_detlSaleDtm").html(d.SALE_STA_DTM + " ~ " + d.SALE_END_DTM);
+		$("#spn_detlRsltDtm").html(d.RSLT_ANNC_DTM.substr(0, 11));
+		$("#spn_detlPayoDtm").html(d.PAYO_STA_DTM.substr(0, 11) + " ~ " + d.PAYO_END_DTM.substr(0, 11));
+		$("#spn_detlGuide").html(d.GM_NM);
+	}
+}
+
+/**
+ * 버튼 이벤트 부착 및 변경 함수 (상세화면 하단 공통)
+ * @param Map 게임ID,게임회차 등의 게임정보
+ */
+function bindEvent(data) {
+	var IFR = "Y" == "Y" ? "IFR" : "";
+	var isIFR = "Y" == "Y" ? "&isIFR=Y" : "";
+	
+	$("#btn_toList").bind("click", function() {
+		var uri = "/main/mainPage/gamebuy/winrstList"+IFR+".do?";
+		for(var key in pageParams) {
+			uri += key + '=' + pageParams[key] + '&';
+		}
+		location.href = uri.slice(0, -1);
+	})
+	if(data.GM_ID == "G102") {
+		$("#btn_prevGm").hide();
+		$("#btn_nextGm").hide();
+		$("#btn_buyNWinrst").hide();
+		return;
+	}
+	$("#btn_prevGm").unbind("click");
+	$("#btn_nextGm").unbind("click");
+	if(data.PREV_GM_TS) {
+		$("#btn_prevGm").bind("click", function() {
+			var uri = "/main/mainPage/gamebuy/winrstDetl"+IFR+".do?gmId=" + data.GM_ID + "&gmTs=" + data.PREV_GM_TS;
+			for(var key in pageParams) {
+				uri += '&' + key + '=' + pageParams[key];
+			}
+			location.href = uri;
+		});
+		$("#btn_prevGm").attr("disabled", false);
+	} else {
+		$("#btn_prevGm").attr("disabled", true);
+	}
+	if(data.NEXT_GM_TS) {
+		$("#btn_nextGm").bind("click", function() {
+			var uri = "/main/mainPage/gamebuy/winrstDetl"+IFR+".do?gmId=" + data.GM_ID + "&gmTs=" + data.NEXT_GM_TS;
+			for(var key in pageParams) {
+				uri += '&' + key + '=' + pageParams[key];
+			}
+			location.href = uri;
+		});
+		$("#btn_nextGm").attr("disabled", false);
+	} else {
+		$("#btn_nextGm").attr("disabled", true);
+	}
+	
+	$("#btn_buyNWinrst").bind("click", function() {
+		if(!isLogin) {
+			openLoginPopMark("/main/mainPage/mypage/myPurchaseWinList.do");
+		} else {
+			location.href = "/main/mainPage/mypage/myPurchaseWinList.do";
+		}
+	});
+}
+
+/**
+ * 코드값->밸류값 리턴함수
+ * @param List<Map> 코드목록, Object 코드값
+ * @return Object 밸류값
+ */
+function getCdVal(codeList, code) {
+	var i = codeList.length;
+	while(i--) {
+		if(codeList[i].code == code) {
+			return codeList[i].value;
+		}
+	}
+	return "-";
+}
+ 
+/**
+ * Object 안 숫자형식 데이터 천단위 컴마찍기
+ * @param Object 
+ * @return Object
+ */
+function setComma(obj) {
+	var result = $.extend({}, obj);
+	for(var key in result)
+		if(result[key] && typeof result[key] == 'number')
+			result[key] = betmanOnlineFront.setNumberComma(result[key]);
+	return result;
+}
+
+/**
+ * iFrame 화면 작업 함수
+ */ 
+function onIframe() {
+	var subTitle = $("#spn_detlGmNm").parent().html().replace("적중결과", "").trim();
+	$("#spn_detlGmNm").parent().html(subTitle);
+	$(".locationArea").hide();
+	$("#btn_buyNWinrst").hide();
+	$(".offResultArea").hide();
+}
+</script>
+
+<script>
+	$(document).ready(function() {
+		$('html, body').css('background','#fff');
+		$('.contents').css('border', '0');
+		$('.contInner').css('border', '0');
+		$('.gametopList').css('border-bottom', '1px solid #ddd');
+	});
+</script>
+		
+		
+	
+	
+	
+	
+	
+	<!-- 건전 팝업 추가-->
+ 	
+
+
+
+
+<link href='/css/ui-common.css' type='text/css' rel='stylesheet'>
+<script type='text/javascript' src='/js/jquery-ui.js'></script>
+<dialog id='asideletter' class='time-letter1-layer' style='user-select: auto; display:none;' tabindex='0' >
+	<div class='time-letter1' id='divLetter' style='user-select: auto;'>
+		<strong class='letter-title' style='user-select: auto;' >
+		<span id='loginTime'>60분</span>
+		<em style='user-select: auto;'>경과하였습니다.</em>
+			<p>잠시 쉬어가면 어떨까요?</p>
+		</strong>
+		<button class='letter-btn2' id='selfTestBtn' onclick='' style='user-select: auto; display:none;'>셀프진단평가</button>
+		<button class='letter-btn' id='logoutBtn' onclick='' style='user-select: auto;'>로그아웃</button>
+		<div class='layer-close' id='popupClose' style='user-select: auto;' tabindex='0'>
+			<span class='hidden' style='user-select: auto;'>닫기</span>
+		</div>
+	</div>
+</dialog>
+<script>
+function detectIE(){
+	var isIE = false;
+	var userAgent = window.navigator.userAgent;
+	
+	var oldIE = userAgent.indexOf('MSIE ');
+	var newIE = userAgent.indexOf('Trident/');
+	
+	if((oldIE > -1 )|| (newIE > -1 )){
+		isIE = true;
+	}
+	
+	return isIE;
+}
+// ready
+$(document).ready(function() {
+	
+		
+	// 팝업 닫기
+	var popupCloseBtn = document.getElementById('popupClose');
+	
+	popupCloseBtn.addEventListener('click', function() {
+		popupClose();
+	});
+	
+	popupCloseBtn.addEventListener('keydown',  function(event) {
+		if(event.key === 'Enter'){
+			popupClose();
+		}
+	});
+	
+	// 셀프테스트 이동(새탭)
+	document.getElementById('selfTestBtn').addEventListener('click',  function() {
+		popupClose();
+		window.open('/main/mainPage/healthiness/selfTest.do', '_blank');
+		return false;
+	});
+	
+	// logout 버튼
+	document.getElementById('logoutBtn').addEventListener('click', function() {
+		popupClose();
+		openLogoutPop();
+	});
+	
+	var popupDialog = document.getElementById('asideletter');
+	var closeBtn = document.getElementById('popupClose');
+	
+	popupDialog.addEventListener('keydown',  function(event) {
+		if(event.key === 'Tab'){
+			if(event.shiftKey){
+				if(document.activeElement === popupDialog){
+					closeBtn.focus();
+					event.preventDefault();
+				}				
+			}else{
+				if(document.activeElement === closeBtn){
+					popupDialog.focus();
+					event.preventDefault();
+				}				
+			}
+		}
+	});
+
+}); // ready
+
+// 건전 팝업(60분) 열기
+function popupOpen(e){
+	var popup = document.getElementById('asideletter');
+	if(e != null ){
+		//popup 닫힐때 60분 기준으로 초기화
+		popupClose(); // popup 초기화
+		document.getElementById('loginTime').innerHTML = '60분';
+		document.getElementById('divLetter').className = 'time-letter1';
+	}
+	var isIE = detectIE();
+	popup.style.display = 'block';
+	if(!isIE){
+		popup.show();	
+	}	
+	popup.focus();
+}
+
+// 건전팝업 닫기 
+function popupClose() {
+	var popup = document.getElementById('asideletter');
+	var isIE = detectIE();
+	if(!isIE){	
+		popup.classList.add('hide');
+		popup.addEventListener('animationend', function() {
+			popup.close();
+			popup.classList.remove('hide');
+			popup.removeEventListener('animationend', arguments.callee, false);
+			popup.style.display = 'none';
+		}, false);
+	}else{
+		popup.style.display = 'none';
+	}
+}
+
+// 건전 팝업(90분) 열기
+function popup90Open(){
+	document.getElementById('loginTime').innerHTML = '90분';
+	document.getElementById('divLetter').className = 'time-letter2';
+	document.getElementById('selfTestBtn').style.display = 'block';
+	popupOpen();
+}
+
+// 로그아웃
+function openLogoutPop() {
+ 	if(chkSlipState() == false) return;
+ 	var url = '/sub/subPage/mbrsvc/logoutPop.do';
+ 	var title = '로그아웃';
+	BUICommon.openModalByUrl(url, title, 'small');
+}
+</script>
+</html>
+
+ </body>
+</html>

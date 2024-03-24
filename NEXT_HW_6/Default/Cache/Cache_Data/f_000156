@@ -1,0 +1,538 @@
+$.fn.betCoachDraw = function(res) {
+	var selector = $(this);
+	$(selector).find(".betCoachArea").parent().remove();
+	$(selector).data(res);
+	
+	return $.get('/js/betcoach/betcoach-template.html', function(html) {
+		
+		if(!res.prediction || !res.prediction.betCoachGame) return false; 
+		
+		var template = $("<div />").html(html);
+		$(selector).append(template);
+		$(template).find(".betCoachArea").data(res);
+
+		var prediction = JSON.parse(JSON.stringify(res.prediction)); // res.prediction : 예측데이터
+		//**벳코치 시뮬레이션 메인 페이지 영역 호출 관련 함수*/ 
+		//승무패 가중치가 모두 0인경우 화면처리
+		betCoachDrawer.noDataGraph(template, prediction);
+		
+		//상단 영역
+		betCoachDrawer.top(template, prediction);
+		
+		//도넛 차트
+		betCoachDrawer.donut(template, prediction);
+		
+		//sns공유
+		if(["1","3"].indexOf(res.bcReqClCd) > -1) $(template).find('.snsBox').show();
+		
+		//시뮬레이션 바
+		var weightList = JSON.parse(JSON.stringify(res.prediction.weightList));
+		betCoachDrawer.simulBar(template, weightList);
+		
+		//투표지 적용 버튼 영역 및 예상 영역
+		betCoachDrawer.vote(template, prediction);
+
+		//시뮬레이션 바 위의 버튼 4개 "안정 중립 모험 직접설정" 영역
+		betCoachDrawer.weightSet(template, prediction);
+		
+		//사용자참여 적중통계 
+		betCoachDrawer.hitRateOptions(template, prediction);
+
+		betCoach.getHitRate(selector);
+		
+	});
+}
+
+
+var betCoachDrawer = {
+	noDataGraph : function(template, prediction){
+		if(prediction.winRate == 0 && prediction.drawRate == 0 && prediction.lossRate == 0){
+			$(template).find(".noDataGraph").show();
+			$(template).find(".bc-data-graph-area").hide();
+		}else{
+			$(template).find(".noDataGraph").hide();
+			$(template).find(".bc-data-graph-area").show();
+		} 
+	},
+	top : function(template, prediction) {
+		// Home, Away팀명,Logo 셋팅
+		// Home팀 영역 셋팅
+		var game = prediction.betCoachGame;
+		var fullGameName = betCoach.util.changeEngNm(prediction.sportsItem);
+		var hmName = betCoach.util.changeTeamNm(game.gameName)[0];
+		var homeParam = {
+			name : fullGameName,
+			leagueCode : game.gameLeagueCode, 
+			teamCode : game.homeCode,
+			sportItem : game.sportsItem
+		}
+		var homeImage = betCoach.util.getLogoImg(homeParam);
+		$(template).find(".bc-ht-img").html(homeImage);
+		$(template).find(".bc-ht-img")[0].children[0].alt = ""; // 웹 접근성 빈 alt 추가
+		$(template).find(".bc-ht-nm").text(hmName);// 대구FC
+
+		// Away팀 영역 셋팅
+		var awName = betCoach.util.changeTeamNm(game.gameName)[1];
+		var awayParam = {
+			name : fullGameName,
+			leagueCode : game.gameLeagueCode,
+			teamCode : game.awayCode,
+			sportItem : game.sportsItem
+		}
+		var awwayImage = betCoach.util.getLogoImg(awayParam);
+		$(template).find(".bc-aw-img").html(awwayImage);
+		$(template).find(".bc-aw-img")[0].children[0].alt = ""; // 웹 접근성 빈 alt 추가
+		$(template).find(".bc-aw-nm").text(awName);// 시카고W
+		
+		var rowIdx = $(template).find(".betCoachArea").data().rowIdx;
+		$(template).find(".bc-sns-row-idx").text(rowIdx);
+	},
+	donut : function(template, prediction){
+		var showTextBox0class = "";
+		var showTextBox0 = ""; // ex) 도넛차트 오른쪽  "오리온스 '패배' 예상"
+		var showTextBox1 = ""; // ex) 도넛차트 오른쪽 네모박스 영역	("62.30%" , probabilityBox1)
+		var showTextBox2 = ""; // ex) 도넛차트 오른쪽 회색 네모박스 영역 ("승리 : 37.70%" 무승부 : 0%, probabilityBox1)
+		var showTextBox3 = ""; // ex) 도넛차트 오른쪽 회색 네모박스 영역 (승리 : 37.70%  "무승부 : 0%",probabilityBox1)
+
+		// 승무패 확률 text
+		var winRateStr = betCoach.util.numFormatCase("rateAllot",prediction.winRate,".") + "%";
+		var drawRateStr = betCoach.util.numFormatCase("rateAllot",prediction.drawRate,".") + "%";
+		var loseRateStr = betCoach.util.numFormatCase("rateAllot",prediction.lossRate,".") + "%";
+		var donutTitleCss = "";
+		$(template).find(".bc-status-code").removeClass("fcRed2");
+		$(template).find(".bc-status-code").removeClass("fcBlue2");
+		// 승
+		if (prediction.simulResult == "1") {
+			showTextBox0class = "fcRed2";
+			showTextBox0 = "승리";
+			showTextBox1 = winRateStr;
+			showTextBox2 = drawRateStr >= loseRateStr ? "무승부 : " + drawRateStr : "패배: " + loseRateStr;
+			showTextBox3 = drawRateStr >= loseRateStr ? "패배: " + loseRateStr : "무승부 : " + drawRateStr;
+			donutTitleCss= "#D81526";
+		}// 무
+		else if (prediction.simulResult == "2") {
+			showTextBox0class = "fcRed2";
+			showTextBox0 = "접전";
+			showTextBox1 = drawRateStr;
+			showTextBox2 = winRateStr >= loseRateStr ? "승리 : " + winRateStr : "패배: " + loseRateStr;
+			showTextBox3 = winRateStr >= loseRateStr ? "패배: " + loseRateStr : "승리 : " + winRateStr;
+			donutTitleCss= "#555555";
+		}// 패
+		else if (prediction.simulResult == "3") {
+			showTextBox0class = "fcBlue2";
+			showTextBox0 = "패배";
+			showTextBox1 = loseRateStr;
+			showTextBox2 = winRateStr >= drawRateStr ? "승리 : " + winRateStr : "무승부 : " + drawRateStr;
+			showTextBox3 = winRateStr >= drawRateStr ? "무승부 : " + drawRateStr : "승리 : " + winRateStr;
+			$(template).find(".bc-status-code").addClass("fcBlue2"); 
+			donutTitleCss= "#1317BB";
+		}//승무패 결과데이터 없음
+		else if (prediction.simulResult == "4") {
+			showTextBox0 = "데이터 없음";
+			showTextBox1 = loseRateStr;
+			showTextBox2 = winRateStr >= drawRateStr ? "무승부 : " + drawRateStr : "승리 : " + winRateStr;
+			showTextBox3 = winRateStr >= drawRateStr ? "승리 : " + winRateStr : "무승부 : " + drawRateStr;
+			donutTitleCss= "#222";
+		}//승무패 결과데이터 같음
+		else if (prediction.simulResult == "5") {
+			showTextBox0class = "fcRed2";
+			showTextBox0 = "접전";
+			showTextBox1 = winRateStr;
+			showTextBox2 = drawRateStr >= loseRateStr ? "무승부 : " + drawRateStr : "패배: " + loseRateStr;
+			showTextBox3 = drawRateStr >= loseRateStr ? "패배: " + loseRateStr : "무승부 : " + drawRateStr;
+			donutTitleCss= "#222";
+		}
+		
+		// 승무패 도넛차트
+		var donutSelector = $(template).find(".bc-donut-chart");
+		var winRateDonutText = betCoach.util.simulResultIntToStr(prediction.simulResult);
+		var donutChart = betCoach.util.winRateDonut(donutSelector, prediction, winRateDonutText);
+
+		// billboard.js 도넛 차트 타이틀 css 설정
+		var donutTitle = $(donutSelector).find(".bb-chart-arcs-title");
+		$(donutTitle).css({'font-size': '25px','font-weight':"bold",'fill' : donutTitleCss});
+
+		// 도넛차트 오른쪽  "오리온스 '패배' 예상"
+		$(template).find(".eaTeam").html(betCoach.util.changeTeamNm(prediction.betCoachGame.gameName)[0] + " <strong class='"+showTextBox0class+"'>‘" + showTextBox0 + "’ </strong> 예상");
+		
+		// 예상 확률 바인딩 : 도넛 차트 우측
+		var probabilityBox1 = $(template).find(".probabilityBox1").children();
+		
+		// 예측확률 span태그에 보여주기
+		probabilityBox1.each(function(i, e) {
+			$(e).text(showTextBox1.slice(i, i + 1));
+		});
+		
+		// 축구만 무승부가 있으니, 무승부 값이 ""이거나, null이면 승무패 보여준다
+		if(drawRateStr != "0%"){
+			$(template).find(".bc-pbBox21").html(showTextBox2); 
+			$(template).find(".bc-pbBox22").html(showTextBox3);
+			$(template).find(".bc-pbBox22").show();
+		}// 농구,야구,배구는 무승부가 없으니 패배만 보여준다
+		else{
+			$(template).find(".bc-pbBox21").html(showTextBox2.indexOf('무승부') == -1 ? showTextBox2 : showTextBox3);
+			$(template).find(".bc-pbBox22").hide();
+		}
+	},
+	simulBar : function(template, weightList){
+		/* 가중치 시뮬레이션 바 : 0 25 50 75 100 */ 
+		var simulArea = $(template).find(".simulArea");
+		var barTemplate = $(template).find(".bc-data-sb")[0];
+		$(simulArea).find(".bc-data-sb").remove();
+		for ( var i in weightList) {
+			var obj = weightList[i];
+			var name = betCoach.util.strReg(obj.name);
+			
+			//게임정보쪽 화면에선 배당률 항목 미표시
+			if(name === "배당률" && typeof matchRecord !== "undefined") continue;
+			
+			$(barTemplate).find(".bc-data-bt").text(name);
+			$(barTemplate).find(".bc-data-percent").css("width", obj.weight + "%");
+			$(barTemplate).find(".dotList").find("button").each(function(i, e) {
+				obj.weight == $(e).val() ? $(e).attr("title", "선택됨") : $(e).removeAttr("title");
+			});
+			
+			// 시뮬바 상세 버튼 innerHTML 추가
+			for(var i =0; i< $(barTemplate).find('.bc-dot-btn').length; i++) {
+				$(barTemplate).find('.bc-dot-btn')[i].innerHTML = name+' '+$(barTemplate).find('.bc-dot-btn')[i].value+"%";	
+			}
+			
+			// 팝업 클릭 이벤트 데이터셋 바인딩
+			var popupBtn = $(barTemplate).find(".bc-popup-btn");
+			$(popupBtn).attr("title", name + " 상세팝업오픈");
+			$(popupBtn).attr("data-weight", name);
+			$(popupBtn).attr("data-pred-cd", obj.predictionCode);
+			
+			var addRow =  $(barTemplate).wrapAll('<div>').parent().html();
+			$(simulArea).append(addRow);
+		}
+		if($(simulArea).find('.simulBar').length <= 0){
+			simulArea.css("display","none");
+		}else{
+			simulArea.css("display","block");
+		}
+	},
+	vote : function(template, prediction) {
+		//투표지 적용 영역 배당률 비교
+		var allotWin  = betCoach.util.numFormatCase("rateAllot", prediction.allotWin , ".");
+		var allotDraw = betCoach.util.numFormatCase("rateAllot", prediction.allotDraw, ".");
+		var allotLoss = betCoach.util.numFormatCase("rateAllot", prediction.allotLoss, ".");
+		
+		var gmId = $(template).parents().find(".betCoachArea").data().bcReqClCd;
+//		var topAllot = allotWin > allotDraw ? (allotWin > allotLoss ? allotWin : allotLoss) : (allotDraw > allotLoss ? allotDraw : allotLoss);
+		/*var allotOnClass = ""; 
+		if(topAllot == allotWin){
+			allotOnClass = ".winBtn"; 
+		}else if(topAllot == allotDraw){
+			allotOnClass =".drawBtn";
+		}else if(topAllot == allotLoss){ 
+			allotOnClass = ".lossBtn";
+		}*/
+		var topAllot;
+		if(prediction.winRate == prediction.drawRate && prediction.drawRate == prediction.lossRate) {
+			topAllot = '.drawBtn';
+		} else {
+			topAllot = prediction.winRate > prediction.drawRate ? (prediction.winRate > prediction.lossRate ? '.winBtn' : '.lossBtn') : (prediction.drawRate > prediction.lossRate ? '.drawBtn' : '.lossBtn');
+		}
+		
+		$(template).parents().find(".bc-btn-allot").removeClass("on");
+//		$(template).find(allotOnClass).addClass("on").attr('title', '선택됨');
+		$(template).find(topAllot).addClass("on").attr('title', '선택됨');
+		$(template).find(".betCoachArea").removeClass("layoutCenter");
+		//투표지 적용 영역 화면 Ctrl
+		if(gmId == "1"){//프로토 승부식
+			$(template).find(".bc-allot-area").show();
+			$(template).find(".bc-allot-vote-area").show();
+			$(template).find(".eaVote").css("border-left","1px solid #E0E0DF");
+			$(template).find(".bc-team-info-area").show();
+			 
+			betCoach.util.oddsBtn.makeOddsBtnHtml(gmId, template, betCoach.util.oddsBtn.winAllot( template,prediction,allotWin) , prediction);
+			betCoach.util.oddsBtn.makeOddsBtnHtml(gmId, template, betCoach.util.oddsBtn.drawAllot(template,prediction,allotDraw), prediction);
+			betCoach.util.oddsBtn.makeOddsBtnHtml(gmId, template, betCoach.util.oddsBtn.loseAllot(template,prediction,allotLoss), prediction);
+			
+		}else if(gmId == "2"){//맞대결정보
+			$(template).find(".bc-allot-area").hide();
+			$(template).find(".bc-allot-vote-area").hide();
+			$(template).find(".eaVote").css("border-left","0px solid #E0E0DF");
+			$(template).find(".bc-team-info-area").hide();
+			$(template).find(".betCoachArea").addClass("layoutCenter");
+			// layoutCenter 해당 클래스가 들어가면 승무패 예상 도넛이 가운데로 위치가 바뀌면서 투표지 적용영역이 없어진다.
+			betCoach.util.oddsBtn.makeOddsBtnHtml(gmId, template, betCoach.util.oddsBtn.winAllot( template,prediction,allotWin) , prediction);
+			betCoach.util.oddsBtn.makeOddsBtnHtml(gmId, template, betCoach.util.oddsBtn.drawAllot(template,prediction,allotDraw), prediction);
+			betCoach.util.oddsBtn.makeOddsBtnHtml(gmId, template, betCoach.util.oddsBtn.loseAllot(template,prediction,allotLoss), prediction);
+			
+		}else if(gmId == "3"){//축구토토 승무패
+			$(template).find(".bc-allot-area").show();
+			$(template).find(".bc-allot-vote-area").show();
+			$(template).find(".eaVote").css("border-left","1px solid #E0E0DF");
+			$(template).find(".bc-team-info-area").show();
+			
+			betCoach.util.oddsBtn.makeOddsBtnHtml(gmId, template, betCoach.util.oddsBtn.winAllot( template,prediction,allotWin) , prediction);
+			betCoach.util.oddsBtn.makeOddsBtnHtml(gmId, template, betCoach.util.oddsBtn.drawAllot(template,prediction,allotDraw), prediction);
+			betCoach.util.oddsBtn.makeOddsBtnHtml(gmId, template, betCoach.util.oddsBtn.loseAllot(template,prediction,allotLoss), prediction);
+
+		}
+		// 2020-07-30 발생한 요청인 구매투표지에서 발매 차단된 버튼에 맞춰서 뱃코치의 투표지 버튼을 활성화 상태로 변경하여 투표 적용을 할수있게 처리 하였음. 
+		if(gmId != "2" ){ // 맞대결은 투표지가 없음으로 해당 처리를 할 필요가 없음. 
+			var winFlag = $(template).find(".betCoachArea").find(".winBtn").attr("disabled");
+			var drwFlag = $(template).find(".betCoachArea").find(".drawBtn").attr("disabled");
+			var losFlag = $(template).find(".betCoachArea").find(".lossBtn").attr("disabled");
+			if( !(winFlag && drwFlag && losFlag) ){
+				$(template).find(".betCoachArea").find(".bc-btn-slip").attr("disabled", false);
+				$(template).find(".betCoachArea").find(".bc-btn-slip").css({"color":"", "cursor":""});
+			}
+		}
+	},
+	weightSet : function (template, prediction){
+		// 01 : 안정. 02 : 중립.  03: 모험  + "05: 직접설정" (04: 랜덤은 Tobe기획에서 제거)
+		var weightSettingList = JSON.parse(JSON.stringify(prediction.weightSettingList)); 
+		var pushData = {
+			sportsItem : prediction.sportsItem,
+			weightSetCd : "5",
+			weightSetNm : "직접설정"
+		};
+		weightSettingList.push(pushData);
+		
+		// 가중치 설정 버튼 셋팅 
+		var btns = $(template).find(".bc-data-ws-btn").removeClass("on");
+		$(btns).each(function(i) {
+			var selector = $(this);
+			var weight = weightSettingList[i];
+			
+			var span = $(selector).find(".bc-data-ws");
+			span.text(weight.weightSetNm); 
+			selector.attr("data-ws-code", weight.weightSetCd); 
+			if (weight.weightSetCd == prediction.weightSetting) {
+				selector.addClass("on").attr('title', '선택됨');
+			}
+			$(selector).data(weight);
+		});
+	},
+	hitRateOptions : function(template,prediction){
+		
+		$(template).find(".bc-hit-rate-rdobar").find("span").each(function(i,e){
+			var str = i==0 ? "daily" : "monthly" ;
+			var guid = betCoach.util.generateGuid(prediction, str);
+			$(e).find("input").attr("id",  guid);
+			$(e).find("label").attr("for", guid);
+			
+		});  
+		//TODO 이 부분 더 좋게 할 수 있는 방법 고민 필요
+		$(template).find(".bt-hr-daily-start").betDatePicker().val(betCoach.util.dateFormatCase("hrDailyStart","","-")); 
+		$(template).find(".bt-hr-monthly-start").betMonthPicker().val(betCoach.util.dateFormatCase("hrMonthlyStart","","-"));
+		$(template).find(".bt-hr-daily-end").betDatePicker().val(betCoach.util.dateFormatCase("hrDailyEnd","","-")); 
+		$(template).find(".bt-hr-monthly-end").betMonthPicker().val(betCoach.util.dateFormatCase("hrMonthlyEnd","","-"));
+
+		$(template).find(".bt-hr-daily-start").betDatePicker().addClass("bt-hr-start");  
+		$(template).find(".bt-hr-monthly-start").betMonthPicker(); 
+		
+		$(template).find(".bt-hr-daily-end").betDatePicker().addClass("bt-hr-end");
+		$(template).find(".bt-hr-monthly-end").betMonthPicker();  
+		$(template).find(".ui-monthpicker-trigger").hide();
+		$(template).find(".bc-hit-rate-con-txt").text("최대 1개월까지 검색 가능합니다.");
+
+		// 시뮬레이션 설정 select box setup; 
+		var select = $(template).find(".bc-hr-weight-type");
+		var settings = prediction.weightSettingList;
+		for (var i in settings){
+			var weight = settings[i]; 
+			var option = $("<option/>",  {value : weight.weightSetCd, text : weight.weightSetNm});
+			$(select).append(option);  
+		}
+		var option = $("<option/>",  {value : "05", text : "직접입력"});
+		$(select).append(option).selectmenu();
+		
+		// 종목 설정 setup
+		var bcSportsItemkey = ['BET_GM_TYPE_VAL'];
+		var codeCommonRes = getCodeMaster(bcSportsItemkey);
+		var select = $(template).find(".bc-hr-sport-type"); 
+		var arr = codeCommonRes.wsComCodeList.BET_GM_TYPE_VAL;
+		for (var i in arr){
+			var item = arr[i];
+			var option = $("<option/>",  {value : item.code, text : item.codeNm});
+			$(select).append(option); 
+		}
+		
+		$(select).selectmenu();
+		
+	},
+	hitRateResult : function (selector, param, list){
+		var rate, participants=0, success=0; // 종합적중률, 예측참여, 적중
+		
+		var hasKey = param.sportType && typeof param.sportType == 'string';
+		var key = hasKey? param.sportType.toLowerCase() : "total";
+		
+		// 차트 x축, y축 default array
+		var x = ["x"]; 
+		var yTotal = ["종목전체"], ySoccer = ["축구"], yBaseball = ["야구"], yVolleyball = ["배구"], yBasketball = ["농구"];
+		
+		for (var i in list){
+			var data = list[i];
+			participants += data[key + "MatchCount"];
+			success += data[key + "WinCount"];
+			
+			var date = data.exptWinProcDt;
+			var y = date.substr(0,4), m = date.substr(4,2), d = date.substr(6,2);
+			var pushDate = param.seperator == "daily" ? [y,m,d].join("-") : [y,m,"01"].join("-") 
+			x.push(pushDate);
+			yTotal.push(data.totalRatio);
+			ySoccer.push(data.scRatio);
+			yBaseball.push(data.bsRatio);
+			yVolleyball.push(data.vlRatio);
+			yBasketball.push(data.bkRatio);
+		}
+		
+		if(!participants || !success || isNaN(participants) || isNaN(success)){
+			// 오류 처리 : 데이터를 찾을 수 없습니다?		
+		}
+		
+		rate = (success / participants * 100 ).toFixed(2);
+		rate = isNaN(rate)? 0 : rate;
+		participants = betCoach.util.numFormatCase("participants", participants, ",");
+		
+		success = betCoach.util.numFormatCase("participants", success, ",");
+		// console.log("rate ::::: ",rate,"  //// participants :::: ",participants,"   /// success :::: ",success);
+		$(selector).find(".bc-hr-rate").text(rate);
+		$(selector).find(".bc-hr-participants").text(participants); 
+		$(selector).find(".bc-hr-success").text(success);
+
+		var cols; 
+		switch (param.sportType) {
+			case "SC": cols = [x,ySoccer]; 	 	break;
+			case "BS": cols = [x,yBaseball]; 	break;
+			case "VL": cols = [x,yVolleyball]; 	break;
+			case "BK": cols = [x,yBasketball]; 	break;
+			case null: case undefined: 
+			default: cols = [x, yTotal, ySoccer, yBaseball, yVolleyball, yBaseball, yBasketball]; break;
+		} 
+		var timeFormat = param.seperator == "monthly" ? "%y.%m" : "%m.%d" ;
+		var chartParam ={};
+		chartParam = {
+			data : {
+				x: "x",
+				columns : cols 
+			},
+			area : {
+				linearGradient: true
+			},
+			axis : {
+				x : {
+					type: "timeseries",
+					tick : { format: timeFormat, fit : true, outer : false }
+			
+				},
+				y : {
+					max: 100,
+					min: 0, 
+					format : function(y){
+
+					},
+					padding : { top : 10, bottom : 10 },
+					tick: {
+						show: false,
+						outer: false,
+						culling: false
+					}
+				}
+			},
+			grid: {
+				y: {
+					show: true
+				}
+			},
+			tooltip : {
+				contents : function(data, defTit, defVal, color) {
+					var tt = '<ul class="bb-tooltip" style="border:1px #ccc solid">';
+					data.forEach(function(e) {
+						tt += '<li>';
+						tt += '<span class="cell"><span class="point" style="background-color:'+ color(e) +'"></span>'+ e.id.replace('종목','') +'</span>';
+						tt += '<span class="line"></span><span class="cell">'+ e.value +'%</span>';
+						tt += '</li>';
+					});
+					tt += '</ul>';
+					return tt;
+				}
+			}
+			/*
+			point : {
+				pattern: [
+					"circle",
+					"<g><circle cx='5' cy='5' r='5'></circle><rect x='5' y='5' width='5' height='5'></rect></g>",
+					"rectangle",  
+					"<polygon points='2.5 0 0 5 5 5 5 5'></polygon>",
+					"<path d='m3.937502,2.348755c1.314192,-3.618047 6.463238, 0 0, 4.651779c-6.463238,-4.651779 -1.314192,-8.269826 0,-4.651779z'/>"
+				]
+			},
+			legend : {
+				usePoint : true
+			}
+			*/
+		};
+		if( list.length == 0 ){ 
+			$(selector).find(".bc-hr-chart").removeData("chartData"); 
+			$(selector).find(".bc-hr-grid").removeData("gridData");
+		}else{
+			$(selector).find(".bc-hr-chart").data("chartData",chartParam);
+			$(selector).find(".bc-hr-grid").data("gridData",list);
+		}
+		
+	},
+	hitRateGridResult : function(selector, list, guid){
+		var cols = [
+			{data : "exptWinProcDt",
+			 render : function(data){
+				 var result;
+				 result = data.substr(0,4)+"."+data.substr(4,2)+"."+data.substr(6,2);
+				 return result;
+			 }},
+			{data : "totalRatio",
+			 render : function(data){
+				 var result;
+				 result = data.toFixed(2)+"%";
+				 return result;
+			 }},
+			{data : "scRatio",
+			 render : function(data){
+				 var result;
+				 result = data.toFixed(2)+"%";
+				 return result;
+			 }},
+			{data : "bsRatio",
+			 render : function(data){
+				 var result;
+				 result = data.toFixed(2)+"%";
+				 return result;
+			 }},
+			{data : "vlRatio",
+			 render : function(data){
+				 var result;
+				 result = data.toFixed(2)+"%";
+				 return result;
+			 }},
+			{data : "bkRatio",
+			 render : function(data){
+				 var result;
+				 result = data.toFixed(2)+"%";
+				 return result;
+			 }} 
+		]; 
+		if(!list) list={};
+		var gridParam = { 
+			paging : false,
+			searching : false, 
+			lengthChange : false,
+			info : false,
+			ordering : true,
+			list : Object.values(list),  
+			columns : cols 
+		};
+		if(Object.values(list).length==0){
+			$(document).find(".bc-hr-pop-chart-area").hide();
+			$(document).find(".bc-hr-no-chart").show();
+		}else{
+			$(document).find("#"+guid).betGrid(gridParam);			 
+		}
+		
+		 
+	}
+}
