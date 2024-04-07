@@ -1,0 +1,34 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
+    </head>
+    <body>
+        <div class="outerbox">
+            <div class="center">
+                <h1>일정 목록</h1>
+            </div>
+            <div>
+                <ul>
+                    <ul>
+                        {% for post in posts %}
+                        <li>
+                            <div class="toDoBox">
+                                <span>{{ post.get_days_left }}</span>
+                                <a href="{% url 'detail' post.pk %}">{{ post.title }}</a>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </ul>
+            </div>
+            <div class="center">
+                <button onclick="window.location.href='{% url 'new' %}'">생성하기</button>
+            </div>
+        </div>
+    </body>
+</html>
