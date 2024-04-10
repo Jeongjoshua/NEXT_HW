@@ -1,0 +1,25 @@
+{% extends 'base.html' %} {% block css %} {% load static %}{% endblock %} {% block content %}
+<h1>블로그</h1>
+<h2>글 전체 목록</h2>
+<h3>
+    글 전체 개수: {{ blog_count }}
+    <h3>
+        <div>
+            <ul>
+                {% for post in posts %}
+                <li>
+                    <a href="{% url 'detail' post.pk %}">{{post.title}}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <a href="{% url 'new' %}">글 작성하기</a>
+        <h2>카테고리</h2>
+        <ul>
+            <li><a href="{% url 'posts_by_category' 'hobby' %}">취미- {{hobby_count}}</a></li>
+            <li><a href="{% url 'posts_by_category' 'food' %}">음식- {{food_count}}</a></li>
+            <li><a href="{% url 'posts_by_category' 'programming' %}">프로그래밍- {{programming_count}}</a></li>
+        </ul>
+        {% endblock content %}
+    </h3>
+</h3>

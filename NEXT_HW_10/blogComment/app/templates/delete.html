@@ -1,0 +1,15 @@
+{% extends 'base.html' %} {% block css %} {% load static %}{% endblock %} {% block content %}
+<form action="" method="post">
+    {csrf_token}
+    <div>
+        <label for="content">내용</label>
+        <input type="text" id="title" name="title" value="{{post.title}}" />
+    </div>
+    <div>
+        <label for="content">내용</label>
+        <textarea name="content" id="content" cols="30" rows="10">{{post.content}}</textarea>
+    </div>
+    <button type="submit">수정하기</button>
+    <a href="{% url 'home' %}">돌아가기</a>
+</form>
+{%endblock content%}
