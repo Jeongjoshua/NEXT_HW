@@ -1,0 +1,12 @@
+{% extends "base.html" %} {% block css %} {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'user_profile.css' %}?after" />
+{% endblock %} {% block content %} {% if user.is_authenticated %}
+<h1>{{ user_profile.username }} 프로파일</h1>
+<ul>
+    {% for article in articles %}
+    <li><a href="{% url 'detail' article.id %}">{{ article.title }}</a></li>
+    {% empty %}
+    <li>목록 없음</li>
+    {% endfor %}
+</ul>
+{% endif %} {% endblock %}
