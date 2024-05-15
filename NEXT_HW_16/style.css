@@ -1,0 +1,56 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.content {
+    text-align: center;
+    padding: 50px;
+    width: 600px;
+    background-color: red;
+    color: white;
+}
+
+.content.about {
+    background-color: red;
+}
+
+.content.products {
+    background-color: blue;
+}
+.content.technology {
+    background-color: green;
+}
+.content.downloads {
+    background-color: black;
+}
+.navbar {
+    display: flex;
+    justify-content: center;
+    width: 700px;
+    background-color: #333;
+    height: 50px;
+}
+
+.nav-button {
+    width: 25%;
+    color: white;
+    font-size: 16px;
+    background-color: grey;
+}
+
+.navbar .nav-button:hover {
+    background-color: #555;
+}
+
+.nav-button.active {
+    background-color: #007bff;
+    color: white;
+}
