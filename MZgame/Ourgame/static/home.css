@@ -26,11 +26,11 @@ img {
 
 h1 {
     font-size: 2.5em;
-    color: #007BFF;
+    color: #007bff;
 }
 
 button {
-    background-color: #007BFF;
+    background-color: #007bff;
     color: #fff;
     border: none;
     padding: 10px 20px;
@@ -43,7 +43,7 @@ button:hover {
     background-color: #0056b3;
 }
 
-form input[type="text"] {
+form input[type='text'] {
     padding: 10px;
     width: calc(100% - 22px);
     margin: 10px 0;
@@ -62,10 +62,8 @@ form button {
     height: 150px;
     margin-bottom: 20px;
     border-radius: 50%;
-    
 }
 
-.ment{
+.ment {
     background-color: rgb(224, 224, 224);
-    
 }
