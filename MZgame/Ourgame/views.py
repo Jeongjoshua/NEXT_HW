@@ -2,13 +2,13 @@ from django.shortcuts import render
 
 # Create your views here.
 def home(request):
-    return
+    return render(request,'home.html')
 
 def name(request):
-    return
+    return render(request,'name.html')
 
 def game(request):
-    return
+    return render(request,'game.html')
 
 def gameover(request):
-    return
+    return render(request, 'gameover.html')
