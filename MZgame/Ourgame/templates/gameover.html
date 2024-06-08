@@ -13,7 +13,7 @@
             <div class="gameover">
                 <h1>GAME OVER</h1>
             </div>
-            <img class="large-img" src="{% static 'images/vv.png' %}" alt="Game Image" width="70%"/>
+            <img class="large-img" src="{% static 'images/vv.png' %}" alt="Game Image" width="40%"/>
             <div class="ranking">
                 <h2>랭킹</h2>
                 <ol>
@@ -30,6 +30,7 @@
             </div>
         </br><button onclick="location.href='{% url 'name' %}'">다시 도전하기</button>
         </div>
+<<<<<<< HEAD
         <script>
             const myRank = document.querySelector('.myranking').dataset.myRank;
             const playerName = document.querySelector('.myranking').dataset.playerName;
@@ -68,5 +69,7 @@
             setInterval(createFallingCry, 1000);
         });
         </script>
+=======
+>>>>>>> 75fcd20471f84e1348ce25aa224c1a0c9b595782
     </body>
 </html>
