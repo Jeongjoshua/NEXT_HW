@@ -1,9 +1,29 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html>
     <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Document</title>
+        <title>Enter Name</title>
+        <link rel="stylesheet" type="text/css" href="{% static 'name.css' %}" />
     </head>
-    <body></body>
+    <body>
+        <div class="container">
+            <div class="top">
+                {% if top_record %}
+                <p>Current top player: {{ top_record.name }} with a score of {{ top_record.score }} seconds</p>
+                {% else %}
+                <p>No records yet.</p>
+                {% endif %}
+            </div>
+            <form method="post">
+                {% csrf_token %}
+                <div>
+                    <label for="name">Enter your name:</label>
+                    <input type="text" id="name" name="name" required />
+                </div>
+                <div>
+                    <button type="submit">Start Game</button>
+                </div>
+            </form>
+        </div>
+    </body>
 </html>
