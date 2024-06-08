@@ -25,7 +25,7 @@
             <div class="myranking">
                 <div class="myranking-container"><div><b>내 순위:</b></div> <div><b>{{ player_rank }}위</b></div></div>
                 <div class="myranking-container"><div><b>이름:</b></div> <div><b>{{ player_name }}</b></div></div>
-                <div class="myranking-container"><div><b>시간:</div> {{ my_record.score }}</b></div></div>
+                <div class="myranking-container"><div><b>시간:</div> <div>{{ my_record.score }}</b></div></div>
             </div>
             <button onclick="location.href='{% url 'name' %}'">다시 도전하기</button>
         </div>

@@ -32,6 +32,13 @@ button {
     align-items: center;
 }
 
+.container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
 .myranking-container {
     display: flex;
     justify-content: space-between;
