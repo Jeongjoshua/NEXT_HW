@@ -15,8 +15,36 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const objectCreationInterval = 2000; // Interval in milliseconds to create objects
     let currentObjectSpeed = objectSpeed;
 
-    // Left person images array is now available globally
-    // var leftPersonImages = ["{% static 'images/park1.png' %}", "{% static 'images/park2.png' %}"];
+    window.addEventListener('DOMContentLoaded', (event) => {
+        const modal = document.getElementById('myModal');
+
+        // Show the modal on page load
+        modal.style.display = 'block';
+
+        // Automatically close the modal after 3 seconds
+        setTimeout(() => {
+            modal.style.display = 'none'; // Hide the modal
+            startGame(); // Start the game
+        }, 3000);
+    });
+    // Function to display new round modal every 20 seconds
+    function displayNewRoundModal() {
+        const roundNumber = Math.floor(timeElapsed / 20);
+        const modalId = `myModal${roundNumber}`;
+        const modal = document.getElementById(modalId);
+
+        if (modal) {
+            modal.style.display = 'block'; // Show the modal
+
+            // Automatically close the modal after 2 seconds
+            setTimeout(() => {
+                modal.style.display = 'none'; // Hide the modal
+            }, 2000);
+        }
+    }
+
+    // Timer to display new round modal every 20 seconds
+    const roundModalInterval = setInterval(displayNewRoundModal, 20000);
 
     // Move the hand up and down
     window.addEventListener('keydown', (e) => {

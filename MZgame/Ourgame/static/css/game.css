@@ -71,3 +71,36 @@ body {
     transform: translateY(-50%) scale(1.5); /* Increase size by 50% */
     width: 400px;
 }
+
+#leftPerson {
+    position: absolute;
+    left: 0%;
+    top: 48%;
+    transform: translateY(-50%) scale(1.5); /* Increase size by 50% */
+    width: 400px;
+}
+
+/* CSS for the modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent gray background */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    text-align: center;
+}
+.ment {
+    color: #ff7b00;
+}
