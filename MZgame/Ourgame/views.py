@@ -26,7 +26,15 @@ def save_score(request):
     return JsonResponse({'status': 'fail'}, status=400)
 
 def gameover(request):
-    top_records = Record.objects.order_by('-score')[:3]
-    
-   
-    return render(request, 'gameover.html', {'top_records': top_records})
+    player_name = request.session.get('player_name')
+    my_record = Record.objects.filter(name=player_name).order_by('-id').first()  # 마지막 기록 가져오기
+    top_records = Record.objects.order_by('-score')[:3]  # 상위 3개의 기록
+    player_rank = list(Record.objects.order_by('-score')).index(my_record) + 1  # 플레이어 순위 계산
+
+    context = {
+        'player_name': player_name,
+        'my_record': my_record,
+        'top_records': top_records,
+        'player_rank': player_rank,
+    }
+    return render(request, 'gameover.html', context)
