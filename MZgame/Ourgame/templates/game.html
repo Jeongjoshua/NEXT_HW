@@ -13,6 +13,7 @@
             var gameoverUrl = "{% url 'gameover' %}";
             var csrfToken = '{{ csrf_token }}';
             var playerName = '{{ request.session.player_name }}';
+            var leftPersonImages = ["{% static 'images/park1.png' %}", "{% static 'images/park2.png' %}"];
         </script>
     </head>
     <body>
@@ -59,6 +60,7 @@
             <div id="timer">Time: 0s</div>
             <img id="hand" src="{% static 'images/hand.jpg' %}" alt="Hand" />
             <img id="ayoung" src="{% static 'images/ayoung1.png' %}" alt="Ayoung" />
+            <img id="leftPerson" src="{% static 'images/park1.png' %}" alt="Left Person" />
         </div>
         <script src="{% static 'js/script.js' %}"></script>
     </body>
