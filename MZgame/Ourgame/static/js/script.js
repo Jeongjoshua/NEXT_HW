@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', (event) => {
-    const hand = document.getElementById('hand');
+    const hand = document.getElementById('hand'); // Update the variable name
     const container = document.getElementById('container');
     const hpBar = document.getElementById('hp-bar');
     const timerElement = document.getElementById('timer');
@@ -16,18 +16,22 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const objectCreationInterval = 2000; // Interval in milliseconds to create objects
     let currentObjectSpeed = objectSpeed;
 
-    window.addEventListener('DOMContentLoaded', (event) => {
+    let counter = 0; // Initialize counter
+    let currentImageSetIndex = 0; // Track the current image set index
+
+    // Function to start the game
+    function startGame() {
         const modal = document.getElementById('myModal');
-
-        // Show the modal on page load
         modal.style.display = 'block';
-
-        // Automatically close the modal after 3 seconds
         setTimeout(() => {
-            modal.style.display = 'none'; // Hide the modal
-            startGame(); // Start the game
+            modal.style.display = 'none';
         }, 3000);
+    }
+
+    window.addEventListener('DOMContentLoaded', (event) => {
+        startGame(); // Start the game on page load
     });
+
     // Function to display new round modal every 20 seconds
     function displayNewRoundModal() {
         const roundNumber = Math.floor(timeElapsed / 20);
@@ -36,18 +40,36 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
         if (modal) {
             modal.style.display = 'block'; // Show the modal
-
-            // Automatically close the modal after 2 seconds
             setTimeout(() => {
                 modal.style.display = 'none'; // Hide the modal
             }, 2000);
         }
+
+        // Increment the counter every 20 seconds
+        counter++;
+
+        // Switch to the correct image set based on counter
+        switch (counter) {
+            case 0:
+                currentImageSetIndex = 0; // Use the park image set
+                break;
+            case 1:
+                currentImageSetIndex = 1; // Switch to the shin image set
+                break;
+            case 2:
+                currentImageSetIndex = 2; // Switch to the ma image set
+                break;
+            case 3:
+                currentImageSetIndex = 3; // Switch to the minheejean image set
+                break;
+            default:
+                currentImageSetIndex = 3; // Continue using the minheejean image set
+                break;
+        }
     }
 
-    // Timer to display new round modal every 20 seconds
+    // Timer to display new round modal and switch image sets every 20 seconds
     const roundModalInterval = setInterval(displayNewRoundModal, 20000);
-    // Left person images array is now available globally
-    // var leftPersonImages = ["{% static 'images/park1.png' %}", "{% static 'images/park2.png' %}"];
 
     // Move the hand up and down
     window.addEventListener('keydown', (e) => {
@@ -92,7 +114,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     // Function to create a flying object
     function createObject(isHeart = false) {
         const object = document.createElement('img');
-        object.src = isHeart ? heartImageUrl : 'https://cdn.britannica.com/68/195168-050-BBAE019A/football.jpg';
+        object.src = isHeart ? heartImageUrl : fireImageUrl;
         object.classList.add(isHeart ? 'heart' : 'object');
         object.style.position = 'absolute'; // Ensure absolute positioning
         object.style.top = `${10 + Math.random() * 80}%`;
@@ -181,11 +203,15 @@ document.addEventListener('DOMContentLoaded', (event) => {
         timerElement.textContent = `Time: ${timeElapsed}s`;
 
         // Alternate left person images every second based on elapsed time
-        leftPerson.src = leftPersonImages[timeElapsed % 2];
+        const currentImageSet = personImageSets[currentImageSetIndex];
+        leftPerson.src = currentImageSet[timeElapsed % currentImageSet.length];
+
+        // Alternate hand images every second based on elapsed time
+        hand.src = handImageSets[currentImageSetIndex];
 
         // Increase speed every 10 seconds
         if (timeElapsed % 10 === 0) {
-            currentObjectSpeed = currentObjectSpeed + 5;
+            currentObjectSpeed += 1;
         }
     }, 1000);
 });
