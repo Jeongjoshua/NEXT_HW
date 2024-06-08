@@ -3,7 +3,36 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Document</title>
+        <title>게임 종료</title>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'css/gameover.css' %}" />
     </head>
-    <body></body>
+    <body>
+        <div class="container">
+            <div class="gameover">
+                <h1>GAME OVER</h1>
+            </div>
+            <div class="ranking">
+                <h2>랭킹</h2>
+                <ol>
+                    {% for record in top_records %}
+                    <li>{{ record.name }} - {{ record.score }}</li>
+                    {% endfor %}
+                </ol>
+            </div>
+
+            <div class="myranking">
+                <p>내 순위: {{ my_record.id }}</p>
+                <p>{{ player_name }}</p>
+                <p>ROUND: {{ my_record.round_number }}</p>
+                <p>TIME: {{ my_record.play_time }}</p>
+            </div>
+            <button onclick="location.href='{% url 'name' %}'">다시 도전하기</button>
+        </div>
+        <script>
+            const myRank = document.querySelector('.myranking').dataset.myRank;
+            const playerName = document.querySelector('.myranking').dataset.playerName;
+            const playTime = document.querySelector('.myranking').dataset.playTime;
+        </script>
+    </body>
 </html>
