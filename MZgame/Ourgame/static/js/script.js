@@ -106,19 +106,21 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     // Function to send game result to the server
     function sendGameResult() {
-        const playerName = '{{ request.session.player_name }}'; // Get player name from session
+        console.log('Sending game result...');
         $.ajax({
             type: 'POST',
-            url: "{% url 'save_score' %}",
+            url: saveScoreUrl,
             data: {
                 name: playerName,
                 score: timeElapsed,
-                csrfmiddlewaretoken: '{{ csrf_token }}',
+                csrfmiddlewaretoken: csrfToken,
             },
             success: function (response) {
-                window.location.href = "{% url 'gameover' %}"; // Redirect to gameover page
+                console.log('Score saved successfully! Redirecting to gameover page...');
+                window.location.href = gameoverUrl; // Redirect to gameover page
             },
             error: function (response) {
+                console.log('Failed to save score:', response);
                 alert('Failed to save score.');
             },
         });
