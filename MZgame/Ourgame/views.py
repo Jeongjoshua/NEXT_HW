@@ -1,4 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from .models import Record
+import time
 
 # Create your views here.
 def home(request):
@@ -8,7 +10,7 @@ def name(request):
     if request.method == 'POST':
         player_name = request.POST.get('player_name')
         # Handle the player's name here (e.g., save to database, pass to game, etc.)
-        return render(request, 'name.html', {'player_name': player_name})
+        return redirect('game')
     return render(request,'name.html')
 
 def game(request):
