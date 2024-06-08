@@ -1,4 +1,5 @@
 body {
+    overflow: hidden;
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
     color: #333;
@@ -7,14 +8,18 @@ body {
 }
 
 .container {
+    margin-top: 30px ;
     text-align: center;
-    margin: 50px auto;
+    margin: 30px auto;
     max-width: 600px;
     background-color: #fff;
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
+    position: relative;
+    z-index: 10;
 }
+
 button {
     background-color: rgb(255, 200, 0);
     color: #000000;
@@ -23,4 +28,33 @@ button {
     font-size: 1em;
     border-radius: 5px;
     cursor: pointer;
+}
+
+.falling-cry {
+    position: absolute;
+    font-size: 24px;
+    animation: fall linear infinite;
+}
+
+@keyframes fall {
+    0% {
+        top: -50px;
+        opacity: 1;
+    }
+    100% {
+        top: 100vh;
+        opacity: 0;
+    }
+}
+
+
+
+
+
+.myranking {
+    background-color: #87ceeb; /* Light blue */
+    color: black;
+    border-radius: 8px;
+    padding: 10px;
+    margin-top: 20px;
 }

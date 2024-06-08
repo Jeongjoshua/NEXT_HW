@@ -1,20 +1,18 @@
-/* styles.css */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    color: #333;
+    background-color: #ffffff;
+    color: #000000;
     margin: 0;
     padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Ensure the body takes the full height of the viewport */
 }
 
 .container {
     text-align: center;
-    margin: 50px auto;
-    max-width: 600px;
-    background-color: #fff;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+    margin: auto; /* Center the container both horizontally and vertically */
 }
 
 img {
@@ -45,7 +43,6 @@ button:hover {
 
 form input[type='text'] {
     padding: 10px;
-    width: calc(100% - 22px);
     margin: 10px 0;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -54,16 +51,18 @@ form input[type='text'] {
 form button {
     margin-top: 10px;
 }
-.circle-text {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 150px;
-    margin-bottom: 20px;
-    border-radius: 50%;
-}
+
 
 .ment {
     background-color: rgb(224, 224, 224);
+     /* Adding a black border */
+    padding: 5px; /* Adding padding */
+    /* Adjust the element's display property */
+    box-sizing: border-box; /* Ensure the padding and border are included in the element's total width and height */
+}
+
+.large-img {
+    max-width: 60%; /* Increase the max width */
+    height: auto;
+    border-radius: 8px;
 }

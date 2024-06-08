@@ -12,6 +12,7 @@
             <div class="gameover">
                 <h1>GAME OVER</h1>
             </div>
+            <img class="large-img" src="{% static 'images/vv.png' %}" alt="Game Image" width="70%"/>
             <div class="ranking">
                 <h2>랭킹</h2>
                 <ol>
@@ -27,12 +28,45 @@
                 <p>ROUND: {{ my_record.round_number }}</p>
                 <p>TIME: {{ my_record.play_time }}</p>
             </div>
-            <button onclick="location.href='{% url 'name' %}'">다시 도전하기</button>
+        </br><button onclick="location.href='{% url 'name' %}'">다시 도전하기</button>
         </div>
         <script>
             const myRank = document.querySelector('.myranking').dataset.myRank;
             const playerName = document.querySelector('.myranking').dataset.playerName;
             const playTime = document.querySelector('.myranking').dataset.playTime;
+            document.addEventListener('DOMContentLoaded', (event) => {
+            const container = document.querySelector('.container');
+            const containerRect = container.getBoundingClientRect();
+            let lastCryPosition = null;
+
+            function createFallingCry() {
+                const cry = document.createElement('div');
+                cry.textContent = '😭';
+                cry.classList.add('falling-cry');
+
+                let cryPosition;
+                do {
+                    cryPosition = Math.random() * window.innerWidth;
+                } while (
+                    (cryPosition > containerRect.left - 30 && cryPosition < containerRect.right + 30) ||
+                    (lastCryPosition && Math.abs(cryPosition - lastCryPosition) < 30)
+                );
+
+                lastCryPosition = cryPosition;
+
+                cry.style.left = cryPosition + 'px';
+                cry.style.animationDuration = (Math.random() * 2 + 5) + 's'; // 5초에서 7초 사이의 랜덤 시간 설정
+                document.body.appendChild(cry);
+
+                // 애니메이션 끝난 후 요소 제거
+                cry.addEventListener('animationend', () => {
+                    document.body.removeChild(cry);
+                });
+            }
+
+            // 일정 간격으로 'ㅠ' 생성
+            setInterval(createFallingCry, 1000);
+        });
         </script>
     </body>
 </html>
