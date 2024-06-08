@@ -9,15 +9,69 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const leftPerson = document.getElementById('leftPerson');
     const collisionSound = document.getElementById('collision-sound');
 
+    const audioSets = [
+        [
+            document.getElementById('round2-audio1'),
+            document.getElementById('round2-audio2'),
+            document.getElementById('round2-audio3'),
+        ],
+        [
+            document.getElementById('round1-audio1'),
+            document.getElementById('round1-audio2'),
+            document.getElementById('round1-audio3'),
+        ],
+        [
+            document.getElementById('round3-audio1'),
+            document.getElementById('round3-audio2'),
+            document.getElementById('round3-audio3'),
+        ],
+        [
+            document.getElementById('round4-audio1'),
+            document.getElementById('round4-audio2'),
+            document.getElementById('round4-audio3'),
+        ],
+    ];
+
+    const volumeSettings = {
+        'collision-sound': 0.3,
+        'round1-audio1': 1,
+        'round1-audio2': 1,
+        'round1-audio3': 1,
+        'round2-audio1': 1,
+        'round2-audio2': 1,
+        'round2-audio3': 1,
+        'round3-audio1': 0.5,
+        'round3-audio2': 0.5,
+        'round3-audio3': 0.5,
+        'round4-audio1': 1,
+        'round4-audio2': 1,
+        'round4-audio3': 1,
+    };
+
+    function setAudioVolume(audioSets, collisionSound) {
+        audioSets.forEach((round) => {
+            round.forEach((audio) => {
+                audio.volume = volumeSettings[audio.id] || 0.5; // Default to 0.5 if not specified
+            });
+        });
+        collisionSound.volume = volumeSettings['collision-sound'] || 0.5;
+    }
+
+    // Set the volume for all audio elements
+    setAudioVolume(audioSets, collisionSound);
+
     let topPosition = 50; // Starting at 50% from the top
     let hp = 100;
     let timeElapsed = 0;
     let objectSpeed = 10; // Initial speed at which objects move towards the hand
     const objectCreationInterval = 2000; // Interval in milliseconds to create objects
     let currentObjectSpeed = objectSpeed;
+    let isModalOpen = false;
 
     let counter = 0; // Initialize counter
     let currentImageSetIndex = 0; // Track the current image set index
+    let currentAudioIndex = 0; // Initialize current audio index
+    let currentAudio = null; // Initialize current audio element
 
     // Function to start the game
     function startGame() {
@@ -28,10 +82,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
         }, 3000);
     }
 
-    window.addEventListener('DOMContentLoaded', (event) => {
-        startGame(); // Start the game on page load
-    });
-
     // Function to display new round modal every 20 seconds
     function displayNewRoundModal() {
         const roundNumber = Math.floor(timeElapsed / 20);
@@ -39,9 +89,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
         const modal = document.getElementById(modalId);
 
         if (modal) {
+            isModalOpen = true;
             modal.style.display = 'block'; // Show the modal
             setTimeout(() => {
                 modal.style.display = 'none'; // Hide the modal
+                isModalOpen = false;
             }, 2000);
         }
 
@@ -66,6 +118,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 currentImageSetIndex = 3; // Continue using the minheejean image set
                 break;
         }
+
+        // Play the next audio in the current audio set
+        playNextAudio();
     }
 
     // Timer to display new round modal and switch image sets every 20 seconds
@@ -113,6 +168,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     // Function to create a flying object
     function createObject(isHeart = false) {
+        if (isModalOpen) return;
         const object = document.createElement('img');
         object.src = isHeart ? heartImageUrl : fireImageUrl;
         object.classList.add(isHeart ? 'heart' : 'object');
@@ -197,6 +253,31 @@ document.addEventListener('DOMContentLoaded', (event) => {
         });
     }
 
+    function playNextAudio() {
+        if (currentAudio) {
+            currentAudio.pause();
+            currentAudio.currentTime = 0;
+        }
+
+        const audioList = audioSets[currentImageSetIndex];
+        if (audioList && audioList.length > 0) {
+            currentAudio = audioList[currentAudioIndex];
+            if (currentAudio) {
+                currentAudio.play();
+                currentAudio.addEventListener(
+                    'ended',
+                    () => {
+                        setTimeout(() => {
+                            currentAudioIndex = (currentAudioIndex + 1) % audioList.length;
+                            playNextAudio();
+                        }, 1000); // Play next audio after 1 second
+                    },
+                    { once: true }
+                );
+            }
+        }
+    }
+
     // Timer to update elapsed time and increase speed
     const timerInterval = setInterval(() => {
         timeElapsed += 1;
@@ -210,8 +291,14 @@ document.addEventListener('DOMContentLoaded', (event) => {
         hand.src = handImageSets[currentImageSetIndex];
 
         // Increase speed every 10 seconds
-        if (timeElapsed % 10 === 0) {
-            currentObjectSpeed += 1;
+        if (timeElapsed % 20 === 0) {
+            currentObjectSpeed += 10;
         }
     }, 1000);
+
+    // Start the game on page load
+    startGame();
+
+    // Start the initial audio
+    playNextAudio();
 });
