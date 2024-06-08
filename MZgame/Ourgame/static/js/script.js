@@ -6,13 +6,17 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const heartImageUrl = container.getAttribute('data-heart-url');
     const healthImages = JSON.parse(container.getAttribute('data-health-images'));
     const ayoung = document.getElementById('ayoung');
+    const leftPerson = document.getElementById('leftPerson');
 
     let topPosition = 50; // Starting at 50% from the top
     let hp = 100;
     let timeElapsed = 0;
-    let objectSpeed = 40; // Initial speed at which objects move towards the hand
+    let objectSpeed = 10; // Initial speed at which objects move towards the hand
     const objectCreationInterval = 2000; // Interval in milliseconds to create objects
     let currentObjectSpeed = objectSpeed;
+
+    // Left person images array is now available globally
+    // var leftPersonImages = ["{% static 'images/park1.png' %}", "{% static 'images/park2.png' %}"];
 
     // Move the hand up and down
     window.addEventListener('keydown', (e) => {
@@ -61,18 +65,25 @@ document.addEventListener('DOMContentLoaded', (event) => {
         object.classList.add(isHeart ? 'heart' : 'object');
         object.style.position = 'absolute'; // Ensure absolute positioning
         object.style.top = `${10 + Math.random() * 80}%`;
-        object.style.left = '0%'; // Start at the left edge
+
+        // Calculate the center of the left person image
+        const leftPersonRect = leftPerson.getBoundingClientRect();
+        const leftPersonCenter = (leftPersonRect.left + leftPersonRect.right) / 2;
+
+        // Set the starting position of the object to the center of the left person image
+        object.style.left = `${leftPersonCenter}px`;
         container.appendChild(object);
 
         // Move the object towards the right
-        let objectPosition = 0;
+        let objectPosition = leftPersonCenter;
         const interval = setInterval(() => {
-            objectPosition += 2; // Increment the position
-            object.style.left = `${objectPosition}%`;
+            objectPosition += currentObjectSpeed; // Increment the position based on speed
+            object.style.left = `${objectPosition}px`;
 
             // Check for collision with the hand
             const objectRect = object.getBoundingClientRect();
             const handRect = hand.getBoundingClientRect();
+            const ayoungRect = ayoung.getBoundingClientRect();
             if (
                 objectRect.right >= handRect.left && // Ensure it touches the hand
                 objectRect.left <= handRect.right && // Ensure it overlaps horizontally
@@ -85,9 +96,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     hp = Math.min(100, hp + 20);
                     updateHpBar();
                 }
-            } else if (objectRect.left >= window.innerWidth) {
-                // Check if the object is off the right edge
-                // If the object reaches the right end
+            } else if (objectRect.left >= (ayoungRect.left + ayoungRect.right) / 2 - 50) {
+                // Adjust the endpoint to 50px behind Ayoung's midpoint
                 clearInterval(interval);
                 container.removeChild(object);
                 if (!isHeart) {
@@ -100,7 +110,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     }
                 }
             }
-        }, currentObjectSpeed);
+        }, 20); // Use a fixed interval timing
     }
 
     // Create objects at intervals with a lower probability for hearts
@@ -111,19 +121,21 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     // Function to send game result to the server
     function sendGameResult() {
-        const playerName = '{{ request.session.player_name }}'; // Get player name from session
+        console.log('Sending game result...');
         $.ajax({
             type: 'POST',
-            url: "{% url 'save_score' %}",
+            url: saveScoreUrl,
             data: {
                 name: playerName,
                 score: timeElapsed,
-                csrfmiddlewaretoken: '{{ csrf_token }}',
+                csrfmiddlewaretoken: csrfToken,
             },
             success: function (response) {
-                window.location.href = "{% url 'gameover' %}"; // Redirect to gameover page
+                console.log('Score saved successfully! Redirecting to gameover page...');
+                window.location.href = gameoverUrl; // Redirect to gameover page
             },
             error: function (response) {
+                console.log('Failed to save score:', response);
                 alert('Failed to save score.');
             },
         });
@@ -134,9 +146,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
         timeElapsed += 1;
         timerElement.textContent = `Time: ${timeElapsed}s`;
 
+        // Alternate left person images every second based on elapsed time
+        leftPerson.src = leftPersonImages[timeElapsed % 2];
+
         // Increase speed every 10 seconds
         if (timeElapsed % 10 === 0) {
-            currentObjectSpeed = Math.max(5, currentObjectSpeed - 10); // Increase speed by 50%
+            currentObjectSpeed = Math.min(currentObjectSpeed + 1, 5); // Increase speed by 1 unit, max 5
         }
     }, 1000);
 });

@@ -7,6 +7,14 @@
         <title>Block the Objects</title>
         <link rel="stylesheet" href="{% static 'css/game.css' %}" />
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            // Django 템플릿 태그를 사용하여 URL과 CSRF 토큰을 설정합니다.
+            var saveScoreUrl = "{% url 'save_score' %}";
+            var gameoverUrl = "{% url 'gameover' %}";
+            var csrfToken = '{{ csrf_token }}';
+            var playerName = '{{ request.session.player_name }}';
+            var leftPersonImages = ["{% static 'images/park1.png' %}", "{% static 'images/park2.png' %}"];
+        </script>
     </head>
     <body>
         <div
@@ -20,6 +28,7 @@
             <div id="timer">Time: 0s</div>
             <img id="hand" src="{% static 'images/hand.jpg' %}" alt="Hand" />
             <img id="ayoung" src="{% static 'images/ayoung1.png' %}" alt="Ayoung" />
+            <img id="leftPerson" src="{% static 'images/park1.png' %}" alt="Left Person" />
         </div>
         <script src="{% static 'js/script.js' %}"></script>
     </body>
