@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const healthImages = JSON.parse(container.getAttribute('data-health-images'));
     const ayoung = document.getElementById('ayoung');
     const leftPerson = document.getElementById('leftPerson');
+    const collisionSound = document.getElementById('collision-sound');
 
     let topPosition = 50; // Starting at 50% from the top
     let hp = 100;
@@ -15,36 +16,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const objectCreationInterval = 2000; // Interval in milliseconds to create objects
     let currentObjectSpeed = objectSpeed;
 
-    window.addEventListener('DOMContentLoaded', (event) => {
-        const modal = document.getElementById('myModal');
-
-        // Show the modal on page load
-        modal.style.display = 'block';
-
-        // Automatically close the modal after 3 seconds
-        setTimeout(() => {
-            modal.style.display = 'none'; // Hide the modal
-            startGame(); // Start the game
-        }, 3000);
-    });
-    // Function to display new round modal every 20 seconds
-    function displayNewRoundModal() {
-        const roundNumber = Math.floor(timeElapsed / 20);
-        const modalId = `myModal${roundNumber}`;
-        const modal = document.getElementById(modalId);
-
-        if (modal) {
-            modal.style.display = 'block'; // Show the modal
-
-            // Automatically close the modal after 2 seconds
-            setTimeout(() => {
-                modal.style.display = 'none'; // Hide the modal
-            }, 2000);
-        }
-    }
-
-    // Timer to display new round modal every 20 seconds
-    const roundModalInterval = setInterval(displayNewRoundModal, 20000);
+    // Left person images array is now available globally
+    // var leftPersonImages = ["{% static 'images/park1.png' %}", "{% static 'images/park2.png' %}"];
 
     // Move the hand up and down
     window.addEventListener('keydown', (e) => {
@@ -123,6 +96,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 if (isHeart) {
                     hp = Math.min(100, hp + 20);
                     updateHpBar();
+                } else {
+                    collisionSound.currentTime = 0; // Reset sound to start
+                    collisionSound.play(); // Play collision sound when an object hits the hand
                 }
             } else if (objectRect.left >= (ayoungRect.left + ayoungRect.right) / 2 - 50) {
                 // Adjust the endpoint to 50px behind Ayoung's midpoint
@@ -179,7 +155,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
         // Increase speed every 10 seconds
         if (timeElapsed % 10 === 0) {
-            currentObjectSpeed = Math.min(currentObjectSpeed + 1, 5); // Increase speed by 1 unit, max 5
+            currentObjectSpeed = currentObjectSpeed + 5;
         }
     }, 1000);
 });
