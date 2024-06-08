@@ -56,3 +56,10 @@ body {
     right: 10px;
     font-size: 20px;
 }
+
+.heart {
+    width: 100px; /* Adjust the width to your desired size */
+    height: 100px; /* Adjust the height to your desired size */
+    position: absolute;
+    transform: scale(1.2); /* Zoom in by 1.5 times, adjust as needed */
+}

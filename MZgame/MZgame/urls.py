@@ -25,4 +25,5 @@ urlpatterns = [
     path('name/',views.name,name='name'),
     path('game/',views.game,name='game'),
     path('gameover/',views.gameover,name='gameover'),
+    path('save_score/', views.save_score, name='save_score'),
 ]

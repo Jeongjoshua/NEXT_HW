@@ -6,15 +6,20 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Block the Objects</title>
         <link rel="stylesheet" href="{% static 'css/game.css' %}" />
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     </head>
     <body>
-        <div id="container">
+        <div
+            id="container"
+            data-heart-url="{% static 'images/heart.png' %}"
+            data-health-images='["{% static "images/ayoung1.png" %}", "{% static "images/ayoung2.png" %}", "{% static "images/ayoung3.png" %}", "{% static "images/ayoung4.png" %}", "{% static "images/ayoung5.png" %}", "{% static "images/ayoung6.png" %}", "{% static "images/ayoung7.png" %}"]'
+        >
             <div id="hp-container">
                 <div id="hp-bar"></div>
             </div>
             <div id="timer">Time: 0s</div>
             <img id="hand" src="{% static 'images/hand.jpg' %}" alt="Hand" />
-            <img id="ayoung" src="{% static 'images/ayoung.jpg' %}" alt="ayoung" />
+            <img id="ayoung" src="{% static 'images/ayoung1.png' %}" alt="Ayoung" />
         </div>
         <script src="{% static 'js/script.js' %}"></script>
     </body>
