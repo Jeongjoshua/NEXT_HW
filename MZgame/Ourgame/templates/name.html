@@ -3,25 +3,30 @@
 <html>
     <head>
         <title>Enter Name</title>
-        <link rel="stylesheet" type="text/css" href="{% static 'name.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'css/name.css' %}" />
     </head>
     <body>
         <div class="container">
+            <img src="{% static 'images/winnercup.png' %}" alt="우승컵" />
             <div class="top">
                 {% if top_record %}
-                <p>Current top player: {{ top_record.name }} with a score of {{ top_record.score }} seconds</p>
+                <div class="first">
+                    <img height="55px" src="{% static 'images/first.png' %}" alt="1위" />
+                </div>
+                <div class="topName">{{ top_record.name }}</div>
+                <div class="topScore">{{ top_record.score }}</div>
                 {% else %}
                 <p>No records yet.</p>
                 {% endif %}
             </div>
             <form method="post">
                 {% csrf_token %}
-                <div>
-                    <label for="name">Enter your name:</label>
+                <div class="name-container">
+                    <div>이름을 입력해주세요!</div>
                     <input type="text" id="name" name="name" required />
                 </div>
-                <div>
-                    <button type="submit">Start Game</button>
+                <div class="button-container">
+                    <button type="submit">START!</button>
                 </div>
             </form>
         </div>
