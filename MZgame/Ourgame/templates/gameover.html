@@ -24,7 +24,6 @@
             <div class="myranking">
                 <p>내 순위: {{ player_rank }}</p>
                 <p>이름: {{ player_name }}</p>
-                <p>ROUND: {{ my_record.round_number }}</p>
                 <p>TIME: {{ my_record.score }}</p>
             </div>
             <button onclick="location.href='{% url 'name' %}'">다시 도전하기</button>
