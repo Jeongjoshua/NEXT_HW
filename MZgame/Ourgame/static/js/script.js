@@ -47,6 +47,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
         } else {
             ayoung.src = healthImages[6];
         }
+        if (hp <= 30) {
+            hpBar.style.backgroundColor = 'red';
+        } else {
+            hpBar.style.backgroundColor = 'black';
+        }
     }
 
     // Function to create a flying object
