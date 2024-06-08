@@ -29,7 +29,7 @@ body {
 }
 
 .heart {
-    transform: translateY(-50%) scale(1.5); /* Zoom the heart image by 120% */
+    transform: translateY(-50%) scale(1.2); /* Zoom the heart image by 120% */
 }
 
 #hp-container {
@@ -64,6 +64,22 @@ body {
     font-size: 20px;
 }
 
+#leftPerson {
+    position: absolute;
+    left: 0%;
+    top: 48%;
+    transform: translateY(-50%) scale(1.5); /* Increase size by 50% */
+    width: 400px;
+}
+
+#leftPerson {
+    position: absolute;
+    left: 0%;
+    top: 48%;
+    transform: translateY(-50%) scale(1.5); /* Increase size by 50% */
+    width: 400px;
+}
+
 /* CSS for the modal */
 .modal {
     display: none;
@@ -85,6 +101,6 @@ body {
     width: 80%;
     text-align: center;
 }
-.ment{
+.ment {
     color: #ff7b00;
 }

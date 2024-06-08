@@ -8,7 +8,7 @@ body {
 }
 
 .container {
-    margin-top: 30px ;
+    margin-top: 30px;
     text-align: center;
     margin: 30px auto;
     max-width: 600px;
@@ -29,6 +29,29 @@ button {
     border-radius: 5px;
     cursor: pointer;
 }
+.myranking,
+.ranking {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+}
+
+.myranking-container {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+    width: 200px;
+}
+
+.record-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 400px;
+    flex-direction: row;
+}
 
 .falling-cry {
     position: absolute;
@@ -46,10 +69,6 @@ button {
         opacity: 0;
     }
 }
-
-
-
-
 
 .myranking {
     background-color: #87ceeb; /* Light blue */

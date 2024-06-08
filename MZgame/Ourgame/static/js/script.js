@@ -6,44 +6,18 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const heartImageUrl = container.getAttribute('data-heart-url');
     const healthImages = JSON.parse(container.getAttribute('data-health-images'));
     const ayoung = document.getElementById('ayoung');
+    const leftPerson = document.getElementById('leftPerson');
+    const collisionSound = document.getElementById('collision-sound');
 
     let topPosition = 50; // Starting at 50% from the top
     let hp = 100;
     let timeElapsed = 0;
-    let objectSpeed = 40; // Initial speed at which objects move towards the hand
+    let objectSpeed = 10; // Initial speed at which objects move towards the hand
     const objectCreationInterval = 2000; // Interval in milliseconds to create objects
     let currentObjectSpeed = objectSpeed;
 
-    window.addEventListener('DOMContentLoaded', (event) => {
-        const modal = document.getElementById('myModal');
-
-        // Show the modal on page load
-        modal.style.display = 'block';
-
-        // Automatically close the modal after 3 seconds
-        setTimeout(() => {
-            modal.style.display = 'none'; // Hide the modal
-            startGame(); // Start the game
-        }, 3000);
-    });
-    // Function to display new round modal every 20 seconds
-    function displayNewRoundModal() {
-        const roundNumber = Math.floor(timeElapsed / 20) ;
-        const modalId = `myModal${roundNumber}`;
-        const modal = document.getElementById(modalId);
-
-        if (modal) {
-            modal.style.display = 'block'; // Show the modal
-
-            // Automatically close the modal after 2 seconds
-            setTimeout(() => {
-                modal.style.display = 'none'; // Hide the modal
-            }, 2000);
-        }
-    }
-
-    // Timer to display new round modal every 20 seconds
-    const roundModalInterval = setInterval(displayNewRoundModal, 20000);
+    // Left person images array is now available globally
+    // var leftPersonImages = ["{% static 'images/park1.png' %}", "{% static 'images/park2.png' %}"];
 
     // Move the hand up and down
     window.addEventListener('keydown', (e) => {
@@ -92,18 +66,25 @@ document.addEventListener('DOMContentLoaded', (event) => {
         object.classList.add(isHeart ? 'heart' : 'object');
         object.style.position = 'absolute'; // Ensure absolute positioning
         object.style.top = `${10 + Math.random() * 80}%`;
-        object.style.left = '0%'; // Start at the left edge
+
+        // Calculate the center of the left person image
+        const leftPersonRect = leftPerson.getBoundingClientRect();
+        const leftPersonCenter = (leftPersonRect.left + leftPersonRect.right) / 2;
+
+        // Set the starting position of the object to the center of the left person image
+        object.style.left = `${leftPersonCenter}px`;
         container.appendChild(object);
 
         // Move the object towards the right
-        let objectPosition = 0;
+        let objectPosition = leftPersonCenter;
         const interval = setInterval(() => {
-            objectPosition += 2; // Increment the position
-            object.style.left = `${objectPosition}%`;
+            objectPosition += currentObjectSpeed; // Increment the position based on speed
+            object.style.left = `${objectPosition}px`;
 
             // Check for collision with the hand
             const objectRect = object.getBoundingClientRect();
             const handRect = hand.getBoundingClientRect();
+            const ayoungRect = ayoung.getBoundingClientRect();
             if (
                 objectRect.right >= handRect.left && // Ensure it touches the hand
                 objectRect.left <= handRect.right && // Ensure it overlaps horizontally
@@ -115,10 +96,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 if (isHeart) {
                     hp = Math.min(100, hp + 20);
                     updateHpBar();
+                } else {
+                    collisionSound.currentTime = 0; // Reset sound to start
+                    collisionSound.play(); // Play collision sound when an object hits the hand
                 }
-            } else if (objectRect.left >= window.innerWidth) {
-                // Check if the object is off the right edge
-                // If the object reaches the right end
+            } else if (objectRect.left >= (ayoungRect.left + ayoungRect.right) / 2 - 50) {
+                // Adjust the endpoint to 50px behind Ayoung's midpoint
                 clearInterval(interval);
                 container.removeChild(object);
                 if (!isHeart) {
@@ -131,7 +114,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     }
                 }
             }
-        }, currentObjectSpeed);
+        }, 20); // Use a fixed interval timing
     }
 
     // Create objects at intervals with a lower probability for hearts
@@ -167,9 +150,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
         timeElapsed += 1;
         timerElement.textContent = `Time: ${timeElapsed}s`;
 
+        // Alternate left person images every second based on elapsed time
+        leftPerson.src = leftPersonImages[timeElapsed % 2];
+
         // Increase speed every 10 seconds
         if (timeElapsed % 10 === 0) {
-            currentObjectSpeed = Math.max(5, currentObjectSpeed - 10); // Increase speed by 50%
+            currentObjectSpeed = currentObjectSpeed + 5;
         }
     }, 1000);
 });

@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -17,16 +18,15 @@
                 <h2>랭킹</h2>
                 <ol>
                     {% for record in top_records %}
-                    <li>{{ record.name }} - {{ record.score }}</li>
+                    <li><div class="record-container"><div><b>{{ record.name }}</div> : <div>{{ record.score }}</b></div></div></li>
                     {% endfor %}
                 </ol>
             </div>
 
             <div class="myranking">
-                <p>내 순위: {{ my_record.id }}</p>
-                <p>{{ player_name }}</p>
-                <p>ROUND: {{ my_record.round_number }}</p>
-                <p>TIME: {{ my_record.play_time }}</p>
+                <div class="myranking-container"><div><b>내 순위:</b></div> <div><b>{{ player_rank }}위</b></div></div>
+                <div class="myranking-container"><div><b>이름:</b></div> <div><b>{{ player_name }}</b></div></div>
+                <div class="myranking-container"><div><b>시간:</div> {{ my_record.score }}</b></div></div>
             </div>
         </br><button onclick="location.href='{% url 'name' %}'">다시 도전하기</button>
         </div>
