@@ -18,25 +18,31 @@ body {
     top: 50%;
     transform: translateY(-50%) scale(1.2);
     width: 100px;
+    z-index: 2;
 }
 
-.object,
+.object {
+    width: 60px; /* Set the same width for both object and heart */
+    height: 60px; /* Set the same height for both object and heart */
+    position: absolute;
+    transform: translateY(-50%) scale(1.5); /* Center vertically */
+}
+
 .heart {
-    width: 50px; /* Set the same width for both object and heart */
-    height: 50px; /* Set the same height for both object and heart */
+    width: 60px; /* Set the same width for both object and heart */
+    height: 60px;
+    transform: translateY(-50%) scale(1.2); /* Zoom the heart image by 120% */
+    height: 60px; /* Set the same height for both object and heart */
     position: absolute;
     transform: translateY(-50%); /* Center vertically */
-}
-
-.heart {
-    transform: translateY(-50%) scale(1.2); /* Zoom the heart image by 120% */
 }
 
 #hp-container {
     position: relative;
     top: 10px;
-    left: 44%;
-    width: 200px;
+    left: 50%;
+    width: 400px;
+    transform: translateX(-50%);
     height: 20px;
     background-color: #ddd;
     border-radius: 10px;
@@ -91,6 +97,7 @@ body {
     height: 100%;
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent gray background */
+    z-index: 3;
 }
 
 .modal-content {
