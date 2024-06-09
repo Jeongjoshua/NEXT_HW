@@ -76,12 +76,15 @@ document.addEventListener('DOMContentLoaded', (event) => {
     // Function to start the game
     function startGame() {
         const modal = document.getElementById('myModal');
-        modal.style.display = 'block';
-        setTimeout(() => {
-            modal.style.display = 'none';
-        }, 3000);
+        if (modal) {
+            isModalOpen = true;
+            modal.style.display = 'block'; // Show the modal
+            setTimeout(() => {
+                modal.style.display = 'none'; // Hide the modal
+                isModalOpen = false;
+            }, 2000);
+        }
     }
-
     // Function to display new round modal every 20 seconds
     function displayNewRoundModal() {
         const roundNumber = Math.floor(timeElapsed / 20);
