@@ -1,0 +1,95 @@
+.namePortfolio {
+    color: white;
+    padding-top: 50px;
+    padding-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+header {
+    padding-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+body {
+    background-image: url(./background1.jpg);
+    width: 100%;
+    max-height: 1200px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin: 0;
+    padding: 0;
+    z-index: 1;
+}
+.myPortfolio {
+    display: flex;
+    align-items: center;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+nav ul li {
+    margin: 0 10px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+.welcome {
+    display: flex;
+    justify-content: flex-end;
+    color: white;
+    font-size: 170px;
+    z-index: 2;
+    margin-top: 500px;
+    margin-right: 50px;
+    font-family: Brush Script MT;
+}
+
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+.aboutMyCareer {
+    display: flex;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+    z-index: 2;
+    margin-top: 100px;
+    font-family: Arial, Helvetica, sans-serif;
+    flex-direction: column;
+}
+.image1 img {
+    height: 700px;
+    width: 500px;
+}
+.image2 img {
+    height: 700px;
+    width: 360px;
+}
+.row {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+}
+.contactIcon {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+}

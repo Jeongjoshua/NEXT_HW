@@ -1,0 +1,29 @@
+body {
+    background-color: black;
+    background-image: url(https://c4.wallpaperflare.com/wallpaper/669/388/957/line-background-dark-curves-wallpaper-preview.jpg);
+    color: white;
+    text-align: center;
+    padding-top: 50px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul li {
+    margin-bottom: 10px;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+}
+
+a:hover {
+    color: green;
+}
+
+.name content title {
+    margin-bottom: 20px;
+}

@@ -1,0 +1,31 @@
+{% extends 'base.html' %} {% block css %} {% load static %} {% endblock %} {% block content %}
+<body>
+    <div class="container">
+        <h2>세부 내용</h2>
+        <div>제목 : {{ article.title }}</div>
+        <div>내용 : {{ article.content }}</div>
+        <div>작성시간 : {{article.time}}</div>
+        <div>
+            작성자: <a href="{% url 'user_profile' article.creator.username %}">{{ article.creator.username }}</a>
+        </div>
+        <div>마지막 열람 시간: {{ article.last_viewed }},{{ article.last_viewed_by.username }}</div>
+        <form method="POST">
+            {% csrf_token %}
+            <input type="text" name="content" placeholder="댓글을 입력해주세요" />
+            <button type="submit">작성하기</button>
+        </form>
+        {% for comment in article.comments.all %}
+        <ul>
+            <li>{{comment.content}} <a href="{% url 'delete-comment' article.pk comment.pk %}">삭제</a></li>
+        </ul>
+
+        {% endfor %}
+
+        <div class="links">
+            <a href="{% url 'home' %}">목록</a>
+            <a href="{% url 'update' article.id %}">수정</a>
+            <a href="{% url 'delete' article.id %}">삭제</a>
+        </div>
+    </div>
+</body>
+{% endblock %}

@@ -1,0 +1,51 @@
+body {
+    background-color: black;
+    background-image: url(https://c4.wallpaperflare.com/wallpaper/669/388/957/line-background-dark-curves-wallpaper-preview.jpg);
+    color: white;
+    text-align: center;
+    padding-top: 50px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul li {
+    margin-bottom: 10px;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+}
+
+a:hover {
+    color: green;
+}
+
+.name content title {
+    margin-bottom: 20px;
+}
+
+.spaceComment {
+    margin-bottom: 50px; /* Adds space below the comment input form */
+    margin-top: 30px;
+}
+
+.comment {
+    margin-bottom: 20px; /* Adds space below each comment */
+}
+
+.replyForm {
+    margin-left: 20px; /* Adds left margin to the reply input form */
+}
+
+.reply {
+    margin-left: 40px; /* Adds left margin to replies */
+}
+
+.spaceBox {
+    margin-top: 30px;
+    margin-bottom: 10px;
+}

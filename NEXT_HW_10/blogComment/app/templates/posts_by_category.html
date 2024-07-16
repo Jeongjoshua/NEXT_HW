@@ -1,0 +1,11 @@
+{% extends 'base.html' %} {% block css %} {% load static %}{% endblock %} {% block content %}
+<h1>Posts by Category - {{ category }}</h1>
+<ul>
+    {% for post in posts %}
+    <li>
+        <a href="{% url 'detail' post.pk %}">{{post.title}}</a>
+    </li>
+    {% endfor %}
+</ul>
+<a href="{% url 'home' %}">돌아가기</a>
+{% endblock content %}

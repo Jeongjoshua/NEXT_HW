@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% load static %}
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        {% block css %} {% endblock css %}
+        <title>블로그</title>
+    </head>
+
+    <body>
+        <nav id="navbar">
+            <ul class="navbar__menu">
+                <li class="navbar__menu__item">
+                    <a href="{% url 'new' %}">만들기</a>
+                </li>
+                <li class="navbar__menu__item">
+                    <a href="{% url 'home' %}">목록</a>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="navbar__menu__item">
+                    <a href="{% url 'user_profile' request.user.username %}">프로파일</a>
+                </li>
+                <li class="navbar__menu__item">
+                    <a href="{% url 'logout' %}">로그아웃</a>
+                </li>
+                {% else %}
+                <li class="navbar__menu__item">
+                    <a href="{% url 'login' %}">로그인</a>
+                </li>
+                <li class="navbar__menu__item">
+                    <a href="{% url 'signup' %}">회원가입</a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        <div class="title">{% block title %} {% endblock title %}</div>
+        <div class="container">{% block content %} {% endblock content %}</div>
+    </body>
+</html>

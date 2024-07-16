@@ -1,0 +1,42 @@
+{%load static%}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>정유철 자기소개</title>
+        <link rel="stylesheet" type="text/css" href="{% static 'portfolio.css' %}">
+    </head>
+
+    <body>
+        <div class="namePortfolio">
+            <h1>YUCHUL JEONG PORTFOLIO</h1>
+        </div>
+        <header>
+            <div class="myPortfolio"></div>
+            <nav>
+                <ul>
+                    <li><a href="{% url 'home' %}">HOME</a></li>
+                    <li><a href="{% url 'aboutme' %}">ABOUT ME</a></li>
+                    <li><a href="{% url 'projects' %}">PROJECTS</a></li>
+                    <li><a href="{% url 'contact' %}">CONTACTS</a></li>
+                </ul>
+            </nav>
+        </header>
+        <div class="aboutMyCareer">
+        <h2>Career</h2>
+        <ul id="Career">
+            <li>SMIC Private School</li>
+            <li>Korea University Specialized in Integrated Energy Engineering</li>
+            <li>30기갑여단 화생방중대</li>
+            <li>NEXT</li>
+        </ul>
+        <h2>Language</h2>
+        <ul id="language">
+            <li>Korean, English, Chinese</li>
+            <li>Python, Java, CSS</li>
+        </ul>
+    </body>
+</html>

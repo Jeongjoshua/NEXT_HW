@@ -1,0 +1,53 @@
+body {
+    height: 120vh; /* Use viewport height for full screen */
+    width: 100vw; /* Use viewport width for full screen */
+    display: flex;
+    position: relative;
+    background-image: url(https://image.slidesdocs.com/responsive-images/docs/design-of-a-yellow-notebook-with-a-creative-ring-mount-page-border-background-word-template_50cf44f71b__1131_1600.jpg);
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-color: papayawhip;
+    margin-top: 400px;
+}
+
+.outerbox {
+    height: 800px;
+    width: 800px;
+    display: flex;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    flex-direction: column;
+}
+
+.center {
+    height: 50px;
+    width: 300px;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 25px;
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toDoBox {
+    position: relative;
+    align-self: start;
+    font-size: 30px;
+    margin-bottom: 15px;
+    margin-left: 70px;
+}
+
+.contentBox {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 25px;
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
