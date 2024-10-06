@@ -6,12 +6,17 @@ function App() {
   const [message, setMessage] = useState("");
   const [password, setPassword] = useState("");
   const [guestbookEntries, setGuestbookEntries] = useState([]);
+  const [sortBy, setSortBy] = useState("time");
 
   useEffect(() => {
-    fetch("http://localhost:3001/api/guestbook")
+    fetchEntries();
+  }, [sortBy]);
+
+  const fetchEntries = () => {
+    fetch(`http://localhost:3001/api/guestbook?sort=${sortBy}`)
       .then((response) => response.json())
       .then((data) => setGuestbookEntries(data));
-  }, []);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -68,6 +73,17 @@ function App() {
     });
   };
 
+  const handleLike = (id) => {
+    fetch(`http://localhost:3001/api/guestbook/${id}/like`, {
+      method: "POST",
+    })
+      .then((response) => response.json())
+      .then((updatedEntry) => {
+        setGuestbookEntries(guestbookEntries.map((entry) => (entry.id === id ? updatedEntry : entry)));
+      })
+      .catch((error) => console.error("Error liking entry:", error));
+  };
+
   return (
     <div className="App">
       <h1>방명록</h1>
@@ -84,11 +100,17 @@ function App() {
         <button type="submit">남기기</button>
       </form>
       <h2>방명록 목록</h2>
+      <div>
+        <button onClick={() => setSortBy("time")}>Sort by Time</button>
+        <button onClick={() => setSortBy("likes")}>Sort by Likes</button>
+      </div>
       <ul>
         {guestbookEntries.map((entry) => (
           <li key={entry.id}>
             <strong>{entry.name}:</strong> {entry.message} <br />
             <small>{new Date(entry.created_at).toLocaleString()}</small> <br />
+            <span>Likes: {entry.likes}</span> <br />
+            <button onClick={() => handleLike(entry.id)}>Like</button>
             <button onClick={() => handleEdit(entry.id)}>수정</button>
             <button onClick={() => handleDelete(entry.id)}>삭제</button>
           </li>
